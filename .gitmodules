@@ -1,0 +1,9 @@
+[submodule "contrib/Nuked-OPL3"]
+	path = contrib/Nuked-OPL3
+	url = https://github.com/nukeykt/Nuked-OPL3.git
+[submodule "contrib/YM7128B_emu"]
+	path = contrib/YM7128B_emu
+	url = https://github.com/TexZK/YM7128B_emu.git
+[submodule "contrib/TDA8425_emu"]
+	path = contrib/TDA8425_emu
+	url = https://github.com/TexZK/TDA8425_emu.git
