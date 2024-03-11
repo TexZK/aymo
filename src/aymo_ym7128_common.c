@@ -1,0 +1,192 @@
+/*
+AYMO - Accelerated YaMaha Operator
+Copyright (c) 2023-2024 Andrea Zoppi.
+
+This file is part of AYMO.
+
+AYMO is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 2.1 of the License, or (at your option)
+any later version.
+
+AYMO is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with AYMO. If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#include "aymo_ym7128_common.h"
+
+AYMO_CXX_EXTERN_C_BEGIN
+
+
+#define PGAIN(x)    ((int16_t)((double)(x) * (double)AYMO_YM7128_GAIN_UNIT)  \
+                    & (int16_t)AYMO_YM7128_GAIN_MASK)
+
+#define NGAIN(x)    ((int16_t)(~(int32_t)PGAIN(x) & (int32_t)0xFFFF))  // pseudo-negative
+
+const int16_t aymo_ym7128_gain[64u] =
+{
+    NGAIN(0.000000000000000000),  // -oo dB-
+    NGAIN(0.001000000000000000),  // -60 dB-
+    NGAIN(0.001258925411794167),  // -58 dB-
+    NGAIN(0.001584893192461114),  // -56 dB-
+    NGAIN(0.001995262314968879),  // -54 dB-
+    NGAIN(0.002511886431509579),  // -52 dB-
+    NGAIN(0.003162277660168379),  // -50 dB-
+    NGAIN(0.003981071705534973),  // -48 dB-
+    NGAIN(0.005011872336272725),  // -46 dB-
+    NGAIN(0.006309573444801930),  // -44 dB-
+    NGAIN(0.007943282347242814),  // -42 dB-
+    NGAIN(0.010000000000000000),  // -40 dB-
+    NGAIN(0.012589254117941675),  // -38 dB-
+    NGAIN(0.015848931924611134),  // -36 dB-
+    NGAIN(0.019952623149688799),  // -34 dB-
+    NGAIN(0.025118864315095794),  // -32 dB-
+    NGAIN(0.031622776601683791),  // -30 dB-
+    NGAIN(0.039810717055349734),  // -28 dB-
+    NGAIN(0.050118723362727220),  // -26 dB-
+    NGAIN(0.063095734448019331),  // -24 dB-
+    NGAIN(0.079432823472428138),  // -22 dB-
+    NGAIN(0.100000000000000006),  // -20 dB-
+    NGAIN(0.125892541179416728),  // -18 dB-
+    NGAIN(0.158489319246111343),  // -16 dB-
+    NGAIN(0.199526231496887974),  // -14 dB-
+    NGAIN(0.251188643150958013),  // -12 dB-
+    NGAIN(0.316227766016837941),  // -10 dB-
+    NGAIN(0.398107170553497203),  // - 8 dB-
+    NGAIN(0.501187233627272244),  // - 6 dB-
+    NGAIN(0.630957344480193250),  // - 4 dB-
+    NGAIN(0.794328234724281490),  // - 2 dB-
+    NGAIN(1.000000000000000000),  // - 0 dB-
+
+    PGAIN(0.000000000000000000),  // -oo dB+
+    PGAIN(0.001000000000000000),  // -60 dB+
+    PGAIN(0.001258925411794167),  // -58 dB+
+    PGAIN(0.001584893192461114),  // -56 dB+
+    PGAIN(0.001995262314968879),  // -54 dB+
+    PGAIN(0.002511886431509579),  // -52 dB+
+    PGAIN(0.003162277660168379),  // -50 dB+
+    PGAIN(0.003981071705534973),  // -48 dB+
+    PGAIN(0.005011872336272725),  // -46 dB+
+    PGAIN(0.006309573444801930),  // -44 dB+
+    PGAIN(0.007943282347242814),  // -42 dB+
+    PGAIN(0.010000000000000000),  // -40 dB+
+    PGAIN(0.012589254117941675),  // -38 dB+
+    PGAIN(0.015848931924611134),  // -36 dB+
+    PGAIN(0.019952623149688799),  // -34 dB+
+    PGAIN(0.025118864315095794),  // -32 dB+
+    PGAIN(0.031622776601683791),  // -30 dB+
+    PGAIN(0.039810717055349734),  // -28 dB+
+    PGAIN(0.050118723362727220),  // -26 dB+
+    PGAIN(0.063095734448019331),  // -24 dB+
+    PGAIN(0.079432823472428138),  // -22 dB+
+    PGAIN(0.100000000000000006),  // -20 dB+
+    PGAIN(0.125892541179416728),  // -18 dB+
+    PGAIN(0.158489319246111343),  // -16 dB+
+    PGAIN(0.199526231496887974),  // -14 dB+
+    PGAIN(0.251188643150958013),  // -12 dB+
+    PGAIN(0.316227766016837941),  // -10 dB+
+    PGAIN(0.398107170553497203),  // - 8 dB+
+    PGAIN(0.501187233627272244),  // - 6 dB+
+    PGAIN(0.630957344480193250),  // - 4 dB+
+    PGAIN(0.794328234724281490),  // - 2 dB+
+    PGAIN(1.000000000000000000)   // - 0 dB+
+};
+
+
+#define TAP(i)  ((int16_t)(((i) * (AYMO_YM7128_DELAY_LENGTH - 1)) / (AYMO_YM7128_TAP_COUNT - 1)))
+
+const int16_t aymo_ym7128_tap[32u] =
+{
+    TAP( 0),  //   0.0 ms
+    TAP( 1),  //   3.2 ms
+    TAP( 2),  //   6.5 ms
+    TAP( 3),  //   9.7 ms
+    TAP( 4),  //  12.9 ms
+    TAP( 5),  //  16.1 ms
+    TAP( 6),  //  19.3 ms
+    TAP( 7),  //  22.6 ms
+    TAP( 8),  //  25.8 ms
+    TAP( 9),  //  29.0 ms
+    TAP(10),  //  32.3 ms
+    TAP(11),  //  35.5 ms
+    TAP(12),  //  38.7 ms
+    TAP(13),  //  41.9 ms
+    TAP(14),  //  45.2 ms
+    TAP(15),  //  48.4 ms
+    TAP(16),  //  51.6 ms
+    TAP(17),  //  54.9 ms
+    TAP(18),  //  58.1 ms
+    TAP(19),  //  61.3 ms
+    TAP(20),  //  64.5 ms
+    TAP(21),  //  67.8 ms
+    TAP(22),  //  71.0 ms
+    TAP(23),  //  74.2 ms
+    TAP(24),  //  77.4 ms
+    TAP(25),  //  80.7 ms
+    TAP(26),  //  83.9 ms
+    TAP(27),  //  87.1 ms
+    TAP(28),  //  90.4 ms
+    TAP(29),  //  93.6 ms
+    TAP(30),  //  96.8 ms
+    TAP(31)   // 100.0 ms
+};
+
+
+#undef KERNEL
+#define KERNEL(x)   ((int16_t)((double)(x) * (double)AYMO_YM7128_GAIN_UNIT)  \
+                    & (int16_t)AYMO_YM7128_GAIN_MASK)
+
+const int16_t aymo_ym7128_kernel_linear[19u] =
+{
+    KERNEL(+0.005969087803865891),
+    KERNEL(-0.003826518613910499),
+    KERNEL(-0.016623943725986926),
+    KERNEL(+0.007053928712894589),
+    KERNEL(+0.038895802111020034),
+    KERNEL(-0.010501507751597486),
+    KERNEL(-0.089238395139830201),
+    KERNEL(+0.013171814880420758),
+    KERNEL(+0.312314472963171053),
+    KERNEL(+0.485820312497107776),
+    KERNEL(+0.312314472963171053),
+    KERNEL(+0.013171814880420758),
+    KERNEL(-0.089238395139830201),
+    KERNEL(-0.010501507751597486),
+    KERNEL(+0.038895802111020034),
+    KERNEL(+0.007053928712894589),
+    KERNEL(-0.016623943725986926),
+    KERNEL(-0.003826518613910499),
+    KERNEL(+0.005969087803865891)
+};
+
+
+const int16_t aymo_ym7128_kernel_minphase[19u] =
+{
+    KERNEL(+0.073585247514714749),
+    KERNEL(+0.269340051166713890),
+    KERNEL(+0.442535202999738531),
+    KERNEL(+0.350129745841520346),
+    KERNEL(+0.026195691646307945),
+    KERNEL(-0.178423532471468610),
+    KERNEL(-0.081176763571493171),
+    KERNEL(+0.083194010466739091),
+    KERNEL(+0.067960765530891545),
+    KERNEL(-0.035840063980478287),
+    KERNEL(-0.044393769145659796),
+    KERNEL(+0.013156688603347873),
+    KERNEL(+0.023451305043275420),
+    KERNEL(-0.004374029821991059),
+    KERNEL(-0.009480786001493536),
+    KERNEL(+0.002700502551912207),
+    KERNEL(+0.003347671274177581),
+    KERNEL(-0.002391896275498628),
+    KERNEL(+0.000483958628744376)
+};
+
+
+AYMO_CXX_EXTERN_C_END

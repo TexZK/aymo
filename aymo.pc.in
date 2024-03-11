@@ -1,0 +1,15 @@
+# AYMO pkg-config file
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: AYMO
+Description: Accelerated YaMaha Operator
+URL: @URL@
+Version: @VERSION@
+Requires:
+Conflicts:
+Libs: -L${libdir} -laymo
+Cflags: -I${includedir}/aymo

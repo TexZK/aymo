@@ -1,0 +1,8 @@
+# Compilation
+option('asm', type : 'feature', value : 'auto', description : 'Generate Assembly Files')
+option('rtcd', type : 'feature', value : 'auto', description : 'Run-Time CPU Detection')
+
+# Components
+option('apps', type : 'feature', value : 'auto', description : 'Build Applications')
+option('docs', type: 'feature', value: 'auto', description: 'Build Documentation')
+option('tests', type : 'feature', value : 'auto', description : 'Build Tests')
