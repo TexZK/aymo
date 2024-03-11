@@ -1,0 +1,39 @@
+name: Basic CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  full_build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: setup-python
+      uses: actions/setup-python@v5
+
+    - name: build
+      uses: BSFishy/meson-build@v1.0.3
+      with:
+        action: build
+        directory: builddir
+        meson-version: 1.3.2
+        ninja-version: 1.11.1
+
+    - name: test
+      uses: BSFishy/meson-build@v1.0.3
+      with:
+        action: test
+        directory: builddir
+        meson-version: 1.3.2
+        ninja-version: 1.11.1

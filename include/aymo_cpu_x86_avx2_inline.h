@@ -24,7 +24,6 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #include "aymo_cpu.h"
 #ifdef AYMO_CPU_SUPPORT_X86_AVX2
 
-#include <intrin.h>
 #include <stdint.h>
 
 AYMO_CXX_EXTERN_C_BEGIN
