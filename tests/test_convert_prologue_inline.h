@@ -284,7 +284,7 @@ const float* compare_f32(const float* bufp, const float* refp, size_t len, float
 
 const void* compare_dirty(const void* bufp, uint8_t refv, size_t size)
 {
-    const uint8_t* sp = (const uint8_t*)bufp;
+    const uint8_t* sp = bufp;
     const uint8_t* ep = (sp + size);
     while (sp != ep) {
         if (*sp != refv) {

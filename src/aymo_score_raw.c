@@ -42,7 +42,7 @@ static void aymo_score_raw_update_clock(
 )
 {
     score->clock += (uint16_t)(score->clock == 0u);
-    score->raw_rate = (AYMO_SCORE_RAW_REFCLK / score->clock);
+    score->raw_rate = (AYMO_SCORE_RAW_REFCLK / score->clock);  // TODO: improve resolution via fixed point 24.8
     score->division = (AYMO_SCORE_OPL_RATE_DEFAULT / score->raw_rate);  // TODO: improve resolution via fixed point 24.8
     score->division += (uint32_t)(score->division == 0u);
 }
@@ -89,7 +89,7 @@ int aymo_score_raw_load(
     if (size < sizeof(struct aymo_score_raw_header)) {
         return 1;
     }
-    const uint8_t* ptr = (const uint8_t*)data;
+    const uint8_t* ptr = data;
 
     if (((ptr[0] != 'R') ||
          (ptr[1] != 'A') ||
@@ -106,9 +106,7 @@ int aymo_score_raw_load(
 
     uint32_t length_by_size = (uint32_t)(size - sizeof(struct aymo_score_raw_header));
     length_by_size /= sizeof(struct aymo_score_raw_event);
-    if (score->length > length_by_size) {
-        score->length = length_by_size;
-    }
+    score->length = length_by_size;
 
     aymo_score_raw_restart(score);
     return 0;

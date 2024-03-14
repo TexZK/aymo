@@ -112,7 +112,7 @@ int aymo_score_dro_load(
     if (size < sizeof(struct aymo_score_dro_header)) {
         return 1;
     }
-    const uint8_t* ptr = (const uint8_t*)data;
+    const uint8_t* ptr = data;
     const struct aymo_score_dro_header* header = NULL;
     header = (const struct aymo_score_dro_header*)(const void*)ptr;
     ptr += sizeof(struct aymo_score_dro_header);

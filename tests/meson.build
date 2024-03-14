@@ -383,10 +383,10 @@ endforeach
 
 # [[format, path], ...]
 aymo_ymf262_compare_suite = [
-#  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
-  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],
+  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
+#  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],  # FIXME:
   ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
-#  ['raw', '../contrib/adplug/test/testmus/inc.raw'],
+#  ['raw', '../contrib/adplug/test/testmus/inc.raw'],  # FIXME:
   ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
   ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
 ]

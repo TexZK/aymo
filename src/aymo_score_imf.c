@@ -133,7 +133,7 @@ int aymo_score_imf_load_specific(
     score->type = type;
 
     if (type) {
-        const uint8_t* ptr = (const uint8_t*)data;
+        const uint8_t* ptr = data;
         uint32_t length_by_header = (ptr[0] | ((uint16_t)ptr[1] << 8u));
         length_by_header /= sizeof(struct aymo_score_imf_event);
         score->length = length_by_header;
