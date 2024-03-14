@@ -293,11 +293,11 @@ static void aymo_score_dro_decode_v2(
     const uint8_t* ptr = &(score->events[score->offset]);
 
     if (ptr[0] == v2_header->short_delay_code) {
-        score->status.delay = (ptr[1] + 1uL);
+        score->status.delay = ((ptr[1] + 1uL) * score->division);
         score->status.flags = AYMO_SCORE_FLAG_DELAY;
     }
     else if (ptr[0] == v2_header->long_delay_code) {
-        score->status.delay = ((ptr[1] + 1uL) * 256u);
+        score->status.delay = (((ptr[1] + 1uL) * 256u) * score->division);
         score->status.flags = AYMO_SCORE_FLAG_DELAY;
     }
     else if ((ptr[0] & 0xFFu) < v2_header->codemap_length) {

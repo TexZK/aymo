@@ -383,7 +383,12 @@ endforeach
 
 # [[format, path], ...]
 aymo_ymf262_compare_suite = [
+#  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
+  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],
+  ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
+#  ['raw', '../contrib/adplug/test/testmus/inc.raw'],
   ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
+  ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
 ]
 
 foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
@@ -393,9 +398,7 @@ foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
     test_suite = 'test_ymf262_@0@_compare'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_args : aymo_ymf262_compare_suite
-      score_type = test_args[0]
-      score_path = test_args[1]
-      test_name = ('_'.join([test_suite, fs.name(score_path)])).underscorify()
+      test_name = ('_'.join([test_suite, fs.name(test_args[1])])).underscorify()
       test(test_name, test_exe, args: test_args)
     endforeach
   endif
