@@ -33,6 +33,7 @@ enum aymo_score_type {
     aymo_score_type_dro,
     aymo_score_type_imf,
     aymo_score_type_raw,
+    aymo_score_type_vgm,
     aymo_score_type_unknown
 };
 

@@ -7,3 +7,6 @@
 [submodule "contrib/TDA8425_emu"]
 	path = contrib/TDA8425_emu
 	url = https://github.com/TexZK/TDA8425_emu.git
+[submodule "contrib/adplug"]
+	path = contrib/adplug
+	url = https://github.com/adplug/adplug.git

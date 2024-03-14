@@ -131,12 +131,14 @@ int aymo_score_dro_load(
 
     if ((((header->version_major == 0u) && (header->version_minor == 1u)) ||
          ((header->version_major == 1u) && (header->version_minor == 0u)))) {
+
         if (size < sizeof(struct aymo_score_dro_v1_header)) {
             return 1;
         }
         v1_header = (const struct aymo_score_dro_v1_header*)(const void*)ptr;
         ptr += sizeof(struct aymo_score_dro_v1_header);
         size -= sizeof(struct aymo_score_dro_v1_header);
+
         if ((v1_header->hardware_extra[0] ||
              v1_header->hardware_extra[1] ||
              v1_header->hardware_extra[2])) {

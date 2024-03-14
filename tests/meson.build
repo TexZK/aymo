@@ -217,7 +217,7 @@ foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
     test_suite = 'test_tda8425_@0@_sweep'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_name, test_args : aymo_tda8425_sweep_suite
-      test_name = ('_'.join([test_suite] + [test_name])).underscorify()
+      test_name = ('_'.join([test_suite, test_name])).underscorify()
       test(test_name, test_exe, args: test_args)
     endforeach
   endif
@@ -371,7 +371,7 @@ foreach intr_name : ['none', 'x86_sse41', 'arm_neon']
     test_suite = 'test_ym7128_@0@_sweep'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_name, test_args : aymo_ym7128_sweep_suite
-      test_name = ('_'.join([test_suite] + [test_name])).underscorify()
+      test_name = ('_'.join([test_suite, test_name])).underscorify()
       test(test_name, test_exe, args: test_args)
     endforeach
   endif
@@ -381,12 +381,22 @@ endforeach
 # =====================================================================
 # YMF262
 
+# [[format, path], ...]
+aymo_ymf262_compare_suite = [
+  ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
+]
+
 foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     # TODO: improve testing scores
-    test_name = 'test_ymf262_@0@_compare'.format(intr_name)
-    test_exe = get_variable('@0@_exe'.format(test_name))
-    test(test_name, test_exe, args: ['avd', '../tests/scores/DUNE.avd'])
+    test_suite = 'test_ymf262_@0@_compare'.format(intr_name)
+    test_exe = get_variable('@0@_exe'.format(test_suite))
+    foreach test_args : aymo_ymf262_compare_suite
+      score_type = test_args[0]
+      score_path = test_args[1]
+      test_name = ('_'.join([test_suite, fs.name(score_path)])).underscorify()
+      test(test_name, test_exe, args: test_args)
+    endforeach
   endif
 endforeach
