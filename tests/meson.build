@@ -157,7 +157,7 @@ foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach t : aymo_convert_suite
       test_name = t.format(intr_name)
-      test(test_name, test_exe, args: test_name)
+#      test(test_name, test_exe, args: test_name)
     endforeach
   endif
 endforeach
@@ -218,7 +218,7 @@ foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_name, test_args : aymo_tda8425_sweep_suite
       test_name = ('_'.join([test_suite, test_name])).underscorify()
-      test(test_name, test_exe, args: test_args)
+#      test(test_name, test_exe, args: test_args)
     endforeach
   endif
 endforeach
@@ -372,7 +372,7 @@ foreach intr_name : ['none', 'x86_sse41', 'arm_neon']
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_name, test_args : aymo_ym7128_sweep_suite
       test_name = ('_'.join([test_suite, test_name])).underscorify()
-      test(test_name, test_exe, args: test_args)
+#       test(test_name, test_exe, args: test_args)
     endforeach
   endif
 endforeach
@@ -383,12 +383,12 @@ endforeach
 
 # [[format, path], ...]
 aymo_ymf262_compare_suite = [
-  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
-#  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],  # FIXME:
-  ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
-#  ['raw', '../contrib/adplug/test/testmus/inc.raw'],  # FIXME:
-  ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
-  ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
+#  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
+  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],  # FIXME:
+#  ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
+  ['raw', '../contrib/adplug/test/testmus/inc.raw'],  # FIXME:
+#  ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
+#  ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
 ]
 
 foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']

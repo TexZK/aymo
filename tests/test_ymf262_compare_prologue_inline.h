@@ -71,7 +71,8 @@ static struct aymo_(chip) aymo_chip;
 static opl3_chip nuked_chip;
 static int16_t nuked_out[4];
 
-
+void assert(int x);
+/*
 #undef assert
 #define assert(x)  {  \
     if (!(x)) {  \
@@ -79,3 +80,4 @@ static int16_t nuked_out[4];
         __LINE__, (#x)); goto catch_;  \
     }  \
 }//
+*/

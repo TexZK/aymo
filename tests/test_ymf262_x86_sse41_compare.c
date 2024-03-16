@@ -45,16 +45,23 @@ static int compare_slots(int slot_)
 
     // TODO: Commented stuff
     assert((int16_t)vextractn(sg->wg_out, sgo) == slot->out);
-    assert((int16_t)vextractn(sg->wg_fb_mulhi, sgo) == (int16_t)(slot->channel->fb ? (0x40 << slot->channel->fb) : 0));
-//    assert(vextractn(sg->wg_fbmod, sgo) == slot->fbmod);
-//    assert(vextractn(sg->wg_mod, sgo) == *slot->mod);
+    int16_t channel_fb = (int16_t)(slot->channel->fb ? (0x40 << slot->channel->fb) : 0);
+    assert((int16_t)vextractn(sg->wg_fb_mulhi, sgo) == channel_fb);
+#ifdef AYMO_DEBUG
+    assert(vextractn(sg->wg_fbmod, sgo) == slot->fbmod);
+    assert(vextractn(sg->wg_mod, sgo) == *slot->mod);
+#endif
     assert((int16_t)vextractn(sg->wg_prout, sgo) == slot->prout);
     assert((uint16_t)vextractn(sg->eg_rout, sgo) == slot->eg_rout);
     assert((uint16_t)vextractn(sg->eg_out, sgo) == slot->eg_out);
-//    assert(vextractn(sg->eg_inc, sgo) == slot->eg_inc);
+#ifdef AYMO_DEBUG
+    assert(vextractn(sg->eg_inc, sgo) == slot->eg_inc);
+#endif
     assert((uint16_t)vextractn(sg->eg_gen, sgo) == slot->eg_gen);
-//    assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
-//    assert(vextractn(sg->eg_ksl, sgo) == slot->eg_ksl);
+#ifdef AYMO_DEBUG
+    assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
+    assert(vextractn(sg->eg_ksl, sgo) == slot->eg_ksl);
+#endif
     assert((int16_t)vextractn(sg->eg_tremolo_am, sgo) == *slot->trem);
     assert((uint16_t)-vextractn(sg->pg_vib, sgo) == slot->reg_vib);
     //assert(vextractn(sg->eg_egt, sgo) == slot->reg_type);
@@ -66,7 +73,9 @@ static int compare_slots(int slot_)
     assert((uint16_t)vextractn(sg->eg_sl, sgo) == slot->reg_sl);
     assert((((uint16_t)vextractn(sg->eg_adsr, sgo) >>  0) & 15) == slot->reg_rr);
     //assert(vextractn(sg->wg_wf, sgo) == slot->reg_wf);
-    assert((uint16_t)vextractn(sg->eg_key, sgo) == slot->key);
+    uint16_t eg_key = (uint16_t)vextractn(sg->eg_key, sgo);
+    eg_key = ((eg_key >> 7) | (eg_key & 1));
+    assert(eg_key == slot->key);
     vi32_t pg_phase_vv = (aymo_(sgo_side)[sgo] ? sg->pg_phase_hi : sg->pg_phase_lo);
     uint32_t pg_phase = vvextractn(pg_phase_vv, aymo_(sgo_cell)[sgo]);
     assert(pg_phase == slot->pg_phase);

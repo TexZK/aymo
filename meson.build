@@ -57,7 +57,7 @@ project('aymo', 'c',
   meson_version: '>=0.60.0',
   default_options: [
     'warning_level=2',
-    'c_std=gnu99',
+    'c_std=c99',
     'buildtype=debugoptimized'
   ],
 )

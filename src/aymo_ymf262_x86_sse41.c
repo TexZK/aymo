@@ -447,7 +447,7 @@ void aymo_(sg_update)(
     // WG: Update chip output accumulators, with quirky slot output delay
     vi16_t og_out_ac = vblendv(wave_out, sg->og_prout, sg->og_prout_ac);
     vi16_t og_out_bd = vblendv(wave_out, sg->og_prout, sg->og_prout_bd);
-    sg->og_prout = wave_out;
+    sg->og_prout = wave_out;  // TODO: sg->og_prout is sg->wg_out before the update here above
     chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate_a));
     chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
     chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate_b));
@@ -646,14 +646,15 @@ void aymo_(tick_once)(struct aymo_(chip)* chip)
     // Process slot group 1
     sgi = 1;
     aymo_(sg_update)(chip, &chip->sg[sgi]);
-    aymo_(ng_update)(chip, (36 - 3));  // slot 16 --> slot 13
+	aymo_(ng_update)(chip, 13);
     aymo_(rm_update_sg1)(chip);
+    aymo_(ng_update)(chip, (16 - 13));
 
     // Process slot group 3
     sgi = 3;
     aymo_(sg_update)(chip, &chip->sg[sgi]);
-    aymo_(ng_update)(chip, 3);  // slot 13 --> slot 16
     aymo_(rm_update_sg3)(chip);
+    aymo_(ng_update)(chip, (36 - 16));
 
     if AYMO_UNLIKELY(chip->process_all_slots) {
         // Process slot group 5
