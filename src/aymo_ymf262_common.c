@@ -23,9 +23,6 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 AYMO_CXX_EXTERN_C_BEGIN
 
 
-// TODO: common tables
-
-
 // Exponential look-up table
 // Values are pre-multiplied by 2
 const int16_t AYMO_ALIGN(4) aymo_ymf262_exp_x2_table[256 + 4] =
@@ -225,11 +222,22 @@ const int8_t aymo_ymf262_subaddr_to_slot[AYMO_YMF262_SLOT_NUM_MAX] =
     42, 43, 44, 45, 46, 47, 62, 63
 };
 
+// Slot index to sub-address
+const int8_t aymo_ymf262_slot_to_subaddr[AYMO_YMF262_SLOT_NUM_MAX] =
+{
+     0,  1,  2,  3,  4,  5,  8,  9,
+    10, 11, 12, 13, 16, 17, 18, 19,
+    20, 21, 32, 33, 34, 35, 36, 37,
+    40, 41, 42, 43, 44, 45, 48, 49,
 
-// TODO: slot_to_addr[]
+    50, 51, 52, 53, 24, 25, 26, 27,
+    28, 29, 56, 57, 58, 59, 60, 61,
+     6,  7, 14, 15, 22, 23, 30, 31,
+    38, 39, 46, 47, 54, 55, 62, 63
+};
 
 
-// Sub-addres to Channel_2xOP index
+// Sub-address to Channel_2xOP index
 const int8_t aymo_ymf262_subaddr_to_ch2x[AYMO_YMF262_CHANNEL_NUM_MAX] =
 {
      0,  1,  2,  3,  4,  5,  6,  7,  8,
@@ -239,8 +247,15 @@ const int8_t aymo_ymf262_subaddr_to_ch2x[AYMO_YMF262_CHANNEL_NUM_MAX] =
     25, 26, 27, 28, 29, 30, 31
 };
 
+// Channel_2xOP index to sub-address
+const int8_t aymo_ymf262_ch2x_to_subaddr[AYMO_YMF262_CHANNEL_NUM_MAX] =
+{
+     0,  1,  2,  3,  4,  5,  6,  7,  8,
+    16, 17, 18, 19, 20, 21, 22,
 
-// TODO: ch2x_to_addr[]
+    23, 24,  9, 10, 11, 12, 13, 14, 15,
+    25, 26, 27, 28, 29, 30, 31
+};
 
 
 const int8_t aymo_ymf262_pg_mult_x2_table[16] =

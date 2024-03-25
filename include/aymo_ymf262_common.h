@@ -212,15 +212,23 @@ AYMO_PUBLIC const int16_t aymo_ymf262_logsin_table[256 + 4];
 
 AYMO_PUBLIC const int8_t aymo_ymf262_word_to_slot[AYMO_YMF262_SLOT_NUM_MAX];
 AYMO_PUBLIC const int8_t aymo_ymf262_slot_to_word[AYMO_YMF262_SLOT_NUM_MAX];
+
 AYMO_PUBLIC const int8_t aymo_ymf262_word_to_ch2x[AYMO_YMF262_SLOT_NUM_MAX];
 AYMO_PUBLIC const int8_t aymo_ymf262_ch2x_to_word[AYMO_YMF262_SLOT_NUM_MAX / 2][2/* slot */];
+
 AYMO_PUBLIC const int8_t aymo_ymf262_word_to_ch4x[AYMO_YMF262_SLOT_NUM_MAX];
 AYMO_PUBLIC const int8_t aymo_ymf262_ch4x_to_word[AYMO_YMF262_SLOT_NUM_MAX / 4][4/* slot */];
 AYMO_PUBLIC const int8_t aymo_ymf262_ch4x_to_pair[AYMO_YMF262_CHANNEL_NUM_MAX / 2][2/* slot */];
 AYMO_PUBLIC const int8_t aymo_ymf262_ch2x_paired[AYMO_YMF262_CHANNEL_NUM_MAX];
+
 AYMO_PUBLIC const int8_t aymo_ymf262_subaddr_to_slot[AYMO_YMF262_SLOT_NUM_MAX];
+AYMO_PUBLIC const int8_t aymo_ymf262_slot_to_subaddr[AYMO_YMF262_SLOT_NUM_MAX];
+
 AYMO_PUBLIC const int8_t aymo_ymf262_subaddr_to_ch2x[AYMO_YMF262_CHANNEL_NUM_MAX];
+AYMO_PUBLIC const int8_t aymo_ymf262_ch2x_to_subaddr[AYMO_YMF262_CHANNEL_NUM_MAX];
+
 AYMO_PUBLIC const int8_t aymo_ymf262_pg_mult_x2_table[16];
+
 AYMO_PUBLIC const int8_t aymo_ymf262_eg_ksl_table[16];
 AYMO_PUBLIC const int8_t aymo_ymf262_eg_kslsh_table[4];
 
