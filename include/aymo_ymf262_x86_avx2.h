@@ -303,7 +303,7 @@ int aymo_(sgi_to_cgi)(int sgi)
 static inline
 int8_t aymo_(addr_to_slot)(uint16_t address)
 {
-    uint16_t subaddr = ((address & 0x1F) | ((address >> 8) & 1));
+    unsigned subaddr = ((address & 0x1Fu) | ((address >> 3u) & 0x20u));
     int8_t slot = aymo_ymf262_subaddr_to_slot[subaddr];
     return slot;
 }
@@ -313,7 +313,7 @@ int8_t aymo_(addr_to_slot)(uint16_t address)
 static inline
 int8_t aymo_(addr_to_ch2x)(uint16_t address)
 {
-    uint16_t subaddr = ((address & 0x0F) | ((address >> 8) & 1));
+    unsigned subaddr = ((address & 0x0Fu) | ((address >> 4u) & 0x10u));
     int8_t ch2x = aymo_ymf262_subaddr_to_ch2x[subaddr];
     return ch2x;
 }
