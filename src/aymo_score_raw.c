@@ -190,7 +190,7 @@ uint32_t aymo_score_raw_tick(
                 }
             }
             else if (event->ctrl == 0x02u) {
-                if (event->ctrl == 0x00u) {
+                if (event->data == 0x00u) {
                     if ((score->index + 1u) < score->length) {
                         score->index++;
                         score->clock = *(const uint16_t*)(void*)++event;
@@ -201,10 +201,10 @@ uint32_t aymo_score_raw_tick(
                         break;
                     }
                 }
-                else if (event->ctrl == 0x01u) {
+                else if (event->data == 0x01u) {
                     score->address_hi = 0u;
                 }
-                else if (event->ctrl == 0x02u) {
+                else if (event->data == 0x02u) {
                     score->address_hi = 1u;
                 }
             }
