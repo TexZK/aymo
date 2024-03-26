@@ -22,7 +22,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 To play via shell pipe, run:
 
     - ALSA Play:
-        aymo_ymf262_play SCORE | aplay -c 2 -r 47916 -f S16_LE
+        aymo_ymf262_play SCORE | aplay -c 2 -r 49716 -f S16_LE
 
     - VLC:
         aymo_ymf262_play SCORE | vlc --demux=rawaud --rawaud-channels 2 --rawaud-samplerate 47916 -

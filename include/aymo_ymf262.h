@@ -29,7 +29,7 @@ AYMO_CXX_EXTERN_C_BEGIN
 #define AYMO_YMF262_CHANNEL_NUM     18
 #define AYMO_YMF262_CONN_NUM_MAX    6
 
-#define AYMO_YMF262_SAMPLE_RATE     47916  // [Hz]
+#define AYMO_YMF262_SAMPLE_RATE     49716  // [Hz]
 
 
 AYMO_PUBLIC void aymo_ymf262_boot(void);
