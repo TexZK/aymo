@@ -637,25 +637,27 @@ void aymo_(tm_update)(struct aymo_(chip)* chip)
 static inline
 void aymo_(rq_update)(struct aymo_(chip)* chip)
 {
-    if (chip->rq_delay) {
-        if (--chip->rq_delay) {
-            return;
-        }
+    if AYMO_UNLIKELY(chip->rq_delay) {
+        --chip->rq_delay;
+        return;
     }
-    if (chip->rq_head != chip->rq_tail) {
-        struct aymo_(reg_queue_item)* item = &chip->rq_buffer[chip->rq_head];
+
+    uint16_t rq_head = chip->rq_head;
+    if AYMO_UNLIKELY(rq_head != chip->rq_tail) {
+        struct aymo_(reg_queue_item)* item = &chip->rq_buffer[rq_head];
 
         if (item->address & 0x8000u) {
-            chip->rq_delay = AYMO_(REG_QUEUE_LATENCY);
-            chip->rq_delay += (((uint32_t)(item->address & 0x7FFFu) << 16) | item->value);
+            chip->rq_delay = (((uint32_t)(item->address & 0x7FFFu) << 16) | item->value);
         }
         else {
+            chip->rq_delay = AYMO_(REG_QUEUE_LATENCY);
             aymo_(write)(chip, item->address, item->value);
         }
 
-        if (++chip->rq_head >= AYMO_(REG_QUEUE_LENGTH)) {
-            chip->rq_head = 0;
+        if (++rq_head >= AYMO_(REG_QUEUE_LENGTH)) {
+            rq_head = 0;
         }
+        chip->rq_head = rq_head;
     }
 }
 
