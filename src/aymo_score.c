@@ -23,6 +23,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #include "aymo_score_dro.h"
 #include "aymo_score_imf.h"
 #include "aymo_score_raw.h"
+#include "aymo_score_ref.h"
 #include "aymo_score_vgm.h"
 
 #include <assert.h>
@@ -132,6 +133,12 @@ enum aymo_score_type aymo_score_ext_to_type(
             (tag[3] == '\0')) {
             return aymo_score_type_raw;
         }
+        if (((tag[0] == 'R') || (tag[0] == 'r')) &&
+            ((tag[1] == 'E') || (tag[1] == 'e')) &&
+            ((tag[2] == 'F') || (tag[2] == 'f')) &&
+            (tag[3] == '\0')) {
+            return aymo_score_type_ref;
+        }
         if (((tag[0] == 'V') || (tag[0] == 'v')) &&
             ((tag[1] == 'G') || (tag[1] == 'g')) &&
             ((tag[2] == 'M') || (tag[2] == 'm')) &&
@@ -152,6 +159,7 @@ const struct aymo_score_vt* aymo_score_type_to_vt(
         case aymo_score_type_dro: return &aymo_score_dro_vt;
         case aymo_score_type_imf: return &aymo_score_imf_vt;
         case aymo_score_type_raw: return &aymo_score_raw_vt;
+        case aymo_score_type_ref: return &aymo_score_ref_vt;
         case aymo_score_type_vgm: return &aymo_score_vgm_vt;
         default: return NULL;
     }

@@ -193,6 +193,15 @@ void aymo_score_dro_unload(
 }
 
 
+struct aymo_score_status* aymo_score_dro_get_status(
+    struct aymo_score_dro_instance* score
+)
+{
+    assert(score);
+    return &score->status;
+}
+
+
 void aymo_score_dro_restart(
     struct aymo_score_dro_instance* score
 )
@@ -308,15 +317,6 @@ static void aymo_score_dro_decode_v2(
         score->status.flags = AYMO_SCORE_FLAG_EVENT;
     }
     score->offset += 2u;
-}
-
-
-struct aymo_score_status* aymo_score_dro_get_status(
-    struct aymo_score_dro_instance* score
-)
-{
-    assert(score);
-    return &score->status;
 }
 
 

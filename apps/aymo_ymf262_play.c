@@ -259,7 +259,7 @@ static int app_args_parse(void)
         if (!strcmp(name, "--score-type")) {
             const char* value = app_args.argv[++argi];
             app_args.score_type = aymo_score_ext_to_type(value);
-            if (app_args.score_type == aymo_score_type_unknown) {
+            if (app_args.score_type >= aymo_score_type_unknown) {
                 fprintf(stderr, "ERROR: Unknown score type \"%s\"\n", value);
                 return 1;
             }
@@ -310,7 +310,7 @@ static int app_args_parse(void)
     }
 
 
-    if (app_args.score_type == aymo_score_type_unknown) {
+    if (app_args.score_type >= aymo_score_type_unknown) {
         const char* text = app_args.score_path_cstr;
         if (text) {
             const char* ext = strrchr(text, '.');
@@ -318,7 +318,7 @@ static int app_args_parse(void)
                 app_args.score_type = aymo_score_ext_to_type(ext + 1);
             }
         }
-        if (app_args.score_type == aymo_score_type_unknown) {
+        if (app_args.score_type >= aymo_score_type_unknown) {
             fprintf(stderr, "ERROR: Unsupported score type of \"%s\"\n", (text ? text : ""));
             return 1;
         }
