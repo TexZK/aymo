@@ -157,7 +157,7 @@ uint32_t aymo_score_avd_tick(
                 score->status.address = (((uint16_t)event->address_hi << 8u) | event->address_lo);
                 score->status.value = event->value;
                 score->status.flags = AYMO_SCORE_FLAG_EVENT;
-                count -= pending;  // FIXME: what if another event follows immediately? --> count -= CONSUMED
+                count -= pending;
                 break;
             }
         }

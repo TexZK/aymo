@@ -295,7 +295,7 @@ uint32_t aymo_score_vgm_tick(
             aymo_score_vgm_decode(score);
 
             if (score->status.flags & AYMO_SCORE_FLAG_EVENT) {
-                count -= pending;  // FIXME: what if another event follows immediately? --> count -= CONSUMED
+                count -= pending;
                 break;
             }
         }

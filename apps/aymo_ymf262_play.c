@@ -36,6 +36,7 @@ To play via shell pipe, run:
 #include "aymo_score_dro.h"
 #include "aymo_score_imf.h"
 #include "aymo_score_raw.h"
+#include "aymo_score_ref.h"
 #include "aymo_score_vgm.h"
 #include "aymo_wave.h"
 #include "aymo_ymf262.h"
@@ -101,6 +102,7 @@ static union app_scores {
     struct aymo_score_dro_instance dro;
     struct aymo_score_imf_instance imf;
     struct aymo_score_raw_instance raw;
+    struct aymo_score_ref_instance ref;
     struct aymo_score_vgm_instance vgm;
 } score;
 
@@ -259,7 +261,7 @@ static int app_args_parse(void)
         if (!strcmp(name, "--score-type")) {
             const char* value = app_args.argv[++argi];
             app_args.score_type = aymo_score_ext_to_type(value);
-            if (app_args.score_type == aymo_score_type_unknown) {
+            if (app_args.score_type >= aymo_score_type_unknown) {
                 fprintf(stderr, "ERROR: Unknown score type \"%s\"\n", value);
                 return 1;
             }
@@ -310,7 +312,7 @@ static int app_args_parse(void)
     }
 
 
-    if (app_args.score_type == aymo_score_type_unknown) {
+    if (app_args.score_type >= aymo_score_type_unknown) {
         const char* text = app_args.score_path_cstr;
         if (text) {
             const char* ext = strrchr(text, '.');
@@ -318,7 +320,7 @@ static int app_args_parse(void)
                 app_args.score_type = aymo_score_ext_to_type(ext + 1);
             }
         }
-        if (app_args.score_type == aymo_score_type_unknown) {
+        if (app_args.score_type >= aymo_score_type_unknown) {
             fprintf(stderr, "ERROR: Unsupported score type of \"%s\"\n", (text ? text : ""));
             return 1;
         }

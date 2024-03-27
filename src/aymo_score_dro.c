@@ -193,6 +193,15 @@ void aymo_score_dro_unload(
 }
 
 
+struct aymo_score_status* aymo_score_dro_get_status(
+    struct aymo_score_dro_instance* score
+)
+{
+    assert(score);
+    return &score->status;
+}
+
+
 void aymo_score_dro_restart(
     struct aymo_score_dro_instance* score
 )
@@ -311,15 +320,6 @@ static void aymo_score_dro_decode_v2(
 }
 
 
-struct aymo_score_status* aymo_score_dro_get_status(
-    struct aymo_score_dro_instance* score
-)
-{
-    assert(score);
-    return &score->status;
-}
-
-
 uint32_t aymo_score_dro_tick(
     struct aymo_score_dro_instance* score,
     uint32_t count
@@ -361,7 +361,7 @@ uint32_t aymo_score_dro_tick(
             }
 
             if (score->status.flags & AYMO_SCORE_FLAG_EVENT) {
-                count -= pending;  // FIXME: what if another event follows immediately? --> count -= CONSUMED
+                count -= pending;
                 break;
             }
         }

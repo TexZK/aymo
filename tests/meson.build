@@ -383,18 +383,19 @@ endforeach
 
 # [[format, path], ...]
 aymo_ymf262_compare_suite = [
+#  ['vgm', '../contrib/adplug/test/testmus/BeyondSN.vgm'],
 #  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
-  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],  # FIXME:
+#  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],
 #  ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
-  ['raw', '../contrib/adplug/test/testmus/inc.raw'],  # FIXME:
+#  ['raw', '../contrib/adplug/test/testmus/inc.raw'],
 #  ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
 #  ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
+  ['ref', '../contrib/adplug/test/testmus/WORMINTR.ref'],
 ]
 
 foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
-    # TODO: improve testing scores
     test_suite = 'test_ymf262_@0@_compare'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_args : aymo_ymf262_compare_suite

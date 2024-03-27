@@ -249,7 +249,7 @@ uint32_t aymo_score_imf_tick(
                 score->status.address = ((uint16_t)(score->address_hi << 8u) | event->address_lo);
                 score->status.value = event->value;
                 score->status.flags = AYMO_SCORE_FLAG_EVENT;
-                count -= pending;  // FIXME: what if another event follows immediately? --> count -= CONSUMED
+                count -= pending;
                 break;
             }
         }
