@@ -447,6 +447,7 @@ sources = {
     'include/aymo_score_vgm.h',
     'include/aymo_wave.h',
     'include/aymo_ymf262_arm_neon.h',
+    'include/aymo_ymf262_dummy.h',
     'include/aymo_ymf262_none.h',
     'include/aymo_ymf262_x86_avx.h',
     'include/aymo_ymf262_x86_avx2.h',
@@ -474,6 +475,7 @@ sources = {
     'src/aymo_ym7128_none.c',
     'src/aymo_ymf262.c',
     'src/aymo_ymf262_common.c',
+    'src/aymo_ymf262_dummy.c',
     'src/aymo_ymf262_none.c',
   ),
 
