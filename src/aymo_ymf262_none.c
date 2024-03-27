@@ -70,6 +70,11 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
     chip->parent.vt = vt;
 
     OPL3_Reset(&chip->opl3, (uint32_t)AYMO_YMF262_SAMPLE_RATE);
+
+    for (unsigned i = 0; i < 18; ++i) {
+        chip->opl3.channel[i].cha = 0xFFFFu;
+        chip->opl3.channel[i].chb = 0xFFFFu;
+    }
 }
 
 
