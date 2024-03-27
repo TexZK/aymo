@@ -74,6 +74,7 @@ struct app_args {
     const char* score_type_cstr;        // NULL uses score file extension
     enum aymo_score_type score_type;
     unsigned score_after;
+    bool score_immediate;
 
     // Output parameters
     const char* out_path_cstr;          // NULL or "-" for stdout
@@ -144,6 +145,12 @@ static void aymo_aligned_free(void* alignptr)
 }
 
 
+static void aymo_ymf262_write_queued(struct aymo_ymf262_chip* chip, uint16_t address, uint8_t value)
+{
+    (void)aymo_ymf262_enqueue_write(chip, address, value);
+}
+
+
 static int app_boot(void)
 {
     app_return = 2;
@@ -210,6 +217,10 @@ static int app_args_parse(void)
         }
         if (!strcmp(name, "--benchmark")) {
             app_args.benchmark = true;
+            continue;
+        }
+        if (!strcmp(name, "--score-immediate")) {
+            app_args.score_immediate = true;
             continue;
         }
         if (!strcmp(name, "--out-quad")) {
@@ -442,6 +453,14 @@ static int app_run(void)
     unsigned pending_loops = (app_args.loops - 1u);
     unsigned score_after = app_args.score_after;
 
+    aymo_ymf262_write_f aymo_ymf262_writer;
+    if (app_args.score_immediate) {
+        aymo_ymf262_writer = aymo_ymf262_write;
+    }
+    else {
+        aymo_ymf262_writer = aymo_ymf262_write_queued;
+    }
+
     aymo_ymf262_generate_i16x2_f aymo_ymf262_generate_i16;
     if (app_args.out_quad) {
         aymo_ymf262_generate_i16 = aymo_ymf262_generate_i16x4;
@@ -473,14 +492,14 @@ static int app_run(void)
             avail_length -= delay_length;
 
             if (status->flags & AYMO_SCORE_FLAG_EVENT) {
-                aymo_ymf262_enqueue_write(chip, status->address, status->value);
+                aymo_ymf262_writer(chip, status->address, status->value);
             }
 
             while (!(status->flags & (AYMO_SCORE_FLAG_DELAY | AYMO_SCORE_FLAG_EOF))) {
                 aymo_score_tick(&score.base, 0u);
 
                 if (status->flags & AYMO_SCORE_FLAG_EVENT) {
-                    aymo_ymf262_enqueue_write(chip, status->address, status->value);
+                    aymo_ymf262_writer(chip, status->address, status->value);
                 }
             }
 
