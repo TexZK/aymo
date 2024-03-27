@@ -1372,8 +1372,9 @@ void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     int ch2x = aymo_(addr_to_ch2x)(address);
     struct aymo_ymf262_reg_C0h* reg_C0h = &(chip->ch2x_regs[ch2x].reg_C0h);
     struct aymo_ymf262_reg_C0h reg_C0h_prev = *reg_C0h;
+
     if (!chip->chip_regs.reg_105h.newm) {
-        value = ((value | 0x30) & 0x3F);
+        value = ((value & 0x0Fu) | 0x30u);
     }
     *(uint8_t*)(void*)reg_C0h = value;
 
@@ -1509,6 +1510,10 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
         cg->og_ch_gate_b = vset1(-1);
     }
     for (int ch2x = 0; ch2x < AYMO_(CHANNEL_NUM_MAX); ++ch2x) {
+        struct aymo_ymf262_reg_C0h* reg_C0h = &(chip->ch2x_regs[ch2x].reg_C0h);
+        reg_C0h->cha = 1;
+        reg_C0h->chb = 1;
+
         aymo_(cm_rewire_ch2x)(chip, ch2x);
     }
 
