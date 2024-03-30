@@ -152,6 +152,7 @@ opt_asm = get_option('asm')
 opt_docs = get_option('docs')
 opt_rtcd = get_option('rtcd')
 opt_tests = get_option('tests')
+opt_test_all_scores = get_option('test_all_scores')
 
 if get_option('buildtype').startswith('debug')
   add_project_arguments('-DDEBUG=1', language : 'c')
