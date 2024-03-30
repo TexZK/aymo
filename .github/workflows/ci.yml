@@ -1,0 +1,131 @@
+name: Compile
+
+on:
+  push:
+    branches:
+      - main
+      - github_actions
+
+  pull_request:
+
+jobs:
+
+  debug:
+
+    strategy:
+      matrix:
+
+        runner_image:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
+        compiler:
+          - gcc
+          #FIXME: - clang
+
+    runs-on: ${{ matrix.runner_image }}
+
+    env:
+      CC: ${{ matrix.compiler }}
+
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: setup-python
+        uses: actions/setup-python@v5
+
+      - name: build
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: builddir
+          setup-options: -Dbuildtype=debug
+          meson-version: 1.4.0
+          ninja-version: 1.11.1
+
+  dbgopt:
+
+    strategy:
+      matrix:
+
+        runner_image:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
+        compiler:
+          - gcc
+          #FIXME: - clang
+
+    runs-on: ${{ matrix.runner_image }}
+
+    env:
+      CC: ${{ matrix.compiler }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: setup-python
+        uses: actions/setup-python@v5
+
+      - name: build
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: builddir
+          setup-options: -Dbuildtype=debugoptimized
+          meson-version: 1.4.0
+          ninja-version: 1.11.1
+
+  release:
+
+    strategy:
+      matrix:
+
+        runner_image:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
+        compiler:
+          - gcc
+          #FIXME: - clang
+
+    runs-on: ${{ matrix.runner_image }}
+
+    env:
+      CC: ${{ matrix.compiler }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: setup-python
+        uses: actions/setup-python@v5
+
+      - name: build
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: builddir
+          setup-options: -Dbuildtype=release
+          meson-version: 1.4.0
+          ninja-version: 1.11.1
+
+      - name: test
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: test
+          directory: builddir
+          meson-version: 1.4.0
+          ninja-version: 1.11.1
