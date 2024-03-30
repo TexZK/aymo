@@ -157,7 +157,7 @@ foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach t : aymo_convert_suite
       test_name = t.format(intr_name)
-#      test(test_name, test_exe, args: test_name)
+      test(test_name, test_exe, args: test_name)
     endforeach
   endif
 endforeach
@@ -211,14 +211,14 @@ aymo_tda8425_sweep_suite = {
   # TODO: T-filter extremes
 }
 
-foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
+foreach intr_name : ['x86_sse41', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_suite = 'test_tda8425_@0@_sweep'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_name, test_args : aymo_tda8425_sweep_suite
       test_name = ('_'.join([test_suite, test_name])).underscorify()
-#      test(test_name, test_exe, args: test_args)
+      test(test_name, test_exe, args: test_args)
     endforeach
   endif
 endforeach
@@ -365,14 +365,14 @@ aymo_ym7128_sweep_suite = {
   ],
 }
 
-foreach intr_name : ['none', 'x86_sse41', 'arm_neon']
+foreach intr_name : ['x86_sse41', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_suite = 'test_ym7128_@0@_sweep'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_name, test_args : aymo_ym7128_sweep_suite
       test_name = ('_'.join([test_suite, test_name])).underscorify()
-#       test(test_name, test_exe, args: test_args)
+      test(test_name, test_exe, args: test_args)
     endforeach
   endif
 endforeach
@@ -383,24 +383,104 @@ endforeach
 
 # [[format, path], ...]
 aymo_ymf262_compare_suite = [
-#  ['vgm', '../contrib/adplug/test/testmus/BeyondSN.vgm'],
-#  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
-#  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],
-#  ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
-#  ['raw', '../contrib/adplug/test/testmus/inc.raw'],
-#  ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
-#  ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
-  ['ref', '../contrib/adplug/test/testmus/WORMINTR.ref'],
+  # Actual scores
+  ['vgm', '../contrib/adplug/test/testmus/BeyondSN.vgm'],
+  ['raw', '../contrib/adplug/test/testmus/crusader.raw'],
+  ['dro', '../contrib/adplug/test/testmus/doofus.dro'],
+  ['dro', '../contrib/adplug/test/testmus/dro_v2.dro'],
+  ['raw', '../contrib/adplug/test/testmus/inc.raw'],
+  ['vgm', '../contrib/adplug/test/testmus/MainBGM5.vgm'],
+  ['dro', '../contrib/adplug/test/testmus/samurai.dro'],
+  ['imf', '../contrib/adplug/test/testmus/WONDERIN.WLF'],
+  ['vgm', '../contrib/adplug/test/testmus/YsBattle.vgm'],
+
+  # AdPlug reference scores
+  ['ref', '../contrib/adplug/test/testref/2.ref'],
+  ['ref', '../contrib/adplug/test/testref/2001.ref'],
+  ['ref', '../contrib/adplug/test/testref/ACTION.ref'],
+  ['ref', '../contrib/adplug/test/testref/ADAGIO.ref'],
+  ['ref', '../contrib/adplug/test/testref/AKMTEC.ref'],
+  ['ref', '../contrib/adplug/test/testref/ALLOYRUN.ref'],
+  ['ref', '../contrib/adplug/test/testref/ARAB.ref'],
+  ['ref', '../contrib/adplug/test/testref/ARRAKIS.ref'],
+  ['ref', '../contrib/adplug/test/testref/BEGIN.ref'],
+  ['ref', '../contrib/adplug/test/testref/BOOTUP.ref'],
+  ['ref', '../contrib/adplug/test/testref/BeyondSN.ref'],
+  ['ref', '../contrib/adplug/test/testref/CHILD1.ref'],
+  ['ref', '../contrib/adplug/test/testref/CHIP.ref'],
+  ['ref', '../contrib/adplug/test/testref/DEMO4.ref'],
+  ['ref', '../contrib/adplug/test/testref/DTM-TRK1.ref'],
+  ['ref', '../contrib/adplug/test/testref/DUNE19.ref'],
+  ['ref', '../contrib/adplug/test/testref/EOBSOUND.ref'],
+  ['ref', '../contrib/adplug/test/testref/Flying.ref'],
+  ['ref', '../contrib/adplug/test/testref/GALWAY.ref'],
+  ['ref', '../contrib/adplug/test/testref/GORBI2.ref'],
+  ['ref', '../contrib/adplug/test/testref/GRABBAG.ref'],
+  ['ref', '../contrib/adplug/test/testref/HIP_D.ref'],
+  ['ref', '../contrib/adplug/test/testref/LOREINTR.ref'],
+  ['ref', '../contrib/adplug/test/testref/MARIO.ref'],
+  ['ref', '../contrib/adplug/test/testref/MORNING.ref'],
+  ['ref', '../contrib/adplug/test/testref/MainBGM5.ref'],
+  ['ref', '../contrib/adplug/test/testref/NECRONOM.ref'],
+  ['ref', '../contrib/adplug/test/testref/NEWPAGA.ref'],
+  ['ref', '../contrib/adplug/test/testref/NEWSAN.ref'],
+  ['ref', '../contrib/adplug/test/testref/PLAYMUS1.ref'],
+  ['ref', '../contrib/adplug/test/testref/REVELAT.ref'],
+  ['ref', '../contrib/adplug/test/testref/RI051.ref'],
+  ['ref', '../contrib/adplug/test/testref/RIK6.ref'],
+  ['ref', '../contrib/adplug/test/testref/SAILOR.ref'],
+  ['ref', '../contrib/adplug/test/testref/SATNIGHT.ref'],
+  ['ref', '../contrib/adplug/test/testref/SCALES.ref'],
+  ['ref', '../contrib/adplug/test/testref/SMKEREM.ref'],
+  ['ref', '../contrib/adplug/test/testref/SNDTRACK.ref'],
+  ['ref', '../contrib/adplug/test/testref/SONG1.ref'],
+  ['ref', '../contrib/adplug/test/testref/TEST16.ref'],
+  ['ref', '../contrib/adplug/test/testref/TOCCATA.ref'],
+  ['ref', '../contrib/adplug/test/testref/TUBES.ref'],
+  ['ref', '../contrib/adplug/test/testref/TU_BLESS.ref'],
+  ['ref', '../contrib/adplug/test/testref/VIB_VOL3.ref'],
+  ['ref', '../contrib/adplug/test/testref/WONDERIN.ref'],
+  ['ref', '../contrib/adplug/test/testref/WORMINTR.ref'],
+  ['ref', '../contrib/adplug/test/testref/YsBattle.ref'],
+  ['ref', '../contrib/adplug/test/testref/adlibsp.ref'],
+  ['ref', '../contrib/adplug/test/testref/blaster2.ref'],
+  ['ref', '../contrib/adplug/test/testref/bmf1_1.ref'],
+  ['ref', '../contrib/adplug/test/testref/bmf1_2.ref'],
+  ['ref', '../contrib/adplug/test/testref/canonind.ref'],
+  ['ref', '../contrib/adplug/test/testref/crusader.ref'],
+  ['ref', '../contrib/adplug/test/testref/doofus.ref'],
+  ['ref', '../contrib/adplug/test/testref/dro_v2.ref'],
+  ['ref', '../contrib/adplug/test/testref/dystopia.ref'],
+  ['ref', '../contrib/adplug/test/testref/ending.ref'],
+  ['ref', '../contrib/adplug/test/testref/fdance03.ref'],
+  ['ref', '../contrib/adplug/test/testref/flash.ref'],
+  ['ref', '../contrib/adplug/test/testref/go-_-go.ref'],
+  ['ref', '../contrib/adplug/test/testref/hybrid.ref'],
+  ['ref', '../contrib/adplug/test/testref/hyp.ref'],
+  ['ref', '../contrib/adplug/test/testref/ice_thnk.ref'],
+  ['ref', '../contrib/adplug/test/testref/inc.ref'],
+  ['ref', '../contrib/adplug/test/testref/lines1.ref'],
+  ['ref', '../contrib/adplug/test/testref/loudness.ref'],
+  ['ref', '../contrib/adplug/test/testref/menu.ref'],
+  ['ref', '../contrib/adplug/test/testref/mi2.ref'],
+  ['ref', '../contrib/adplug/test/testref/michaeld.ref'],
+  ['ref', '../contrib/adplug/test/testref/opensong.ref'],
+  ['ref', '../contrib/adplug/test/testref/psi1.ref'],
+  ['ref', '../contrib/adplug/test/testref/rat.ref'],
+  ['ref', '../contrib/adplug/test/testref/revival.ref'],
+  ['ref', '../contrib/adplug/test/testref/samurai.ref'],
+  ['ref', '../contrib/adplug/test/testref/tafa.ref'],
+  ['ref', '../contrib/adplug/test/testref/well.ref'],
 ]
 
-foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
+foreach intr_name : ['x86_sse41', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_suite = 'test_ymf262_@0@_compare'.format(intr_name)
     test_exe = get_variable('@0@_exe'.format(test_suite))
     foreach test_args : aymo_ymf262_compare_suite
       test_name = ('_'.join([test_suite, fs.name(test_args[1])])).underscorify()
-      test(test_name, test_exe, args: test_args)
+      test(test_name, test_exe, args: test_args, timeout: 0)
     endforeach
   endif
 endforeach
