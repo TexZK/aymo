@@ -551,7 +551,7 @@ void aymo_(og_update)(struct aymo_(chip)* chip)
     tot_d = _mm_add_epi32(tot_d, _mm_shuffle_epi32(tot_d, _MM_SHUFFLE(1, 0, 3, 2)));
 
     vi32x4_t tot_ab = _mm_blend_epi32(tot_a, tot_b, 0xA);
-    vi32x4_t tot_cd = _mm_blend_epi32(tot_c, tot_d, 0x5);
+    vi32x4_t tot_cd = _mm_blend_epi32(tot_c, tot_d, 0xA);
     vi32x4_t tot_abcd = _mm_blend_epi32(tot_ab, tot_cd, 0xC);
     vi16x8_t sat_abcd = _mm_packs_epi32(tot_abcd, tot_abcd);
 
