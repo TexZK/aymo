@@ -112,7 +112,8 @@ struct aymo_ymf262_reg_104h {
 struct aymo_ymf262_reg_105h {
     uint8_t newm : 1;
     uint8_t stereo : 1;
-    uint8_t _7_2 : 6;
+    uint8_t simd : 1;
+    uint8_t _7_3 : 5;
 };
 struct aymo_ymf262_reg_08h {
     uint8_t _5_0 : 6;
