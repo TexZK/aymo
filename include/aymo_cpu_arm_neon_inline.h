@@ -39,7 +39,7 @@ AYMO_CXX_EXTERN_C_BEGIN
     #define AYMO_ARM_DSB(n)     (__dsb(n))
     #define AYMO_ARM_DSB_ST()   (AYMO_ARM_DSB((unsigned)_ARM_BARRIER_ST))
 #elif (defined(__GNUC__) || defined(__clang__))
-    #define AYMO_ARM_DSB_ST()   {asm volatile ("dsb st");}
+    #define AYMO_ARM_DSB_ST()   {__asm__ volatile ("dsb st");}
 #endif
 
 #define vsfence         AYMO_ARM_DSB_ST
