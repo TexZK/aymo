@@ -32,4 +32,10 @@ void aymo_boot(void)
 }
 
 
+const char* aymo_get_version(void)
+{
+    return PACKAGE_VERSION;
+}
+
+
 AYMO_CXX_EXTERN_C_END

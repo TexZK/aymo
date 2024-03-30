@@ -27,6 +27,8 @@ AYMO_CXX_EXTERN_C_BEGIN
 
 AYMO_PUBLIC void aymo_boot(void);
 
+AYMO_PUBLIC const char* aymo_get_version(void);
+
 
 AYMO_CXX_EXTERN_C_END
 
