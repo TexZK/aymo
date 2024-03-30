@@ -67,8 +67,15 @@ struct aymo_ymf262_chip {
 
 
 // Limits
+#define AYMO_YMF262_SLOT_NUM            36
+#define AYMO_YMF262_CHANNEL_NUM         18
+
 #define AYMO_YMF262_SLOT_NUM_MAX        64
 #define AYMO_YMF262_CHANNEL_NUM_MAX     32
+
+#ifndef AYMO_YMF262_REG_SAMPLE_LATENCY
+#define AYMO_YMF262_REG_SAMPLE_LATENCY  2
+#endif
 
 
 // Registers; little-endian bitfields

@@ -74,7 +74,7 @@ struct app_args {
     const char* score_type_cstr;        // NULL uses score file extension
     enum aymo_score_type score_type;
     unsigned score_after;
-    bool score_immediate;
+    int score_latency;
 
     // Output parameters
     const char* out_path_cstr;          // NULL or "-" for stdout
@@ -145,9 +145,9 @@ static void aymo_aligned_free(void* alignptr)
 }
 
 
-static void aymo_ymf262_write_queued(struct aymo_ymf262_chip* chip, uint16_t address, uint8_t value)
+static void aymo_ymf262_write_queued(struct aymo_ymf262_chip* chip_, uint16_t address, uint8_t value)
 {
-    (void)aymo_ymf262_enqueue_write(chip, address, value);
+    (void)aymo_ymf262_enqueue_write(chip_, address, value);
 }
 
 
@@ -182,6 +182,7 @@ static int app_args_init(int argc, char** argv)
     app_args.loops = 1u;
 
     app_args.score_type = aymo_score_type_unknown;
+    app_args.score_latency = -1;
 
     app_args.out_frame_length = 1u;
 
@@ -219,10 +220,6 @@ static int app_args_parse(void)
             app_args.benchmark = true;
             continue;
         }
-        if (!strcmp(name, "--score-immediate")) {
-            app_args.score_immediate = true;
-            continue;
-        }
         if (!strcmp(name, "--out-quad")) {
             app_args.out_quad = true;
             continue;
@@ -239,7 +236,7 @@ static int app_args_parse(void)
         if (!strcmp(name, "--loops")) {
             const char* text = app_args.argv[++argi];
             errno = 0;
-            app_args.loops = strtoul(text, NULL, 0);
+            app_args.loops = (unsigned)strtoul(text, NULL, 0);
             if (errno) {
                 perror(name);
                 return 1;
@@ -249,7 +246,7 @@ static int app_args_parse(void)
         if (!strcmp(name, "--score-after")) {
             const char* text = app_args.argv[++argi];
             errno = 0;
-            app_args.score_after = strtoul(text, NULL, 0);
+            app_args.score_after = (unsigned)strtoul(text, NULL, 0);
             if (errno) {
                 perror(name);
                 return 1;
@@ -261,6 +258,16 @@ static int app_args_parse(void)
             app_args.score_type = aymo_score_ext_to_type(value);
             if (app_args.score_type >= aymo_score_type_unknown) {
                 fprintf(stderr, "ERROR: Unknown score type \"%s\"\n", value);
+                return 1;
+            }
+            continue;
+        }
+        if (!strcmp(name, "--score-latency")) {
+            const char* text = app_args.argv[++argi];
+            errno = 0;
+            app_args.score_latency = (int)strtol(text, NULL, 0);
+            if (errno) {
+                perror(name);
                 return 1;
             }
             continue;
@@ -277,7 +284,7 @@ static int app_args_parse(void)
         if (!strcmp(name, "--buffer-size")) {
             const char* text = app_args.argv[++argi];
             errno = 0;
-            app_args.out_frame_length = strtoul(text, NULL, 0);
+            app_args.out_frame_length = (uint32_t)strtoul(text, NULL, 0);
             if (errno) {
                 perror(name);
                 return 1;
@@ -454,7 +461,7 @@ static int app_run(void)
     unsigned score_after = app_args.score_after;
 
     aymo_ymf262_write_f aymo_ymf262_writer;
-    if (app_args.score_immediate) {
+    if (app_args.score_latency >= 0) {
         aymo_ymf262_writer = aymo_ymf262_write;
     }
     else {
@@ -500,6 +507,11 @@ static int app_run(void)
 
                 if (status->flags & AYMO_SCORE_FLAG_EVENT) {
                     aymo_ymf262_writer(chip, status->address, status->value);
+
+                    if (app_args.score_latency > 0) {
+                        status->delay += (uint32_t)app_args.score_latency;
+                        break;
+                    }
                 }
             }
 
