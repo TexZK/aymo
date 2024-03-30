@@ -224,7 +224,7 @@ struct aymo_(chip) {
     // 32-bit data
     uint32_t rq_delay;
     uint32_t og_ch2x_pairing;
-    uint32_t og_ch2x_drum;  // FIXME: use this instead of BDh.RYT
+    uint32_t og_ch2x_drum;
     uint32_t ng_noise;
 
     // 16-bit data

@@ -77,7 +77,7 @@ const uint16_t aymo_(eg_incstep_table)[4] =
 
 
 // Wave descriptors
-const struct aymo_(wave) aymo_(wave_table)[8] =  // TODO: share bits; select via shifts
+const struct aymo_(wave) aymo_(wave_table)[8] =
 {
     { 1,  0x0000,  0x0200,  0x0100,  0x00FF,  -1 },
     { 1,  0x0200,  0x0000,  0x0100,  0x00FF,  -1 },
@@ -159,7 +159,7 @@ const struct aymo_(conn) aymo_(conn_ryt_table)[4][2/* slot */] =
 
 
 // Slot mask output delay for outputs A and C
-const uint16_t aymo_(og_prout_ac)[AYMO_(SLOT_GROUP_NUM)] =  // TODO: TBV: use a shared mask; use bit 7 as mask flag; <<=1 for the next flag
+const uint16_t aymo_(og_prout_ac)[AYMO_(SLOT_GROUP_NUM)] =
 {
     0xF8F8,
     0xFFF8,
@@ -169,7 +169,7 @@ const uint16_t aymo_(og_prout_ac)[AYMO_(SLOT_GROUP_NUM)] =  // TODO: TBV: use a 
 
 
 // Slot mask output delay for outputs B and D
-const uint16_t aymo_(og_prout_bd)[AYMO_(SLOT_GROUP_NUM)] =  // TODO: TBV: use a shared mask; use bit 7 as mask flag; <<=1 for the next flag
+const uint16_t aymo_(og_prout_bd)[AYMO_(SLOT_GROUP_NUM)] =
 {
     0xF888,
     0xF888,
@@ -312,7 +312,6 @@ void aymo_(rm_update1_sg1)(struct aymo_(chip)* chip)
 }
 
 
-// Updates rhythm manager, slot group 1
 static inline
 void aymo_(rm_update2_sg1)(struct aymo_(chip)* chip)
 {
@@ -1054,6 +1053,7 @@ void aymo_(cm_rewire_rhythm)(
     }
     else {
         reg_BDh = &reg_BDh_zero;  // force all keys off
+
         if AYMO_UNLIKELY(reg_BDh_prev.ryt) {
             // Apply standard Channel_2xOP connection
             FORCE_BYTE(&reg_BDh_prev) = (FORCE_BYTE(reg_BDh) ^ 0xFFu);  // force update

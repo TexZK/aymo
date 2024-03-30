@@ -77,7 +77,7 @@ struct aymo_(conn) {
 
 // TODO: move reg queue outside YMF262
 #ifndef AYMO_YMF262_X86_SSE41_REG_QUEUE_LENGTH
-#define AYMO_YMF262_X86_SSE41_REG_QUEUE_LENGTH      256
+#define AYMO_YMF262_X86_SSE41_REG_QUEUE_LENGTH      1024
 #endif
 #ifndef AYMO_YMF262_X86_SSE41_REG_QUEUE_LATENCY
 #define AYMO_YMF262_X86_SSE41_REG_QUEUE_LATENCY     2
@@ -163,6 +163,7 @@ struct aymo_(slot_group) {
 
 #ifdef AYMO_DEBUG
     // Variables for debug
+    vi16x8_t eg_tl_x4;
     vi16x8_t eg_ksl;
     vi16x8_t eg_rate;
     vi16x8_t eg_inc;
@@ -181,7 +182,6 @@ struct aymo_(ch2x_group) {
 
     // Updated only by writing registers
     vi16x8_t eg_ksv;
-
     vi16x8_t og_ch_gate_a;
     vi16x8_t og_ch_gate_b;
     vi16x8_t og_ch_gate_c;
@@ -209,10 +209,11 @@ struct aymo_(chip) {
     vi16x8_t og_acc_c;
     vi16x8_t og_acc_b;
     vi16x8_t og_acc_d;
-    vi16x8_t og_out;
 
     vi16x8_t pg_vib_mulhi;
     vi16x8_t pg_vib_neg;
+
+    vi16x8_t og_out;
 
     // 64-bit data
     uint64_t eg_timer;
@@ -303,7 +304,7 @@ int aymo_(sgi_to_cgi)(int sgi)
 static inline
 int8_t aymo_(addr_to_slot)(uint16_t address)
 {
-    uint16_t subaddr = ((address & 0x1F) | ((address >> 8) & 1));
+    unsigned subaddr = ((address & 0x1Fu) | ((address >> 3u) & 0x20u));
     int8_t slot = aymo_ymf262_subaddr_to_slot[subaddr];
     return slot;
 }
@@ -313,7 +314,7 @@ int8_t aymo_(addr_to_slot)(uint16_t address)
 static inline
 int8_t aymo_(addr_to_ch2x)(uint16_t address)
 {
-    uint16_t subaddr = ((address & 0x0F) | ((address >> 8) & 1));
+    unsigned subaddr = ((address & 0x0Fu) | ((address >> 4u) & 0x10u));
     int8_t ch2x = aymo_ymf262_subaddr_to_ch2x[subaddr];
     return ch2x;
 }
