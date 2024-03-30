@@ -27,7 +27,7 @@ AYMO_CXX_EXTERN_C_BEGIN
 
 /*
 This is a VERY CRUDE score player for AdPlug reference score sheets.
-See: <ADPLUG_SRC>/test/testref/*.ref
+See: <ADPLUG_SRC>/test/testref/<*>.ref
 */
 
 const struct aymo_score_vt aymo_score_ref_vt = {

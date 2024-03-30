@@ -75,12 +75,12 @@ aymo_public_includes = include_directories('include')
 
 # =====================================================================
 
-add_project_arguments('-DAYMO_BUILD', language: 'c')
-add_project_arguments('-DAYMO_HAVE_CONFIG_H', language: 'c')
+add_project_arguments('-DAYMO_BUILD=1', language: 'c')
+add_project_arguments('-DAYMO_HAVE_CONFIG_H=1', language: 'c')
 
 if host_system == 'windows'
   if cc.get_argument_syntax() == 'msvc'
-    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
+    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS=1', language: 'c')
   endif
 endif
 
@@ -154,11 +154,11 @@ opt_rtcd = get_option('rtcd')
 opt_tests = get_option('tests')
 
 if get_option('buildtype').startswith('debug')
-  add_project_arguments('-DDEBUG', language : 'c')
-  add_project_arguments('-D_DEBUG', language : 'c')
-  add_project_arguments('-DAYMO_DEBUG', language : 'c')
+  add_project_arguments('-DDEBUG=1', language : 'c')
+  add_project_arguments('-D_DEBUG=1', language : 'c')
+  add_project_arguments('-DAYMO_DEBUG=1', language : 'c')
 else
-  add_project_arguments('-DNDEBUG', language : 'c')
+  add_project_arguments('-DNDEBUG=1', language : 'c')
 endif
 
 # =====================================================================
@@ -439,7 +439,6 @@ sources = {
     'include/aymo_convert_x86_avx2.h',
     'include/aymo_convert_x86_sse41.h',
     'include/aymo_score.h',
-    'include/aymo_score_avd.h',
     'include/aymo_score_dro.h',
     'include/aymo_score_imf.h',
     'include/aymo_score_raw.h',
@@ -460,7 +459,6 @@ sources = {
     'src/aymo_convert_none.c',
     'src/aymo_cpu.c',
     'src/aymo_score.c',
-    'src/aymo_score_avd.c',
     'src/aymo_score_dro.c',
     'src/aymo_score_imf.c',
     'src/aymo_score_raw.c',

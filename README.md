@@ -111,11 +111,8 @@ Currently only the `aymo_ymf262_play` application is provided, so here's an exam
 
 ```sh
 cd PATH_TO_PROJECT_ROOT/builddir/apps
-./aymo_ymf262_play --benchmark --cpu-ext x86_avx2 ../../tests/scores/DUNE.avd
+./aymo_ymf262_play --benchmark --cpu-ext x86_avx2 ../contrib/adplug/test/testref/loudness.ref
 ```
-
-**NOTE:** The `DUNE.avd` music score file isn't provided with this repository; sorry for that.
-I'm going to replace it with something more appropriate for a free open source project, ideally a very diverse set of music scores.
 
 This would report the execution time.
 Time comparisons must be carried out by hand.

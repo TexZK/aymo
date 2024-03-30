@@ -5,10 +5,8 @@ Here are some ideas that came to my mind.
 * Make as _shared library_.
     * *AYMO_API* for *__stdcall*.  &rarr;  **DROPPED:** no need for *__stdcall*!
     * *AYMO_PUBLIC* for *declspec* / *attribute*.  &rarr;  **DONE!**
- 
+
 * Add score replayer.
-    * _AVD_ score format.  &rarr;  **DONE!**
-        * Custom basic dump of _address+value_ and delays.
     * _IMF_ score format.  &rarr;  **DONE!**
     * _DRO_ score format.  &rarr;  **DONE!**
     * _RAW_ score format.  &rarr;  **DONE!**

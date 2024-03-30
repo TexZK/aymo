@@ -29,7 +29,6 @@ AYMO_CXX_EXTERN_C_BEGIN
 
 
 enum aymo_score_type {
-    aymo_score_type_avd,
     aymo_score_type_dro,
     aymo_score_type_imf,
     aymo_score_type_raw,

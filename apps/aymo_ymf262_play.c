@@ -32,7 +32,6 @@ To play via shell pipe, run:
 #include "aymo_cpu.h"
 #include "aymo_file.h"
 #include "aymo_score.h"
-#include "aymo_score_avd.h"
 #include "aymo_score_dro.h"
 #include "aymo_score_imf.h"
 #include "aymo_score_raw.h"
@@ -98,7 +97,6 @@ static void* score_data;
 static size_t score_size;
 static union app_scores {
     struct aymo_score_instance base;
-    struct aymo_score_avd_instance avd;
     struct aymo_score_dro_instance dro;
     struct aymo_score_imf_instance imf;
     struct aymo_score_raw_instance raw;
