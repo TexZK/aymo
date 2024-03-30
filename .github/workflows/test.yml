@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: setup-python
+      uses: actions/setup-python@v5
+
+    - name: build
+      uses: BSFishy/meson-build@v1.0.3
+      with:
+        action: build
+        directory: builddir_test
+        setup-options: -Dbuildtype=release
+        meson-version: 1.4.0
+        ninja-version: 1.11.1
+
+    - name: test
+      uses: BSFishy/meson-build@v1.0.3
+      with:
+        action: test
+        directory: builddir_test
+        meson-version: 1.4.0
+        ninja-version: 1.11.1

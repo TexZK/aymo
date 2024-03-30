@@ -1,16 +1,9 @@
-name: Basic CI
+name: Test All Scores
 
-on:
-  push:
-    branches:
-      - main
-
-  pull_request:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
-  full_build:
+  test:
     runs-on: ubuntu-latest
     steps:
 
@@ -26,8 +19,8 @@ jobs:
       uses: BSFishy/meson-build@v1.0.3
       with:
         action: build
-        directory: builddir
-        setup-options: -Dbuildtype=release
+        directory: builddir_test
+        setup-options: -Dbuildtype=release -Dtest_all_scores=enabled
         meson-version: 1.4.0
         ninja-version: 1.11.1
 
@@ -35,7 +28,6 @@ jobs:
       uses: BSFishy/meson-build@v1.0.3
       with:
         action: test
-        directory: builddir
-        setup-options: -Dbuildtype=release
+        directory: builddir_test
         meson-version: 1.4.0
         ninja-version: 1.11.1
