@@ -102,6 +102,15 @@ void aymo_(write)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     assert(chip);
 
     OPL3_WriteReg(&chip->opl3, address, value);
+
+    // Fix tremolo updates delayed w.r.t. AYMO
+    if (address == 0xBDu) {
+        uint8_t tremolopos = chip->opl3.tremolopos;
+        if (tremolopos >= 105u) {
+            tremolopos = (210u - tremolopos);
+        }
+        chip->opl3.tremolo = (tremolopos >> chip->opl3.tremoloshift);
+    }
 }
 
 

@@ -562,6 +562,53 @@ void aymo_(og_update)(struct aymo_(chip)* chip)
 }
 
 
+static inline
+void aymo_(tm_update_tremolo)(struct aymo_(chip)* chip)
+{
+    uint16_t eg_tremolopos = chip->eg_tremolopos;
+    if (eg_tremolopos >= 105) {
+        eg_tremolopos = (210 - eg_tremolopos);
+    }
+    vi16_t eg_tremolo = vset1((int16_t)(eg_tremolopos >> chip->eg_tremoloshift));
+
+    for (int sgi = 0; sgi < AYMO_(SLOT_GROUP_NUM); ++sgi) {
+        struct aymo_(slot_group)* sg = &chip->sg[sgi];
+        sg->eg_tremolo_am = vand(eg_tremolo, sg->eg_am);
+    }
+}
+
+
+static inline
+void aymo_(tm_update_vibrato)(struct aymo_(chip)* chip)
+{
+    uint8_t vibpos = chip->pg_vibpos;
+    int16_t pg_vib_mulhi = (0x10000 >> 7);
+    int16_t pg_vib_neg = 0;
+
+    if (!(vibpos & 3)) {
+        pg_vib_mulhi = 0;
+    }
+    else if (vibpos & 1) {
+        pg_vib_mulhi >>= 1;
+    }
+    pg_vib_mulhi >>= chip->eg_vibshift;
+    pg_vib_mulhi &= 0x7F80;
+
+    if (vibpos & 4) {
+        pg_vib_neg = -1;
+    }
+    chip->pg_vib_mulhi = vset1(pg_vib_mulhi);
+    chip->pg_vib_neg = vset1(pg_vib_neg);
+
+    for (int sgi = 0; sgi < AYMO_(SLOT_GROUP_NUM); ++sgi) {
+        int cgi = aymo_(sgi_to_cgi)(sgi);
+        struct aymo_(ch2x_group)* cg = &chip->cg[cgi];
+        struct aymo_(slot_group)* sg = &chip->sg[sgi];
+        aymo_(pg_update_deltafreq)(chip, cg, sg);
+    }
+}
+
+
 // Updates timer management
 static inline
 void aymo_(tm_update)(struct aymo_(chip)* chip)
@@ -569,47 +616,13 @@ void aymo_(tm_update)(struct aymo_(chip)* chip)
     // Update tremolo
     if AYMO_UNLIKELY((chip->tm_timer & 0x3F) == 0x3F) {
         chip->eg_tremolopos = ((chip->eg_tremolopos + 1) % 210);
-
-        uint16_t eg_tremolopos = chip->eg_tremolopos;
-        if (eg_tremolopos >= 105) {
-            eg_tremolopos = (210 - eg_tremolopos);
-        }
-        vi16_t eg_tremolo = vset1((int16_t)(eg_tremolopos >> chip->eg_tremoloshift));
-
-        for (int sgi = 0; sgi < AYMO_(SLOT_GROUP_NUM); ++sgi) {
-            struct aymo_(slot_group)* sg = &chip->sg[sgi];
-            sg->eg_tremolo_am = vand(eg_tremolo, sg->eg_am);
-        }
+        aymo_(tm_update_tremolo)(chip);
     }
 
     // Update vibrato
     if AYMO_UNLIKELY((chip->tm_timer & 0x3FF) == 0x3FF) {
         chip->pg_vibpos = ((chip->pg_vibpos + 1) & 7);
-        uint8_t vibpos = chip->pg_vibpos;
-        int16_t pg_vib_mulhi = (0x10000 >> 7);
-        int16_t pg_vib_neg = 0;
-
-        if (!(vibpos & 3)) {
-            pg_vib_mulhi = 0;
-        }
-        else if (vibpos & 1) {
-            pg_vib_mulhi >>= 1;
-        }
-        pg_vib_mulhi >>= chip->eg_vibshift;
-        pg_vib_mulhi &= 0x7F80;
-
-        if (vibpos & 4) {
-            pg_vib_neg = -1;
-        }
-        chip->pg_vib_mulhi = vset1(pg_vib_mulhi);
-        chip->pg_vib_neg = vset1(pg_vib_neg);
-
-        for (int sgi = 0; sgi < AYMO_(SLOT_GROUP_NUM); ++sgi) {
-            int cgi = aymo_(sgi_to_cgi)(sgi);
-            struct aymo_(ch2x_group)* cg = &chip->cg[cgi];
-            struct aymo_(slot_group)* sg = &chip->sg[sgi];
-            aymo_(pg_update_deltafreq)(chip, cg, sg);
-        }
+        aymo_(tm_update_vibrato)(chip);
     }
 
     chip->tm_timer++;
@@ -1339,8 +1352,16 @@ void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
         struct aymo_ymf262_reg_BDh reg_BDh_prev = *reg_BDh;
         FORCE_BYTE(reg_BDh) = value;
 
-        chip->eg_tremoloshift = (((reg_BDh->dam ^ 1) << 1) + 2);
-        chip->eg_vibshift = (reg_BDh->dvb ^ 1);
+        if (reg_BDh->dam != reg_BDh_prev.dam) {
+            chip->eg_tremoloshift = (((reg_BDh->dam ^ 1) << 1) + 2);
+            aymo_(tm_update_tremolo)(chip);
+        }
+
+        if (reg_BDh->dvb != reg_BDh_prev.dvb) {
+            chip->eg_vibshift = (reg_BDh->dvb ^ 1);
+            aymo_(tm_update_vibrato)(chip);
+        }
+
         aymo_(cm_rewire_rhythm)(chip, reg_BDh_prev);
     }
     else {

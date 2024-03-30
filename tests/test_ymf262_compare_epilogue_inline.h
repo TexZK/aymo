@@ -121,6 +121,7 @@ static void app_teardown(void)
 static int app_run(void)
 {
     struct aymo_score_status* status = aymo_score_get_status(&score.base);
+    unsigned score_delay = 0u;
 
     while (!(status->flags & AYMO_SCORE_FLAG_EOF)) {
         if (compare_chips()) {
@@ -128,11 +129,27 @@ static int app_run(void)
             return TEST_STATUS_FAIL;
         }
 
-        aymo_score_tick(&score.base, 1u);
+        if (score_delay == 0u) {
+            aymo_score_tick(&score.base, 1u);
 
-        if (status->flags & AYMO_SCORE_FLAG_EVENT) {
-            OPL3_WriteReg(&nuked_chip, status->address, status->value);
-            aymo_(write)(&aymo_chip, status->address, status->value);
+            if (status->flags & AYMO_SCORE_FLAG_EVENT) {
+                OPL3_WriteReg(&nuked_chip, status->address, status->value);
+
+                // Fix tremolo updates delayed w.r.t. AYMO
+                if (status->address == 0xBDu) {
+                    uint8_t tremolopos = nuked_chip.tremolopos;
+                    if (tremolopos >= 105u) {
+                        tremolopos = (210u - tremolopos);
+                    }
+                    nuked_chip.tremolo = (tremolopos >> nuked_chip.tremoloshift);
+                }
+
+                aymo_(write)(&aymo_chip, status->address, status->value);
+                score_delay = 2u;
+            }
+        }
+        else {
+            --score_delay;
         }
 
         OPL3_Generate4Ch(&nuked_chip, &nuked_out[0]);
