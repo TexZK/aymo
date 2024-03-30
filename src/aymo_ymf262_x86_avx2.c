@@ -29,6 +29,10 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 AYMO_CXX_EXTERN_C_BEGIN
 
 
+#undef FORCE_BYTE
+#define FORCE_BYTE(reg_ptr)  (*(volatile uint8_t*)(void*)(reg_ptr))
+
+
 const struct aymo_ymf262_vt aymo_(vt) =
 {
     AYMO_STRINGIFY2(aymo_(vt)),
@@ -332,7 +336,6 @@ void aymo_(rm_update2_sg1)(struct aymo_(chip)* chip)
 // Updates slot generators
 static
 void aymo_(sg_update1)(
-    struct aymo_(chip)* chip,
     struct aymo_(slot_group)* sg
 )
 {
@@ -672,7 +675,7 @@ void aymo_(tick_once)(struct aymo_(chip)* chip)
 
     // Process slot group 0
     sgi = 0;
-    aymo_(sg_update1)(chip, &chip->sg[sgi]);
+    aymo_(sg_update1)(&chip->sg[sgi]);
     aymo_(ng_update)(chip, 13);
     aymo_(rm_update1_sg0)(chip);
     aymo_(ng_update)(chip, (16 - 13));
@@ -681,7 +684,7 @@ void aymo_(tick_once)(struct aymo_(chip)* chip)
 
     // Process slot group 1
     sgi = 1;
-    aymo_(sg_update1)(chip, &chip->sg[sgi]);
+    aymo_(sg_update1)(&chip->sg[sgi]);
     aymo_(rm_update1_sg1)(chip);
     aymo_(ng_update)(chip, (36 - 16));
     aymo_(sg_update2)(chip, &chip->sg[sgi]);
@@ -689,12 +692,12 @@ void aymo_(tick_once)(struct aymo_(chip)* chip)
 
     // Process slot group 2
     sgi = 2;
-    aymo_(sg_update1)(chip, &chip->sg[sgi]);
+    aymo_(sg_update1)(&chip->sg[sgi]);
     aymo_(sg_update2)(chip, &chip->sg[sgi]);
 
     // Process slot group 3
     sgi = 3;
-    aymo_(sg_update1)(chip, &chip->sg[sgi]);
+    aymo_(sg_update1)(&chip->sg[sgi]);
     aymo_(sg_update2)(chip, &chip->sg[sgi]);
 
     // Update outputs
@@ -721,11 +724,10 @@ void aymo_(eg_update_ksl)(struct aymo_(chip)* chip, int word)
 
     int16_t pg_fnum = vextractv(cg->pg_fnum, sgo);
     int16_t pg_fnum_hn = ((pg_fnum >> 6) & 15);
+    int16_t pg_block = vextractv(cg->pg_block, sgo);
 
-    int ch2x = aymo_ymf262_word_to_ch2x[aymo_ymf262_slot_to_word[slot]];
-    int16_t eg_block = (int16_t)(chip->ch2x_regs[ch2x].reg_B0h.block);
     int16_t eg_ksl = aymo_ymf262_eg_ksl_table[pg_fnum_hn];
-    eg_ksl = ((eg_ksl << 2) - ((8 - eg_block) << 5));
+    eg_ksl = ((eg_ksl << 2) - ((8 - pg_block) << 5));
     if (eg_ksl < 0) {
         eg_ksl = 0;
     }
@@ -738,6 +740,7 @@ void aymo_(eg_update_ksl)(struct aymo_(chip)* chip, int word)
     vinsertv(sg->eg_ksl_sh_tl_x4, eg_ksl_sh_tl_x4, sgo);
 
 #ifdef AYMO_DEBUG
+    vinsertv(sg->eg_tl_x4, eg_tl_x4, sgo);
     vinsertv(sg->eg_ksl, eg_ksl, sgo);
 #endif
 }
@@ -1029,7 +1032,7 @@ void aymo_(cm_rewire_rhythm)(
     if (reg_BDh->ryt) {
         if AYMO_UNLIKELY(!reg_BDh_prev.ryt) {
             // Apply special connection for rhythm mode
-            *(uint8_t*)(void*)&reg_BDh_prev = (*(uint8_t*)(void*)reg_BDh ^ 0xFFu);  // force update
+            FORCE_BYTE(&reg_BDh_prev) = (FORCE_BYTE(reg_BDh) ^ 0xFFu);  // force update
             chip->og_ch2x_drum = 0x1C0u;
             aymo_(cm_rewire_ch2x)(chip, 6);
             aymo_(cm_rewire_ch2x)(chip, 7);
@@ -1040,7 +1043,7 @@ void aymo_(cm_rewire_rhythm)(
         reg_BDh = &reg_BDh_zero;  // force all keys off
         if AYMO_UNLIKELY(reg_BDh_prev.ryt) {
             // Apply standard Channel_2xOP connection
-            *(uint8_t*)(void*)&reg_BDh_prev = (*(uint8_t*)(void*)reg_BDh ^ 0xFFu);  // force update
+            FORCE_BYTE(&reg_BDh_prev) = (FORCE_BYTE(reg_BDh) ^ 0xFFu);  // force update
             chip->og_ch2x_drum = 0u;
             aymo_(cm_rewire_ch2x)(chip, 6);
             aymo_(cm_rewire_ch2x)(chip, 7);
@@ -1103,30 +1106,30 @@ void aymo_(write_00h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     switch (address) {
     case 0x01: {
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_01h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_01h)) = value;
         break;
     }
     case 0x02: {
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_02h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_02h)) = value;
         break;
     }
     case 0x03: {
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_03h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_03h)) = value;
         break;
     }
     case 0x04: {
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_04h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_04h)) = value;
         break;
     }
     case 0x104: {
         struct aymo_ymf262_reg_104h reg_104h_prev = chip->chip_regs.reg_104h;
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_104h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_104h)) = value;
         aymo_(cm_rewire_conn)(chip, &reg_104h_prev);
         break;
     }
     case 0x105: {
         struct aymo_ymf262_reg_105h reg_105h_prev = chip->chip_regs.reg_105h;
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_105h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_105h)) = value;
         if (chip->chip_regs.reg_105h.newm != reg_105h_prev.newm) {
             ;
         }
@@ -1134,7 +1137,7 @@ void aymo_(write_00h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     }
     case 0x08: {
         struct aymo_ymf262_reg_08h reg_08h_prev = chip->chip_regs.reg_08h;
-        *(uint8_t*)(void*)&(chip->chip_regs.reg_08h) = value;
+        FORCE_BYTE(&(chip->chip_regs.reg_08h)) = value;
         if (chip->chip_regs.reg_08h.nts != reg_08h_prev.nts) {
             aymo_(chip_pg_update_nts)(chip);
         }
@@ -1148,14 +1151,15 @@ static
 void aymo_(write_20h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int slot = aymo_(addr_to_slot)(address);
+    struct aymo_ymf262_reg_20h* reg_20h = &(chip->slot_regs[slot].reg_20h);
+    struct aymo_ymf262_reg_20h reg_20h_prev = *reg_20h;
+    FORCE_BYTE(reg_20h) = value;
+
     int sgi = (aymo_ymf262_slot_to_word[slot] / AYMO_(SLOT_GROUP_LENGTH));
     int sgo = (aymo_ymf262_slot_to_word[slot] % AYMO_(SLOT_GROUP_LENGTH));
     int cgi = aymo_(sgi_to_cgi)(sgi);
     struct aymo_(ch2x_group)* cg = &(chip->cg[cgi]);
     struct aymo_(slot_group)* sg = &(chip->sg[sgi]);
-    struct aymo_ymf262_reg_20h* reg_20h = &(chip->slot_regs[slot].reg_20h);
-    struct aymo_ymf262_reg_20h reg_20h_prev = *reg_20h;
-    *(uint8_t*)(void*)reg_20h = value;
     unsigned update_deltafreq = 0;
 
     if (reg_20h->mult != reg_20h_prev.mult) {
@@ -1211,10 +1215,11 @@ static
 void aymo_(write_40h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int slot = aymo_(addr_to_slot)(address);
-    int word = aymo_ymf262_slot_to_word[slot];
     struct aymo_ymf262_reg_40h* reg_40h = &(chip->slot_regs[slot].reg_40h);
     struct aymo_ymf262_reg_40h reg_40h_prev = *reg_40h;
-    *(uint8_t*)(void*)reg_40h = value;
+    FORCE_BYTE(reg_40h) = value;
+
+    int word = aymo_ymf262_slot_to_word[slot];
 
     if ((reg_40h->tl != reg_40h_prev.tl) || (reg_40h->ksl != reg_40h_prev.ksl)) {
         aymo_(eg_update_ksl)(chip, word);
@@ -1226,13 +1231,14 @@ static
 void aymo_(write_60h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int slot = aymo_(addr_to_slot)(address);
+    struct aymo_ymf262_reg_60h* reg_60h = &(chip->slot_regs[slot].reg_60h);
+    struct aymo_ymf262_reg_60h reg_60h_prev = *reg_60h;
+    FORCE_BYTE(reg_60h) = value;
+
     int word = aymo_ymf262_slot_to_word[slot];
     int sgi = (word / AYMO_(SLOT_GROUP_LENGTH));
     int sgo = (word % AYMO_(SLOT_GROUP_LENGTH));
     struct aymo_(slot_group)* sg = &(chip->sg[sgi]);
-    struct aymo_ymf262_reg_60h* reg_60h = &(chip->slot_regs[slot].reg_60h);
-    struct aymo_ymf262_reg_60h reg_60h_prev = *reg_60h;
-    *(uint8_t*)(void*)reg_60h = value;
 
     if ((reg_60h->dr != reg_60h_prev.dr) || (reg_60h->ar != reg_60h_prev.ar)) {
         int16_t eg_adsr_word = vextractv(sg->eg_adsr, sgo);
@@ -1248,13 +1254,14 @@ static
 void aymo_(write_80h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int slot = aymo_(addr_to_slot)(address);
+    struct aymo_ymf262_reg_80h* reg_80h = &(chip->slot_regs[slot].reg_80h);
+    struct aymo_ymf262_reg_80h reg_80h_prev = *reg_80h;
+    FORCE_BYTE(reg_80h) = value;
+
     int word = aymo_ymf262_slot_to_word[slot];
     int sgi = (word / AYMO_(SLOT_GROUP_LENGTH));
     int sgo = (word % AYMO_(SLOT_GROUP_LENGTH));
     struct aymo_(slot_group)* sg = &(chip->sg[sgi]);
-    struct aymo_ymf262_reg_80h* reg_80h = &(chip->slot_regs[slot].reg_80h);
-    struct aymo_ymf262_reg_80h reg_80h_prev = *reg_80h;
-    *(uint8_t*)(void*)reg_80h = value;
 
     if ((reg_80h->rr != reg_80h_prev.rr) || (reg_80h->sl != reg_80h_prev.sl)) {
         int16_t eg_adsr_word = vextractv(sg->eg_adsr, sgo);
@@ -1275,13 +1282,14 @@ static
 void aymo_(write_E0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int slot = aymo_(addr_to_slot)(address);
+    struct aymo_ymf262_reg_E0h* reg_E0h = &(chip->slot_regs[slot].reg_E0h);
+    struct aymo_ymf262_reg_E0h reg_E0h_prev = *reg_E0h;
+    FORCE_BYTE(reg_E0h) = value;
+
     int word = aymo_ymf262_slot_to_word[slot];
     int sgi = (word / AYMO_(SLOT_GROUP_LENGTH));
     int sgo = (word % AYMO_(SLOT_GROUP_LENGTH));
     struct aymo_(slot_group)* sg = &(chip->sg[sgi]);
-    struct aymo_ymf262_reg_E0h* reg_E0h = &(chip->slot_regs[slot].reg_E0h);
-    struct aymo_ymf262_reg_E0h reg_E0h_prev = *reg_E0h;
-    *(uint8_t*)(void*)reg_E0h = value;
 
     if (!chip->chip_regs.reg_105h.newm) {
         reg_E0h->ws &= 3;
@@ -1303,22 +1311,22 @@ static
 void aymo_(write_A0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int ch2x = aymo_(addr_to_ch2x)(address);
+    struct aymo_ymf262_reg_A0h* reg_A0h = &(chip->ch2x_regs[ch2x].reg_A0h);
+    struct aymo_ymf262_reg_A0h reg_A0h_prev = *reg_A0h;
+    FORCE_BYTE(reg_A0h) = value;
+
     unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1uL << ch2x));
     int ch2p = aymo_ymf262_ch2x_paired[ch2x];
     int ch2x_is_secondary = (ch2p < ch2x);
-    if (chip->chip_regs.reg_105h.newm && ch2x_is_pairing && ch2x_is_secondary) {
-        return;
-    }
-    if (!ch2x_is_pairing || ch2x_is_secondary) {
-        ch2p = -1;
-    }
 
-    struct aymo_ymf262_reg_A0h* reg_A0h = &(chip->ch2x_regs[ch2x].reg_A0h);
-    struct aymo_ymf262_reg_A0h reg_A0h_prev = *reg_A0h;
-    *(uint8_t*)(void*)reg_A0h = value;
+    if (!(chip->chip_regs.reg_105h.newm && ch2x_is_pairing && ch2x_is_secondary)) {
+        if (!(chip->chip_regs.reg_105h.newm && ch2x_is_pairing && !ch2x_is_secondary)) {
+            ch2p = -1;
+        }
 
-    if (reg_A0h->fnum_lo != reg_A0h_prev.fnum_lo) {
-        aymo_(ch2x_update_fnum)(chip, ch2x, ch2p);
+        if (reg_A0h->fnum_lo != reg_A0h_prev.fnum_lo) {
+            aymo_(ch2x_update_fnum)(chip, ch2x, ch2p);
+        }
     }
 }
 
@@ -1326,33 +1334,33 @@ void aymo_(write_A0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 static
 void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
-    int ch2x = aymo_(addr_to_ch2x)(address);
-    unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1uL << ch2x));
-    int ch2p = aymo_ymf262_ch2x_paired[ch2x];
-    int ch2x_is_secondary = (ch2p < ch2x);
-    if (chip->chip_regs.reg_105h.newm && ch2x_is_pairing && ch2x_is_secondary) {
-        return;
-    }
-    if (!ch2x_is_pairing || ch2x_is_secondary) {
-        ch2p = -1;
-    }
-
     if AYMO_UNLIKELY(address == 0xBD) {
         struct aymo_ymf262_reg_BDh* reg_BDh = &chip->chip_regs.reg_BDh;
         struct aymo_ymf262_reg_BDh reg_BDh_prev = *reg_BDh;
-        *(uint8_t*)(void*)reg_BDh = value;
+        FORCE_BYTE(reg_BDh) = value;
 
         chip->eg_tremoloshift = (((reg_BDh->dam ^ 1) << 1) + 2);
         chip->eg_vibshift = (reg_BDh->dvb ^ 1);
         aymo_(cm_rewire_rhythm)(chip, reg_BDh_prev);
     }
     else {
+        int ch2x = aymo_(addr_to_ch2x)(address);
         struct aymo_ymf262_reg_B0h* reg_B0h = &(chip->ch2x_regs[ch2x].reg_B0h);
         struct aymo_ymf262_reg_B0h reg_B0h_prev = *reg_B0h;
-        *(uint8_t*)(void*)reg_B0h = value;
+        FORCE_BYTE(reg_B0h) = value;
 
-        if ((reg_B0h->fnum_hi != reg_B0h_prev.fnum_hi) || (reg_B0h->block != reg_B0h_prev.block)) {
-            aymo_(ch2x_update_fnum)(chip, ch2x, ch2p);
+        unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1u << ch2x));
+        int ch2p = aymo_ymf262_ch2x_paired[ch2x];
+        int ch2x_is_secondary = (ch2p < ch2x);
+
+        if (!(chip->chip_regs.reg_105h.newm && ch2x_is_pairing && ch2x_is_secondary)) {
+            if (!(chip->chip_regs.reg_105h.newm && ch2x_is_pairing && !ch2x_is_secondary)) {
+                ch2p = -1;
+            }
+
+            if ((reg_B0h->fnum_hi != reg_B0h_prev.fnum_hi) || (reg_B0h->block != reg_B0h_prev.block)) {
+                aymo_(ch2x_update_fnum)(chip, ch2x, ch2p);
+            }
         }
 
         if (reg_B0h->kon != reg_B0h_prev.kon) {
@@ -1369,16 +1377,17 @@ void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 static
 void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
-    int ch2x = aymo_(addr_to_ch2x)(address);
-    struct aymo_ymf262_reg_C0h* reg_C0h = &(chip->ch2x_regs[ch2x].reg_C0h);
-    struct aymo_ymf262_reg_C0h reg_C0h_prev = *reg_C0h;
-
     if (!chip->chip_regs.reg_105h.newm) {
         value = ((value & 0x0Fu) | 0x30u);
     }
-    *(uint8_t*)(void*)reg_C0h = value;
+    int ch2x = aymo_(addr_to_ch2x)(address);
+    struct aymo_ymf262_reg_C0h* reg_C0h = &(chip->ch2x_regs[ch2x].reg_C0h);
+    struct aymo_ymf262_reg_C0h reg_C0h_prev = *reg_C0h;
+    FORCE_BYTE(reg_C0h) = value;
 
-    if ((value ^ *(uint8_t*)(void*)&reg_C0h_prev) & 0xFE) {
+    }
+
+    if ((value ^ FORCE_BYTE(&reg_C0h_prev)) & 0xFE) {
         int ch2x_word0 = aymo_ymf262_ch2x_to_word[ch2x][0];
         int ch2x_word1 = aymo_ymf262_ch2x_to_word[ch2x][1];
         int sgo = (ch2x_word0 % AYMO_(SLOT_GROUP_LENGTH));
@@ -1425,7 +1434,7 @@ void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
         // TODO
     }
 
-    {//FIXME: if (reg_C0h->cnt != reg_C0h_prev.cnt) {
+    if (reg_C0h->cnt != reg_C0h_prev.cnt) {
         aymo_(cm_rewire_ch2x)(chip, ch2x);
     }
 }
@@ -1435,7 +1444,7 @@ static
 void aymo_(write_D0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
     int ch2x = aymo_(addr_to_ch2x)(address);
-    *(uint8_t*)(void*)&(chip->ch2x_regs[ch2x].reg_D0h) = value;
+    FORCE_BYTE(&(chip->ch2x_regs[ch2x].reg_D0h)) = value;
 
     if (chip->chip_regs.reg_105h.stereo) {
         // TODO

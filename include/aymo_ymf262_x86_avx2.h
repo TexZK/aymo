@@ -163,6 +163,7 @@ struct aymo_(slot_group) {
 
 #ifdef AYMO_DEBUG
     // Variables for debug
+    vi16x16_t eg_tl_x4;
     vi16x16_t eg_ksl;
     vi16x16_t eg_rate;
     vi16x16_t eg_inc;
