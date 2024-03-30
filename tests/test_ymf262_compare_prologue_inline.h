@@ -29,7 +29,9 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 
 #include "opl3.h"
 
+#include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 AYMO_CXX_EXTERN_C_BEGIN
@@ -71,13 +73,13 @@ static struct aymo_(chip) aymo_chip;
 static opl3_chip nuked_chip;
 static int16_t nuked_out[4];
 
-void assert(int x);
-/*
-#undef assert
-#define assert(x)  {  \
-    if (!(x)) {  \
-        fprintf(stderr, "@ %d: FAILED assert(%s)\n",  \
-        __LINE__, (#x)); goto catch_;  \
-    }  \
-}//
-*/
+
+#ifdef NDEBUG
+    #undef assert
+    #define assert(x)  { \
+        if (!(x)) { \
+            fprintf(stderr, "ERROR: %s:%d: assert(false)\n", __FILE__, __LINE__); \
+            goto catch_; \
+        } \
+    }//
+#endif

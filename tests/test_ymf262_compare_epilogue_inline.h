@@ -20,14 +20,12 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 
 #include "aymo.h"
 
-#include <assert.h>
-
 
 static int app_boot(void)
 {
     app_return = TEST_STATUS_HARD;
 
-    aymo_cpu_boot();
+    aymo_boot();
 
     score_data = NULL;
     score_size = 0u;
@@ -84,14 +82,23 @@ static int app_setup(void)
         perror("aymo_file_load()");
         return TEST_STATUS_HARD;
     }
-
-    assert(score_size <= UINT32_MAX);
+    if (score_size > UINT32_MAX) {
+        fprintf(stderr, "Score size=0x%zX > UINT32_MAX\n", score_size);
+        return TEST_STATUS_HARD;
+    }
     if (aymo_score_load(&score.base, score_data, (uint32_t)score_size)) {
         fprintf(stderr, "Cannot load score: %s\n", app_args.argv[2]);
         return TEST_STATUS_HARD;
     }
 
     OPL3_Reset(&nuked_chip, (uint32_t)AYMO_YMF262_SAMPLE_RATE);
+
+    // Fix initial channel gates w.r.t. AYMO
+    for (int ch2x = 0; ch2x < 18; ++ch2x) {
+        nuked_chip.channel[ch2x].cha = 0xFFFFu;
+        nuked_chip.channel[ch2x].chb = 0xFFFFu;
+    }
+
     aymo_(ctor)(&aymo_chip);
 
     return TEST_STATUS_PASS;

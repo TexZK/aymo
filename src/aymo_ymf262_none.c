@@ -71,9 +71,10 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
 
     OPL3_Reset(&chip->opl3, (uint32_t)AYMO_YMF262_SAMPLE_RATE);
 
-    for (unsigned i = 0; i < 18; ++i) {
-        chip->opl3.channel[i].cha = 0xFFFFu;
-        chip->opl3.channel[i].chb = 0xFFFFu;
+    // Fix initial channel gates w.r.t. AYMO
+    for (int ch2x = 0; ch2x < 18; ++ch2x) {
+        chip->opl3.channel[ch2x].cha = 0xFFFFu;
+        chip->opl3.channel[ch2x].chb = 0xFFFFu;
     }
 }
 
