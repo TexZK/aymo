@@ -30,7 +30,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 
 static int compare_slots(int slot_)
 {
-    if (slot_ >= 36) {
+    if (slot_ >= AYMO_YMF262_SLOT_NUM) {
         return 0;  // ignore
     }
 
@@ -61,13 +61,13 @@ static int compare_slots(int slot_)
 #ifdef AYMO_DEBUG
     assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
     assert(vextractn(sg->eg_ksl, sgo) == slot->eg_ksl);
+    assert((uint16_t)vextractn(sg->eg_tl_x4, sgo) == (slot->reg_tl * 4u));
 #endif
     assert((int16_t)vextractn(sg->eg_tremolo_am, sgo) == *slot->trem);
     assert((uint16_t)-vextractn(sg->pg_vib, sgo) == slot->reg_vib);
     //assert(vextractn(sg->eg_egt, sgo) == slot->reg_type);
     //assert(vextractn(sg->eg_ksr, sgo) == slot->reg_ksr);
     assert((uint16_t)vextractn(sg->pg_mult_x2, sgo) == mt[slot->reg_mult]);
-//FIXME:    assert((uint16_t)vextractn(sg->eg_tl_x4, sgo) == slot->reg_tl * 4U);
     assert((((uint16_t)vextractn(sg->eg_adsr, sgo) >> 12) & 15) == slot->reg_ar);
     assert((((uint16_t)vextractn(sg->eg_adsr, sgo) >>  8) & 15) == slot->reg_dr);
     assert((uint16_t)vextractn(sg->eg_sl, sgo) == slot->reg_sl);
@@ -89,7 +89,7 @@ catch_:
 
 static int compare_ch2xs(int ch2x)
 {
-    if (ch2x >= 18) {
+    if (ch2x >= AYMO_YMF262_CHANNEL_NUM) {
         return 0;  // ignore
     }
 
@@ -127,14 +127,26 @@ catch_:
 
 static int compare_chips(void)
 {
-    _mm_sfence();
+    vsfence();
+
+    for (int slot = 0; slot < AYMO_YMF262_SLOT_NUM; ++slot) {
+        if (compare_slots(slot)) {
+            assert(0);
+        }
+    }
+
+    for (int ch2x = 0; ch2x < AYMO_YMF262_CHANNEL_NUM; ++ch2x) {
+        if (compare_ch2xs(ch2x)) {
+            assert(0);
+        }
+    }
 
     // TODO: Commented stuff
-    assert((uint16_t)aymo_chip.tm_timer == nuked_chip.timer);
+    assert((uint16_t)aymo_chip.tm_timer == (uint16_t)nuked_chip.timer);
     assert(aymo_chip.eg_timer == nuked_chip.eg_timer);
     assert(aymo_chip.eg_timerrem == nuked_chip.eg_timerrem);
     assert(aymo_chip.eg_state == nuked_chip.eg_state);
-    assert((uint16_t)vextract(aymo_chip.eg_add, 0) == nuked_chip.eg_add);
+    assert((uint16_t)vextractn(aymo_chip.eg_add, 0) == nuked_chip.eg_add);
     //uint8_t newm;
     //uint8_t nts;
     //uint8_t rhy;
@@ -154,18 +166,6 @@ static int compare_chips(void)
     assert(aymo_chip.rm_hh_bit8 == nuked_chip.rm_hh_bit8);
     assert(aymo_chip.rm_tc_bit3 == nuked_chip.rm_tc_bit3);
     assert(aymo_chip.rm_tc_bit5 == nuked_chip.rm_tc_bit5);
-
-    for (int ch2x = 0; ch2x < 18; ++ch2x) {
-        if (compare_ch2xs(ch2x)) {
-            assert(0);
-        }
-    }
-
-    for (int slot = 0; slot < 36; ++slot) {
-        if (compare_slots(slot)) {
-            assert(0);
-        }
-    }
 
     return 0;
 catch_:

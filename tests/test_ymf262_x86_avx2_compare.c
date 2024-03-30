@@ -49,17 +49,17 @@ static int compare_slots(int slot_)
     assert((int16_t)vextractn(sg->wg_fb_mulhi, sgo) == channel_fb);
 #ifdef AYMO_DEBUG
     assert(vextractn(sg->wg_fbmod, sgo) == slot->fbmod);
-    //assert(vextractn(sg->wg_mod, sgo) == *slot->mod);
+    assert(vextractn(sg->wg_mod, sgo) == *slot->mod);
 #endif
     assert((int16_t)vextractn(sg->wg_prout, sgo) == slot->prout);
     assert((uint16_t)vextractn(sg->eg_rout, sgo) == slot->eg_rout);
     assert((uint16_t)vextractn(sg->eg_out, sgo) == slot->eg_out);
 #ifdef AYMO_DEBUG
-    //assert(vextractn(sg->eg_inc, sgo) == slot->eg_inc);
+    assert(vextractn(sg->eg_inc, sgo) == slot->eg_inc);
 #endif
     assert((uint16_t)vextractn(sg->eg_gen, sgo) == slot->eg_gen);
 #ifdef AYMO_DEBUG
-    //assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
+    assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
     assert(vextractn(sg->eg_ksl, sgo) == slot->eg_ksl);
     assert((uint16_t)vextractn(sg->eg_tl_x4, sgo) == (slot->reg_tl * 4u));
 #endif
@@ -127,7 +127,7 @@ catch_:
 
 static int compare_chips(void)
 {
-    _mm_sfence();
+    vsfence();
 
     for (int slot = 0; slot < AYMO_YMF262_SLOT_NUM; ++slot) {
         if (compare_slots(slot)) {
