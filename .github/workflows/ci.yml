@@ -27,7 +27,8 @@ jobs:
       with:
         action: build
         directory: builddir
-        meson-version: 1.3.2
+        setup-options: -Dbuildtype=release
+        meson-version: 1.4.0
         ninja-version: 1.11.1
 
     - name: test
@@ -35,5 +36,6 @@ jobs:
       with:
         action: test
         directory: builddir
-        meson-version: 1.3.2
+        setup-options: -Dbuildtype=release
+        meson-version: 1.4.0
         ninja-version: 1.11.1
