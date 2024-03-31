@@ -28,6 +28,10 @@ test_names_x86_sse41 = [
   'test_ymf262_x86_sse41_compare',
 ]
 
+test_names_x86_avx = [
+  'test_ymf262_x86_avx_compare',
+]
+
 test_names_x86_avx2 = [
   'test_convert_x86_avx2',
   'test_tda8425_x86_avx2_sweep',
@@ -107,7 +111,7 @@ endif
 
 
 # CPU-ext specific
-foreach intr_name : ['none', 'x86_sse41', 'x86_avx2', 'arm_neon']
+foreach intr_name : ['none', 'x86_sse41', 'x86_avx', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_names = get_variable('test_names_@0@'.format(intr_name))
@@ -483,7 +487,7 @@ if opt_test_all_scores.enabled()
   ]
 endif
 
-foreach intr_name : ['x86_sse41', 'x86_avx2', 'arm_neon']
+foreach intr_name : ['x86_sse41', 'x86_avx', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_suite = 'test_ymf262_@0@_compare'.format(intr_name)

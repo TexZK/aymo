@@ -108,7 +108,6 @@ const struct aymo_ymf262_vt* aymo_ymf262_get_vt(const char* cpu_ext)
     if (!aymo_strcmp(cpu_ext, "none")) {
         return aymo_ymf262_none_get_vt();
     }
-
     if (!aymo_strcmp(cpu_ext, "dummy")) {
         return aymo_ymf262_dummy_get_vt();
     }

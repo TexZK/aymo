@@ -108,7 +108,7 @@ if opt_test_all_scores.enabled()
   ]
 endif
 
-foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx2', 'arm_neon']
+foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_suite = 'ymf262_@0@_play'.format(intr_name)
