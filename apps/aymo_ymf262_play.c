@@ -570,7 +570,7 @@ static int app_run(void)
     if (app_args.benchmark) {
         clock_t clock_duration = (clock_end - clock_start);
         double seconds = ((double)clock_duration * (1. / (double)CLOCKS_PER_SEC));
-        printf("Render time: %.3f seconds\n", seconds);
+        printf("Render time: %.6f seconds\n", seconds);
     }
 
     return 0;

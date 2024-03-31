@@ -66,11 +66,13 @@ libversion = '0.0.2'
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
 host_cpu_family = host_machine.cpu_family()
-top_srcdir = meson.current_source_dir()  # for opt_docs
-top_builddir = meson.current_build_dir()  # for opt_docs
+top_srcdir = meson.current_source_dir()
+top_builddir = meson.current_build_dir()
 
 aymo_includes = include_directories('.', 'include')
 aymo_public_includes = include_directories('include')
+
+python_exe = find_program('python', 'python3')
 
 # =====================================================================
 

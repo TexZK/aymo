@@ -103,13 +103,12 @@ These tests usually compare the implementations of *AYMO* with those of other ex
 
 ## Benchmarking
 
-**This feature is still under heavy development.**
-
-A basic benchmark suite is run via the `meson test --benchmark` command:
+A basic benchmark suite is run via the following commands:
 
 ```sh
 cd PATH_TO_PROJECT_ROOT/builddir
 meson test --benchmark
+meson compile benchmark-report
 ```
 
 

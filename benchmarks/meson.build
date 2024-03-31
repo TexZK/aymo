@@ -127,3 +127,15 @@ foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx2', 'arm_neon']
     endforeach
   endif
 endforeach
+
+# Strictly run:
+#   meson test --benchmark
+run_target(
+  'benchmark-report',
+  command: [
+    python_exe,
+    join_paths(top_srcdir, 'benchmarks', 'export_report.py'),
+    join_paths(top_builddir, 'meson-logs', 'testlog.json'),
+    join_paths(top_builddir, 'benchmarks', 'report.csv')
+  ]
+)
