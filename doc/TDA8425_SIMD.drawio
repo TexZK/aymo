@@ -1,0 +1,279 @@
+<mxfile host="app.diagrams.net" modified="2024-03-31T20:39:36.699Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="p_zrNaZqiQ6aqDOOEvFk" version="24.2.1" type="dropbox">
+  <diagram name="TDA8425" id="edOE4YrNMYj5JXM1y9sH">
+    <mxGraphModel dx="3494" dy="1080" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PAcEirbw5nk9jACKfIgM-169" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="530" as="sourcePoint" />
+            <mxPoint x="680" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-384" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;fontSize=16;fillColor=#cce5ff;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry y="960" width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-385" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-384" vertex="1">
+          <mxGeometry width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-386" value="tfxl(t-2)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-385" vertex="1">
+          <mxGeometry width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-387" value="bxl(t-3)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-385" vertex="1">
+          <mxGeometry x="160" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-388" value="tdrxl(t-1)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-385" vertex="1">
+          <mxGeometry x="320" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-389" value="psxl(t)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-385" vertex="1">
+          <mxGeometry x="480" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-397" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;fontSize=16;fillColor=#cce5ff;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="721" y="960" width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-398" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-397" vertex="1">
+          <mxGeometry width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-399" value="tfxr(t-2)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-398" vertex="1">
+          <mxGeometry width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-400" value="bxr(t-3)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-398" vertex="1">
+          <mxGeometry x="160" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-401" value="tdrxr(t-1)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-398" vertex="1">
+          <mxGeometry x="320" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-402" value="psxr(t)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-398" vertex="1">
+          <mxGeometry x="480" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-411" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;fontSize=16;fillColor=#cce5ff;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry y="1020" width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-412" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-411" vertex="1">
+          <mxGeometry width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-413" value="TFL_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-412" vertex="1">
+          <mxGeometry width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-414" value="BL_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-412" vertex="1">
+          <mxGeometry x="160" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-415" value="TDRL_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-412" vertex="1">
+          <mxGeometry x="320" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-416" value="PSL_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-412" vertex="1">
+          <mxGeometry x="480" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-417" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;fontSize=16;fillColor=#cce5ff;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="721" y="1020" width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-418" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-417" vertex="1">
+          <mxGeometry width="640" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-419" value="TFR_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-418" vertex="1">
+          <mxGeometry width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-420" value="BR_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-418" vertex="1">
+          <mxGeometry x="160" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-421" value="TDR_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-418" vertex="1">
+          <mxGeometry x="320" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-422" value="PSR_B0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-418" vertex="1">
+          <mxGeometry x="480" width="160" height="40" as="geometry">
+            <mxRectangle width="160" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-429" value="mul_ps()" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="960" y="1080" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-430" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="720" y="1070" as="sourcePoint" />
+            <mxPoint x="720" y="1130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-431" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1360" y="1070" as="sourcePoint" />
+            <mxPoint x="1360" y="1130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-455" value="mul_ps()" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="240" y="1080" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-456" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="1070" as="sourcePoint" />
+            <mxPoint y="1130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-457" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="640" y="1070" as="sourcePoint" />
+            <mxPoint x="640" y="1130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-549" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;fontSize=16;labelBackgroundColor=none;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="320" y="480" width="720" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-550" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-549" vertex="1">
+          <mxGeometry width="720" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-551" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-552" value="..." style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="80" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-553" value="x(t-2)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="160" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-554" value="x(t-1)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="240" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-555" value="x(t)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="320" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-556" value="x(t+1)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="400" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-557" value="X(t+2)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="480" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-558" value="..." style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="560" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-559" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=16;" parent="PAcEirbw5nk9jACKfIgM-550" vertex="1">
+          <mxGeometry x="640" width="80" height="40" as="geometry">
+            <mxRectangle width="80" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PAcEirbw5nk9jACKfIgM-560" value="Input samples" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="200" y="480" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aJAHqhnA95wzlbjUuUYs-1" value="NOTE: SIMD vectors are shown with big-endian representation,&lt;br&gt;while being actually stored in little-endian form.&lt;br&gt;&lt;br&gt;Stream/delay buffers are shown as usual,&lt;br&gt;increasing offset from left to right." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;fontStyle=1;fontColor=#CC0000;" parent="1" vertex="1">
+          <mxGeometry x="-640" y="565" width="500" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="jJACMQWrS6U_tFIE97bQ-1" value="&lt;b&gt;FOR&lt;/b&gt; i : length(x) &lt;b&gt;DO&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbl2 = bl2 = hbl1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbr2 = br2 = hbr1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl = bl2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr = br2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div&gt;hal2 = al2 = hal1&lt;/div&gt;&lt;div&gt;har2 = ar2 = har1&lt;/div&gt;&lt;div&gt;yl += al2 * A2&lt;/div&gt;&lt;div&gt;yr += ar2 * A2&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hbl1 = bl1 = hbl0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hbr1 = br1 = hbr0&lt;/div&gt;&lt;div&gt;yl += bl1 * B1&lt;/div&gt;&lt;div&gt;yr += br1 * B1&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hal1 = al1 = hal0&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;har1 = ar1 = har0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl += al1 * A1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr += ar1 * A1&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;xlr = loadl_pi(?, &amp;amp;x[2*i])&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;xrl = shufflei(xlr, &quot;??01&quot;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;xx = xlr * KLR&lt;/div&gt;&lt;div&gt;xx += xrl * KRL&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;bl0 = alignr(hal0, xx, 12)&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;br0 = alignr(har0, xx, 12)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hbl0 = bl0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbr0 = br0&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl += bl0 * B0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr += br0 * B0&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hal0 = yl&lt;/div&gt;&lt;div&gt;har0 = yr&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;y = shufflei(yl, &quot;?3??&quot;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;y = blendi(yr, y, &quot;01??&quot;)&lt;/div&gt;&lt;div&gt;y *= V&lt;/div&gt;&lt;div&gt;storeh_pi(&amp;amp;y[2*i], y)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;b&gt;ENDFOR&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=#d6b656;fillColor=#FFF8DD;align=left;glass=0;shadow=0;verticalAlign=top;comic=1;spacingTop=0;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="2080" y="400" width="280" height="880" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-1" value="pseudo-stereo" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="1201" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-2" value="treble &amp;amp;&lt;br&gt;DC removal" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="1041" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-3" value="bass" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="880" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-4" value="T-filter" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="720" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-5" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1340" y="870" as="sourcePoint" />
+            <mxPoint x="740" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-6" value="pseudo-stereo" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="480" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-7" value="treble &amp;amp;&lt;br&gt;DC removal" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="320" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-8" value="bass" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="160" y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-9" value="T-filter" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry y="880" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-10" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="620" y="870" as="sourcePoint" />
+            <mxPoint x="20" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-11" value="&lt;b&gt;FOR&lt;/b&gt; i : length(x) &lt;b&gt;DO&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hb2 = b2 = hb1&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = b2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha2 = a2 = ha1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y += a2 * A2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hb1 = b1 = hb0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y += b1 * B1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha1 = a1 = ha0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y += a1 * A1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xl = x[2*i+0]&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xr = x[2*i+1]&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xlr = inserti(?, xl, 0)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xrl = inserti(?, xl, 4)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xlr = inserti(xlr, xr, 4)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xrl = inserti(xrl, xr, 0)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xx = xlr * KLR&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xx += xrl * KRL&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;b0 = shufflei(ha0, &quot;210?&quot;&quot;210?&quot;)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;b0 = blendi(b0, xx, &quot;0001&quot;&quot;0001&quot;)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;hb0 = b0&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;y += b0 * B0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha0 = y&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;vy = y * V&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y[2*i+0] = extracti(vy, 3)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y[2*i+1] = extracti(vy, 7)&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;b&gt;ENDFOR&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=#d6b656;fillColor=#FFF8DD;align=left;glass=0;shadow=0;verticalAlign=top;comic=1;spacingTop=0;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="2400" y="400" width="280" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-12" value="SSE4.1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="2140" y="360" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-13" value="AVX" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="2460" y="360" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-14" value="b0m = cmpeq(set(0,0,0,1), set1(0))&lt;br&gt;ym = cmpeq(set(0,1,0,0), set1(0))&lt;br&gt;&lt;br&gt;&lt;b&gt;FOR&lt;/b&gt; i : length(x) &lt;b&gt;DO&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbl2 = bl2 = hbl1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbr2 = br2 = hbr1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl = bl2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr = br2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div&gt;hal2 = al2 = hal1&lt;/div&gt;&lt;div&gt;har2 = ar2 = har1&lt;/div&gt;&lt;div&gt;yl += al2 * A2&lt;/div&gt;&lt;div&gt;yr += ar2 * A2&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hbl1 = bl1 = hbl0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hbr1 = br1 = hbr0&lt;/div&gt;&lt;div&gt;yl += bl1 * B1&lt;/div&gt;&lt;div&gt;yr += br1 * B1&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hal1 = al1 = hal0&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;har1 = ar1 = har0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl += al1 * A1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr += ar1 * A1&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;xlr = loadl_pi(?, &amp;amp;x[2*i])&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;xrl = shufflei(xlr, &quot;??01&quot;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;xx = xlr * KLR&lt;/div&gt;&lt;div&gt;xx += xrl * KRL&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;bl0 = shufflei(hal0, &quot;210?&quot;)&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;br0 = shufflei(har0, &quot;210?&quot;)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div&gt;bl0 = andnot(b0m, xx)&lt;/div&gt;&lt;div&gt;bl0 |= and(b0m, bl0)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;br0 = shufflei(xx, &quot;??01&quot;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;br0 = andnot(b0m, br0)&lt;/div&gt;&lt;div&gt;br0 |= and(b0m, xx)&lt;/div&gt;&lt;div&gt;hbl0 = bl0&lt;/div&gt;&lt;div&gt;hbr0 = br0&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;yl += bl0 * B0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr += br0 * B0&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hal0 = yl&lt;/div&gt;&lt;div&gt;har0 = yr&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;y = shufflei(yl, &quot;?3??&quot;)&lt;/div&gt;&lt;div&gt;y = andnot(ym, y)&lt;/div&gt;&lt;div&gt;y |= and(ym, yr)&lt;/div&gt;&lt;div&gt;y *= V&lt;/div&gt;&lt;div&gt;storeh_pi(&amp;amp;y[2*i], y)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;b&gt;ENDFOR&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=#d6b656;fillColor=#FFF8DD;align=left;glass=0;shadow=0;verticalAlign=top;comic=1;spacingTop=0;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="1760" y="400" width="280" height="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-15" value="SSE" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="1820" y="360" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-16" value="&lt;b&gt;FOR&lt;/b&gt; i : length(x) &lt;b&gt;DO&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hb2 = b2 = hb1&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = b2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha2 = a2 = ha1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = fmadd(a2, A2, y)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hb1 = b1 = hb0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = fmadd(b1, B1, y)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha1 = a1 = ha0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = fmadd(a1, A1, y)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xl = x[2*i+0]&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xr = x[2*i+1]&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xlr = inserti(?, xl, 0)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xrl = inserti(?, xl, 4)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xlr = inserti(xlr, xr, 4)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xrl = inserti(xrl, xr, 0)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xx = xlr * KLR&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xx = fmadd(xrl, KRL, xx)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;b0 = alignr(ha0,&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;xx, 12)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;hb0 = b0&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = fmadd(b0,&amp;nbsp; B0, y)&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha0 = y&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;vy = y * V&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y[2*i+0] = extracti(vy, 3)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y[2*i+1] = extracti(vy, 7)&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;b&gt;ENDFOR&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=#d6b656;fillColor=#FFF8DD;align=left;glass=0;shadow=0;verticalAlign=top;comic=1;spacingTop=0;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="3040" y="400" width="280" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="zP17LscNVbNyF_5Kx7Pl-17" value="FMA" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="3100" y="360" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="doLGwSjasy1CJL7PU0nr-1" value="&lt;b&gt;FOR&lt;/b&gt; i : length(x) &lt;b&gt;DO&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbl2 = bl2 = hbl1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbr2 = br2 = hbr1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl = bl2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr = br2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div&gt;hal2 = al2 = hal1&lt;/div&gt;&lt;div&gt;har2 = ar2 = har1&lt;/div&gt;&lt;div&gt;yl = fmadd(al2, A2, yl)&lt;/div&gt;&lt;div&gt;yr = fmadd(ar2, A2, yr)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hbl1 = bl1 = hbl0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hbr1 = br1 = hbr0&lt;/div&gt;&lt;div&gt;yl = fmadd(bl1, B1, yl)&lt;/div&gt;&lt;div&gt;yr = fmadd(br1, B1, yr)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hal1 = al1 = hal0&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;har1 = ar1 = har0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yl = fmadd(al1, A1, yl)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;yr = fmadd(ar1, A1, yr)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;xlr = load64(&amp;amp;x[2*i])&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;xrl = shufflei(xlr, &quot;??01&quot;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;xx = xlr * KLR&lt;/div&gt;&lt;div&gt;xx = fmadd(xrl, KRL, xx)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;bl0 = shufflei(hal0, &quot;210?&quot;)&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;br0 = shufflei(har0, &quot;210?&quot;)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;bl0 = blendi(bl0, xx, &quot;0001&quot;)&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;br0 = shufflei(xx, &quot;??01&quot;)&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;br0 = blendi(br0, xx, &quot;0001&quot;)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;hbl0 = bl0&lt;/span&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hbr0 = br0&lt;/div&gt;&lt;/div&gt;&lt;div&gt;yl = fmadd(bl0, B0, yl)&lt;/div&gt;&lt;div&gt;yr = fmadd(br0, B0, yr)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hal0 = yl&lt;/div&gt;&lt;div&gt;har0 = yr&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;y = shufflei(yl, &quot;?3??&quot;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;y = blendi(y, yr, &quot;01??&quot;)&lt;/div&gt;&lt;div&gt;y *= V&lt;/div&gt;&lt;div&gt;storeh_pi(&amp;amp;y[2*i], y)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;b&gt;ENDFOR&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=#d6b656;fillColor=#FFF8DD;align=left;glass=0;shadow=0;verticalAlign=top;comic=1;spacingTop=0;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="3360" y="400" width="280" height="920" as="geometry" />
+        </mxCell>
+        <mxCell id="doLGwSjasy1CJL7PU0nr-2" value="NEON" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="3420" y="360" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GGnOuYs-UQeJa6hcVrnI-2" value="&lt;b&gt;FOR&lt;/b&gt; i : length(x) &lt;b&gt;DO&lt;/b&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hb2 = b2 = hb1&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y = b2 * B2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha2 = a2 = ha1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y += a2 * A2&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;hb1 = b1 = hb0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y += b1 * B1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha1 = a1 = ha0&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y += a1 * A1&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xl = x[2*i+0]&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xr = x[2*i+1]&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xlr = inserti(?, xl, 0)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xrl = inserti(?, xl, 4)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xlr = inserti(xlr, xr, 4)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xrl = inserti(xrl, xr, 0)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xx = xlr * KLR&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;xx += xrl * KRL&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;b0 = alignr(ha0, xx, 12)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;hb0 = b0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;y += b0 * B0&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;ha0 = y&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;vy = y * V&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y[2*i+0] = extracti(vy, 3)&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;y[2*i+1] = extracti(vy, 7)&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;b&gt;ENDFOR&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=#d6b656;fillColor=#FFF8DD;align=left;glass=0;shadow=0;verticalAlign=top;comic=1;spacingTop=0;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="2720" y="400" width="280" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="GGnOuYs-UQeJa6hcVrnI-3" value="AVX2" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="2780" y="360" width="160" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
