@@ -22,7 +22,6 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #ifdef AYMO_CPU_SUPPORT_ARM_NEON
 
 #include "aymo_cpu_arm_neon_inline.h"
-#include "aymo_ym7128_common.h"
 #define AYMO_KEEP_SHORTHANDS
 #include "aymo_ym7128_arm_neon.h"
 
@@ -227,7 +226,7 @@ void aymo_(process_i16)(struct aymo_(chip)* chip, uint32_t count, const int16_t 
         vi16x8_t ggrl = vvpacks(ggr, ggl);
         vi16x8_t gglr = vext(ggrl, ggrl, 1);
         vi16x8_t vlr = vmulhrs(gglr, chip->kv);
- 
+
         vi16x8_t zc = chip->zc;
         vi16x8_t zb = chip->zb;
         zc = vext(zb, zc, 6);  // '543210..'

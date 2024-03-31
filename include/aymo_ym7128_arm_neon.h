@@ -24,7 +24,6 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #include "aymo_ym7128_common.h"
 
 #include <stddef.h>
-#include <stdint.h>
 
 #ifdef AYMO_CPU_SUPPORT_ARM_NEON
 

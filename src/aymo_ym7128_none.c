@@ -18,7 +18,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "aymo_ym7128_common.h"
 #define AYMO_KEEP_SHORTHANDS
 #include "aymo_ym7128_none.h"
 

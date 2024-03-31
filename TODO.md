@@ -22,7 +22,7 @@ Here are some ideas that came to my mind.
     * 4-slot operators.  &rarr;  **DONE!**
     * rhythm mode.  &rarr;  **DONE!**
 
-* Add most of the possible *YMF262* static operator configurations for unit tests.
+* Add most of the possible *YMF262* static operator configurations for unit tests.  &rarr;  **DEFERRED:** sticking to AdPlug reference scores
     * Single-note scores.
     * 4-slot operators.
     * Rhythm mode.
@@ -33,7 +33,7 @@ Here are some ideas that came to my mind.
 
 * Take queuing away from _YMF262_ instances.
     * Make as CPU-independent utility class.
-    * Make default length 64.
+    * Make default length 1024.
     * Make length and pointers configurable.
     * Queue status accessors.
 
@@ -50,19 +50,22 @@ Here are some ideas that came to my mind.
 
 * Add _YM7128B_.
     * All CPU architectures.
+        * _x86 SSE2_
         * _x86 SSE4.1_  &rarr;  **DONE!**
         * _x86 AVX_
         * _x86 AVX2_
-        * _ARM NEON_  &rarr;  **TBV: RPi5 & BBB**
+        * _ARM NEON_  &rarr;  **DONE!**
     * Stick to the closest fixed point models.  &rarr;  **DONE!**
     * C++ wrappers.
 
 * Add _TDA8425_.
     * All CPU architectures.
+        * _x86 SSE_
         * _x86 SSE4.1_  &rarr;  **DONE!**
         * _x86 AVX_
         * _x86 AVX2_  &rarr;  **DONE!**
-        * _ARM NEON_  &rarr;  **TBV: RPi5 & BBB**
+        * _x86 FMA_
+        * _ARM NEON_  &rarr;  **DONE!**
     * _float32_ model.  &rarr;  **DONE!**
     * _int16_ mode.
     * C++ wrappers.

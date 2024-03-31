@@ -21,9 +21,9 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #define _include_aymo_tda8425_x86_avx2_h
 
 #include "aymo_cpu.h"
+#include "aymo_tda8425_common.h"
 
 #include <stddef.h>
-#include <stdint.h>
 
 #ifdef AYMO_CPU_SUPPORT_X86_AVX2
 

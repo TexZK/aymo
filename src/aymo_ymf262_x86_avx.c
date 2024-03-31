@@ -1402,7 +1402,7 @@ void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     }
 
     if (chip->chip_regs.reg_105h.stereo) {
-        // TODO
+        // TODO:
     }
 
     if (reg_C0h->cnt != reg_C0h_prev.cnt) {
@@ -1418,7 +1418,7 @@ void aymo_(write_D0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     *(uint8_t*)(void*)&(chip->ch2x_regs[ch2x].reg_C0h) = value;
 
     if (chip->chip_regs.reg_105h.stereo) {
-        // TODO
+        // TODO:
     }
 }
 

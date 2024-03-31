@@ -698,7 +698,7 @@ void aymo_(tick_once)(struct aymo_(chip)* chip)
     // Process slot group 1
     sgi = 1;
     aymo_(sg_update1)(&chip->sg[sgi]);
-	aymo_(ng_update)(chip, 13);
+    aymo_(ng_update)(chip, 13);
     aymo_(rm_update1_sg1)(chip);
     aymo_(ng_update)(chip, (16 - 13));
     aymo_(sg_update2)(chip, &chip->sg[sgi]);
@@ -1494,7 +1494,7 @@ void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     }
 
     if (chip->chip_regs.reg_105h.stereo) {
-        // TODO
+        // TODO:
     }
 
     if (reg_C0h->cnt != reg_C0h_prev.cnt) {
@@ -1514,7 +1514,7 @@ void aymo_(write_D0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     }
 
     if (chip->chip_regs.reg_105h.stereo) {
-        // TODO
+        // TODO:
     }
 }
 

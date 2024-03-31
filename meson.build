@@ -70,7 +70,6 @@ top_srcdir = meson.current_source_dir()
 top_builddir = meson.current_build_dir()
 
 aymo_includes = include_directories('.', 'include')
-aymo_public_includes = include_directories('include')
 
 python_exe = find_program('python', 'python3')
 
@@ -435,30 +434,6 @@ endif  # opt_rtcd
 # =====================================================================
 
 sources = {
-  'AYMO_HEADERS': files(
-    'include/aymo.h',
-    'include/aymo_cc.h',
-    'include/aymo_cpu.h',
-    'include/aymo_convert.h',
-    'include/aymo_convert_arm_neon.h',
-    'include/aymo_convert_none.h',
-    'include/aymo_convert_x86_avx2.h',
-    'include/aymo_convert_x86_sse41.h',
-    'include/aymo_score.h',
-    'include/aymo_score_dro.h',
-    'include/aymo_score_imf.h',
-    'include/aymo_score_raw.h',
-    'include/aymo_score_ref.h',
-    'include/aymo_score_vgm.h',
-    'include/aymo_wave.h',
-    'include/aymo_ymf262_arm_neon.h',
-    'include/aymo_ymf262_dummy.h',
-    'include/aymo_ymf262_none.h',
-    'include/aymo_ymf262_x86_avx.h',
-    'include/aymo_ymf262_x86_avx2.h',
-    'include/aymo_ymf262_x86_sse41.h',
-  ),
-
   'AYMO_SOURCES': files(
     'src/aymo.c',
     'src/aymo_convert.c',
@@ -483,43 +458,43 @@ sources = {
     'src/aymo_ymf262_none.c',
   ),
 
-  'AYMO_SOURCES_X86': files (
+  'AYMO_SOURCES_X86': files(
     'src/aymo_cpu_x86.c',
   ),
 
-  'AYMO_SOURCES_X86_SSE41': files (
+  'AYMO_SOURCES_X86_SSE41': files(
     'src/aymo_convert_x86_sse41.c',
     'src/aymo_tda8425_x86_sse41.c',
     'src/aymo_ym7128_x86_sse41.c',
     'src/aymo_ymf262_x86_sse41.c',
   ),
 
-  'AYMO_SOURCES_X86_AVX': files (
+  'AYMO_SOURCES_X86_AVX': files(
     'src/aymo_ymf262_x86_avx.c',
   ),
 
-  'AYMO_SOURCES_X86_AVX2': files (
+  'AYMO_SOURCES_X86_AVX2': files(
     'src/aymo_convert_x86_avx2.c',
     'src/aymo_tda8425_x86_avx2.c',
     'src/aymo_ymf262_x86_avx2.c',
   ),
 
-  'AYMO_SOURCES_ARM': files (
+  'AYMO_SOURCES_ARM': files(
     'src/aymo_cpu_arm.c',
   ),
 
-  'AYMO_SOURCES_ARM_NEON': files (
+  'AYMO_SOURCES_ARM_NEON': files(
     'src/aymo_convert_arm_neon.c',
     'src/aymo_tda8425_arm_neon.c',
     'src/aymo_ym7128_arm_neon.c',
     'src/aymo_ymf262_arm_neon.c',
   ),
 
-  'AYMO_SOURCES_LIBC': files (
+  'AYMO_SOURCES_LIBC': files(
     'src/aymo_file.c',
   ),
 
-  'AYMO_SOURCES_AYMO': files (
+  'AYMO_SOURCES_AYMO': files(
     'src/aymo_empty.c',
   ),
 }
@@ -692,7 +667,7 @@ summary(
 
 summary(
   {
-#    'API documentation': doxygen.found(),  # TODO: Docygen
+#    'API documentation': doxygen.found(),  # TODO: Doxygen
     'Apps': not opt_apps.disabled(),
     'Tests': not opt_tests.disabled(),
   },
