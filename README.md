@@ -112,9 +112,33 @@ meson compile benchmark-report
 ```
 
 
-### Benchmark Results
+### OPL3 Benchmark Results
 
-**TODO**
+Some preliminary benchmarks were run against some very different CPUs:
+
+| System | OS | CPU | SIMD | Notes
+|:-|:-|:-|:-|:-|
+| PC | Windows 10 | i7 6700k | x86 SSE4.1 + AVX2 | Home PC |
+| BeagleBone Black | Debian 11 | ARM Cortex-A8 | ARMv7 NEON | Headless |
+| Raspberry Pi 5 | Debian 12 | ARM Cortex-A76 | ARMv7 NEON | Headless + Heatsink Fan |
+
+All the systems were updated to their latest software and OS releases.
+The compiler was *GCC* for all these machines.
+All the scores were played via `aymo_ymf262_play --benchmark --loops 3`, except for the *BBB* which did not loop (too slow!).
+
+All the systems run `--cpu-ext dummy`, which mimics the overhead of the test harness itself (mostly the score decoder), to subtract it from the actual benchmarks.
+The reference implementation is *NukedOPL3*, run as `--cpu-ext none`.
+
+Here's a summary of the results:
+
+| CPU | SIMD | Ratio | DevSt | Speedup |
+|:-|:-|-:|-:|-:|
+| i7 6700k | x86 SSE4.1 | 0.590 | 0.026 | 1.695 |
+| i7 6700k | x86 AVX2 | 0.302 | 0.013 | 3.315 |
+| ARM Cortex-A8 | ARMv7 NEON | 0.575 | 0.035 | 1.740 |
+| ARM Cortex-A76 | ARMv7 NEON | 0.374 | 0.010 | 2.671 |
+
+![Benchmark Results](./doc/benchmarks/benchmark-results.png)
 
 
 ## Integration
