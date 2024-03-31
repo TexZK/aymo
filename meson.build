@@ -53,16 +53,15 @@
 # =====================================================================
 
 project('aymo', 'c',
-  version: '0.0.1',
+  version: '0.0.2',
   meson_version: '>=0.60.0',
   default_options: [
     'warning_level=2',
     'c_std=c99',
-    'buildtype=debugoptimized'
+    'buildtype=release'
   ],
 )
-
-libversion = '0.0.1'
+libversion = '0.0.2'
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
@@ -149,6 +148,8 @@ endif
 
 opt_apps = get_option('apps')
 opt_asm = get_option('asm')
+opt_benchmarks = get_option('benchmarks')
+opt_benchmark_loops = get_option('benchmark_loops')
 opt_docs = get_option('docs')
 opt_rtcd = get_option('rtcd')
 opt_tests = get_option('tests')
@@ -196,7 +197,9 @@ if cc.get_argument_syntax() != 'msvc'
   arm_neon_link_args += ['-mfpu=neon']
 endif
 
+aymo_have_dummy = true  # always
 aymo_have_none = true  # always
+
 aymo_have_x86_sse = false
 aymo_have_x86_sse2 = false
 aymo_have_x86_sse41 = false
@@ -659,6 +662,10 @@ subdir('apps')
 
 if not opt_tests.disabled()
   subdir('tests')
+endif
+
+if not opt_benchmarks.disabled()
+  subdir('benchmarks')
 endif
 
 # =====================================================================

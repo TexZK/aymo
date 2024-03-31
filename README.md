@@ -105,17 +105,12 @@ These tests usually compare the implementations of *AYMO* with those of other ex
 
 **This feature is still under heavy development.**
 
-My desire is to make it more streamlined, as per testing.
-
-Currently only the `aymo_ymf262_play` application is provided, so here's an example only for it:
+A basic benchmark suite is run via the `meson test --benchmark` command:
 
 ```sh
-cd PATH_TO_PROJECT_ROOT/builddir/apps
-./aymo_ymf262_play --benchmark --cpu-ext x86_avx2 ../contrib/adplug/test/testref/loudness.ref
+cd PATH_TO_PROJECT_ROOT/builddir
+meson test --benchmark
 ```
-
-This would report the execution time.
-Time comparisons must be carried out by hand.
 
 
 ### Benchmark Results

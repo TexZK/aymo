@@ -182,7 +182,7 @@ static int app_args_init(int argc, char** argv)
     app_args.loops = 1u;
 
     app_args.score_type = aymo_score_type_unknown;
-    app_args.score_latency = -1;
+    app_args.score_latency = AYMO_YMF262_REG_SAMPLE_LATENCY;
 
     app_args.out_frame_length = 1u;
 

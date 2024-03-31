@@ -10,17 +10,17 @@ Here are some ideas that came to my mind.
     * _IMF_ score format.  &rarr;  **DONE!**
     * _DRO_ score format.  &rarr;  **DONE!**
     * _RAW_ score format.  &rarr;  **DONE!**
-    * _VGM_ score format.
-    * _Benchmark_ mode, to be integrated with _Meson_.  &rarr; currently only via `aymo_ymf262_play`
+    * _VGM_ score format.  &rarr;  **DONE!**
+    * _Benchmark_ mode, to be integrated with _Meson_.  &rarr;  **DONE!**
 
 * Add _YMF262_.
     * All CPU architectures.
         * _x86 SSE4.1_  &rarr;  **DONE!**
         * _x86 AVX_ (_VEX_ encoded _SSE4.1_)
         * _x86 AVX2_  &rarr;  **DONE!**
-        * _ARM NEON_  &rarr;  **TBV: RPi5 & BBB**
-    * 4-slot operators.  &rarr;  **TBV**
-    * rhythm mode.  &rarr;  **TBV**
+        * _ARM NEON_  &rarr;  **DONE!**
+    * 4-slot operators.  &rarr;  **DONE!**
+    * rhythm mode.  &rarr;  **DONE!**
 
 * Add most of the possible *YMF262* static operator configurations for unit tests.
     * Single-note scores.

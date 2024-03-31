@@ -1,9 +1,11 @@
 # Compilation
-option('asm', type : 'feature', value : 'auto', description : 'Generate Assembly Files')
-option('rtcd', type : 'feature', value : 'auto', description : 'Run-Time CPU Detection')
+option('asm', type: 'feature', value: 'auto', description: 'Generate Assembly Files')
+option('rtcd', type: 'feature', value: 'auto', description: 'Run-Time CPU Detection')
 
 # Components
-option('apps', type : 'feature', value : 'auto', description : 'Build Applications')
+option('apps', type: 'feature', value: 'auto', description: 'Build Applications')
+option('benchmarks', type: 'feature', value: 'auto', description: 'Build Benchmarks')
+option('benchmark_loops', type: 'integer', min: 1, value: 3, description: 'Benchmark Score Loops')
 option('docs', type: 'feature', value: 'auto', description: 'Build Documentation')
-option('tests', type : 'feature', value : 'auto', description : 'Build Tests')
-option('test_all_scores', type : 'feature', value : 'auto', description : 'Test All Scores')
+option('tests', type: 'feature', value: 'auto', description: 'Build Tests')
+option('test_all_scores', type: 'feature', value: 'auto', description: 'Test All Scores')
