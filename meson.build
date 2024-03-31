@@ -447,6 +447,7 @@ sources = {
     'src/aymo_score_vgm.c',
     'src/aymo_tda8425.c',
     'src/aymo_tda8425_common.c',
+    'src/aymo_tda8425_dummy.c',
     'src/aymo_tda8425_none.c',
     'src/aymo_wave.c',
     'src/aymo_ym7128.c',

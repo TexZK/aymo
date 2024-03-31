@@ -21,6 +21,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #include "aymo_cpu.h"
 #include "aymo_tda8425.h"
 #include "aymo_tda8425_arm_neon.h"
+#include "aymo_tda8425_dummy.h"
 #include "aymo_tda8425_none.h"
 #include "aymo_tda8425_x86_avx2.h"
 #include "aymo_tda8425_x86_sse41.h"
@@ -98,6 +99,9 @@ const struct aymo_tda8425_vt* aymo_tda8425_get_vt(const char* cpu_ext)
 
     if (!aymo_strcmp(cpu_ext, "none")) {
         return aymo_tda8425_none_get_vt();
+    }
+    if (!aymo_strcmp(cpu_ext, "dummy")) {
+        return aymo_tda8425_dummy_get_vt();
     }
     return NULL;
 }
