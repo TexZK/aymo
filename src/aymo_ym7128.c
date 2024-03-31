@@ -21,6 +21,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #include "aymo_cpu.h"
 #include "aymo_ym7128.h"
 #include "aymo_ym7128_arm_neon.h"
+#include "aymo_ym7128_dummy.h"
 #include "aymo_ym7128_none.h"
 #include "aymo_ym7128_x86_sse41.h"
 
@@ -74,6 +75,9 @@ const struct aymo_ym7128_vt* aymo_ym7128_get_vt(const char* cpu_ext)
 
     if (!aymo_strcmp(cpu_ext, "none")) {
         return aymo_ym7128_none_get_vt();
+    }
+    if (!aymo_strcmp(cpu_ext, "dummy")) {
+        return aymo_ym7128_dummy_get_vt();
     }
     return NULL;
 }

@@ -452,6 +452,7 @@ sources = {
     'src/aymo_wave.c',
     'src/aymo_ym7128.c',
     'src/aymo_ym7128_common.c',
+    'src/aymo_ym7128_dummy.c',
     'src/aymo_ym7128_none.c',
     'src/aymo_ymf262.c',
     'src/aymo_ymf262_common.c',
