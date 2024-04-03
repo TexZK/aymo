@@ -457,8 +457,10 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
     const float* xe = &x[count * 2u];
 
     while AYMO_LIKELY(x != xe) {
-        vf32x4_t y2l = _mm_add_ps(_mm_mul_ps(b2l, chip->kb2), _mm_mul_ps(a2l, chip->ka2));
-        vf32x4_t y2r = _mm_add_ps(_mm_mul_ps(b2r, chip->kb2), _mm_mul_ps(a2r, chip->ka2));
+        vf32x4_t y2l = _mm_add_ps(_mm_mul_ps(b2l, chip->kb2),
+                                  _mm_mul_ps(a2l, chip->ka2));
+        vf32x4_t y2r = _mm_add_ps(_mm_mul_ps(b2r, chip->kb2),
+                                  _mm_mul_ps(a2r, chip->ka2));
         chip->hb2l = b2l;
         chip->hb2r = b2r;
         chip->ha2l = a2l;
@@ -468,8 +470,10 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
         vf32x4_t b1r = chip->hb0r;
         vf32x4_t a1l = chip->ha0l;
         vf32x4_t a1r = chip->ha0r;
-        vf32x4_t y1l = _mm_add_ps(_mm_mul_ps(b1l, chip->kb1), _mm_mul_ps(a1l, chip->ka1));
-        vf32x4_t y1r = _mm_add_ps(_mm_mul_ps(b1r, chip->kb1), _mm_mul_ps(a1r, chip->ka1));
+        vf32x4_t y1l = _mm_add_ps(_mm_mul_ps(b1l, chip->kb1),
+                                  _mm_mul_ps(a1l, chip->ka1));
+        vf32x4_t y1r = _mm_add_ps(_mm_mul_ps(b1r, chip->kb1),
+                                  _mm_mul_ps(a1r, chip->ka1));
         chip->hb1l = b1l;
         chip->hb1r = b1r;
         chip->ha1l = a1l;
@@ -480,7 +484,8 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
 
         vf32x4_t xlr = _mm_loadh_pi(_mm_undefined_ps(), (const void*)x); x += 2u;
         vf32x4_t xrl = _mm_shuffle_ps(xlr, xlr, _MM_SHUFFLE(2, 3, 0, 1));  // "23.."
-        vf32x4_t xx = _mm_add_ps(_mm_mul_ps(xlr, chip->klr), _mm_mul_ps(xrl, chip->krl));
+        vf32x4_t xx = _mm_add_ps(_mm_mul_ps(xlr, chip->klr),
+                                 _mm_mul_ps(xrl, chip->krl));
 
         vf32x4_t xl = _mm_shuffle_ps(xx, xx, _MM_SHUFFLE(2, 3, 0, 1));  // "2..."
         vf32x4_t b0l = mm_alignr_ps(a1l, xl, 3);
@@ -496,13 +501,12 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
         yyl = _mm_shuffle_ps(yyl, yyl, _MM_SHUFFLE(2, 3, 0, 1));  // ".3.."
         vf32x4_t yy = _mm_blend_ps(yyl, yyr, 0x8);  // "1000"
         yy = _mm_mul_ps(yy, chip->kv);
+        _mm_storeh_pi((void*)y, yy); y += 2u;
 
         b2l = chip->hb1l;
         b2r = chip->hb1r;
         a2l = chip->ha1l;
         a2r = chip->ha1r;
-
-        _mm_storeh_pi((void*)y, yy); y += 2u;
     }
 }
 

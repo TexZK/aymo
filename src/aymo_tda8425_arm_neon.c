@@ -447,8 +447,10 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
     const float* xe = &x[count * 2u];
 
     while AYMO_LIKELY(x != xe) {
-        vf32x4_t y2l = vaddq_f32(vmulq_f32(b2l, chip->kb2), vmulq_f32(a2l, chip->ka2));
-        vf32x4_t y2r = vaddq_f32(vmulq_f32(b2r, chip->kb2), vmulq_f32(a2r, chip->ka2));
+        vf32x4_t y2l = vaddq_f32(vmulq_f32(b2l, chip->kb2),
+                                 vmulq_f32(a2l, chip->ka2));
+        vf32x4_t y2r = vaddq_f32(vmulq_f32(b2r, chip->kb2),
+                                 vmulq_f32(a2r, chip->ka2));
         chip->hb2l = b2l;
         chip->hb2r = b2r;
         chip->ha2l = a2l;
@@ -458,8 +460,10 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
         vf32x4_t b1r = chip->hb0r;
         vf32x4_t a1l = chip->ha0l;
         vf32x4_t a1r = chip->ha0r;
-        vf32x4_t y1l = vaddq_f32(vmulq_f32(b1l, chip->kb1), vmulq_f32(a1l, chip->ka1));
-        vf32x4_t y1r = vaddq_f32(vmulq_f32(b1r, chip->kb1), vmulq_f32(a1r, chip->ka1));
+        vf32x4_t y1l = vaddq_f32(vmulq_f32(b1l, chip->kb1),
+                                 vmulq_f32(a1l, chip->ka1));
+        vf32x4_t y1r = vaddq_f32(vmulq_f32(b1r, chip->kb1),
+                                 vmulq_f32(a1r, chip->ka1));
         chip->hb1l = b1l;
         chip->hb1r = b1r;
         chip->ha1l = a1l;
@@ -470,7 +474,8 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
 
         vf32x2_t xlr = vld1_f32(x); x += 2u;
         vf32x2_t xrl = vrev64_f32(xlr);
-        vf32x2_t wx = vadd_f32(vmul_f32(xlr, chip->klr), vmul_f32(xrl, chip->krl));
+        vf32x2_t wx = vadd_f32(vmul_f32(xlr, chip->klr),
+                               vmul_f32(xrl, chip->krl));
         vf32x4_t xx = vcombine_f32(wx, wx);
 
         vf32x4_t xl = vrev64q_f32(xx);
@@ -488,13 +493,12 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
         vf32x2_t yrh = vget_high_f32(yyr);
         vf32x2_t yy = vext_f32(ylh, vrev64_f32(yrh), 1);
         yy = vmul_f32(yy, chip->kv);
+        vst1_f32(y, yy); y += 2u;
 
         b2l = chip->hb1l;
         b2r = chip->hb1r;
         a2l = chip->ha1l;
         a2r = chip->ha1r;
-
-        vst1_f32(y, yy); y += 2u;
     }
 }
 

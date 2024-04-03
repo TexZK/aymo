@@ -446,34 +446,38 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
     assert(x);
     assert(y);
 
-    float AYMO_ALIGN_V256 xlrv[8];
-    float AYMO_ALIGN_V256 xrlv[8];
-    float AYMO_ALIGN_V256 yyv[8];
-
     vf32x8_t b2 = chip->hb1;
     vf32x8_t a2 = chip->ha1;
 
     const float* xe = &x[count * 2u];
 
     while AYMO_LIKELY(x != xe) {
-        vf32x8_t y2 = _mm256_add_ps(_mm256_mul_ps(b2, chip->kb2), _mm256_mul_ps(a2, chip->ka2));
+        vf32x8_t y2 = _mm256_add_ps(_mm256_mul_ps(b2, chip->kb2),
+                                    _mm256_mul_ps(a2, chip->ka2));
         chip->hb2 = b2;
         chip->ha2 = a2;
 
         vf32x8_t b1 = chip->hb0;
         vf32x8_t a1 = chip->ha0;
-        vf32x8_t y1 = _mm256_add_ps(_mm256_mul_ps(b1, chip->kb1), _mm256_mul_ps(a1, chip->ka1));
+        vf32x8_t y1 = _mm256_add_ps(_mm256_mul_ps(b1, chip->kb1),
+                                    _mm256_mul_ps(a1, chip->ka1));
         chip->hb1 = b1;
         chip->ha1 = a1;
 
         vf32x8_t yy = _mm256_add_ps(y2, y1);
 
-        xrlv[7] = xlrv[3] = *x++;
-        xrlv[3] = xlrv[7] = *x++;
-        _mm_sfence();
-        vf32x8_t xlr = _mm256_load_ps(xlrv);
-        vf32x8_t xrl = _mm256_load_ps(xrlv);
-        vf32x8_t xx = _mm256_add_ps(_mm256_mul_ps(xlr, chip->klr), _mm256_mul_ps(xrl, chip->krl));
+        int32_t xli = *(int32_t*)x++;
+        int32_t xri = *(int32_t*)x++;
+        vi32x8_t xlri = _mm256_undefined_si256();
+        vi32x8_t xrli = _mm256_undefined_si256();
+        xlri = _mm256_insert_epi32(xlri, xli, 3);
+        xrli = _mm256_insert_epi32(xrli, xli, 7);
+        xlri = _mm256_insert_epi32(xlri, xri, 7);
+        xrli = _mm256_insert_epi32(xrli, xri, 3);
+        vf32x8_t xlr = _mm256_castsi256_ps(xlri);
+        vf32x8_t xrl = _mm256_castsi256_ps(xrli);
+        vf32x8_t xx = _mm256_add_ps(_mm256_mul_ps(xlr, chip->klr),
+                                    _mm256_mul_ps(xrl, chip->krl));
 
         vf32x8_t b0 = mm256_alignr_ps(chip->ha0, xx, 3);
         yy = _mm256_add_ps(yy, _mm256_mul_ps(b0, chip->kb0));
@@ -482,14 +486,12 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
         chip->ha0 = yy;
 
         yy = _mm256_mul_ps(yy, chip->kv);
-        _mm256_store_ps(yyv, yy);
+        vi32x8_t yyi = _mm256_castps_si256(yy);
+        *(int32_t*)y++ = _mm256_extract_epi32(yyi, 3);
+        *(int32_t*)y++ = _mm256_extract_epi32(yyi, 7);
 
         b2 = chip->hb1;
         a2 = chip->ha1;
-
-        _mm_sfence();
-        *y++ = yyv[3];
-        *y++ = yyv[7];
     }
 }
 
