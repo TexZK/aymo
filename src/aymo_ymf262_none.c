@@ -65,10 +65,9 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
     assert(chip);
 
     // Wipe everything, except VT
-    const struct aymo_ymf262_vt* vt = chip->parent.vt;
-    aymo_memset(chip, 0, sizeof(*chip));
-    chip->parent.vt = vt;
+    aymo_memset((&chip->parent.vt + 1u), 0, (sizeof(*chip) - sizeof(chip->parent.vt)));
 
+    // Initialize wrapped emulator
     OPL3_Reset(&chip->opl3, (uint32_t)AYMO_YMF262_SAMPLE_RATE);
 
     // Fix initial channel gates w.r.t. AYMO

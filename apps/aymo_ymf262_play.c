@@ -113,6 +113,7 @@ static int16_t* out_buffer_ptr;
 static uint32_t out_frame_length;
 static struct aymo_wave_heading wave_head;
 
+
 static void* aymo_aligned_alloc(size_t size, size_t align)
 {
     assert(align);
@@ -155,7 +156,7 @@ static int app_boot(void)
 {
     app_return = 2;
 
-    aymo_cpu_boot();
+    aymo_boot();
     aymo_ymf262_boot();
 
     score_data = NULL;
@@ -213,12 +214,12 @@ static int app_args_parse(void)
         }
 
         // Unary options
-        if (!strcmp(name, "--help") || !strcmp(name, "-h")) {
-            return app_usage();
-        }
         if (!strcmp(name, "--benchmark")) {
             app_args.benchmark = true;
             continue;
+        }
+        if (!strcmp(name, "--help") || !strcmp(name, "-h")) {
+            return app_usage();
         }
         if (!strcmp(name, "--out-quad")) {
             app_args.out_quad = true;
@@ -232,6 +233,25 @@ static int app_args_parse(void)
         // Binary options
         if (argi >= (app_args.argc - 1)) {
             break;
+        }
+        if (!strcmp(name, "--buffer-size")) {
+            const char* text = app_args.argv[++argi];
+            errno = 0;
+            app_args.out_frame_length = (uint32_t)strtoul(text, NULL, 0);
+            if (errno) {
+                perror(name);
+                return 1;
+            }
+            continue;
+        }
+        if (!strcmp(name, "--cpu-ext")) {
+            const char* text = app_args.argv[++argi];
+            app_args.ymf262_vt = aymo_ymf262_get_vt(text);
+            if (!app_args.ymf262_vt) {
+                fprintf(stderr, "ERROR: Unsupported CPU extensions tag: \"%s\"\n", text);
+                return 1;
+            }
+            continue;
         }
         if (!strcmp(name, "--loops")) {
             const char* text = app_args.argv[++argi];
@@ -253,15 +273,6 @@ static int app_args_parse(void)
             }
             continue;
         }
-        if (!strcmp(name, "--score-type")) {
-            const char* value = app_args.argv[++argi];
-            app_args.score_type = aymo_score_ext_to_type(value);
-            if (app_args.score_type >= aymo_score_type_unknown) {
-                fprintf(stderr, "ERROR: Unknown score type \"%s\"\n", value);
-                return 1;
-            }
-            continue;
-        }
         if (!strcmp(name, "--score-latency")) {
             const char* text = app_args.argv[++argi];
             errno = 0;
@@ -272,21 +283,11 @@ static int app_args_parse(void)
             }
             continue;
         }
-        if (!strcmp(name, "--cpu-ext")) {
-            const char* text = app_args.argv[++argi];
-            app_args.ymf262_vt = aymo_ymf262_get_vt(text);
-            if (!app_args.ymf262_vt) {
-                fprintf(stderr, "ERROR: Unsupported CPU extensions tag: \"%s\"\n", text);
-                return 1;
-            }
-            continue;
-        }
-        if (!strcmp(name, "--buffer-size")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            app_args.out_frame_length = (uint32_t)strtoul(text, NULL, 0);
-            if (errno) {
-                perror(name);
+        if (!strcmp(name, "--score-type")) {
+            const char* value = app_args.argv[++argi];
+            app_args.score_type = aymo_score_ext_to_type(value);
+            if (app_args.score_type >= aymo_score_type_unknown) {
+                fprintf(stderr, "ERROR: Unknown score type \"%s\"\n", value);
                 return 1;
             }
             continue;
@@ -315,7 +316,6 @@ static int app_args_parse(void)
             app_args.score_path_cstr = text;
         }
     }
-
 
     if (app_args.score_type >= aymo_score_type_unknown) {
         const char* text = app_args.score_path_cstr;
@@ -374,7 +374,7 @@ static int app_setup(void)
     if (out_frame_length > (UINT32_MAX / (sizeof(int16_t) * out_channels))) {
         out_frame_length = (UINT32_MAX / (sizeof(int16_t) * out_channels));
     }
-    uint32_t out_buffer_size = (out_frame_length * sizeof(int16_t) * out_channels);
+    size_t out_buffer_size = (out_frame_length * (sizeof(int16_t) * out_channels));
     out_buffer_ptr = (int16_t*)malloc(out_buffer_size);
     if (!out_buffer_ptr) {
         perror("malloc(out_buffer_size)");

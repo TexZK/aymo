@@ -1543,9 +1543,7 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
     assert(chip);
 
     // Wipe everything, except VT
-    const struct aymo_ymf262_vt* vt = chip->parent.vt;
-    aymo_memset(chip, 0, sizeof(*chip));
-    chip->parent.vt = vt;
+    aymo_memset((&chip->parent.vt + 1u), 0, (sizeof(*chip) - sizeof(chip->parent.vt)));
 
     // Initialize slots
     for (int sgi = 0; sgi < AYMO_(SLOT_GROUP_NUM); ++sgi) {

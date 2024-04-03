@@ -197,6 +197,7 @@ struct aymo_(ch2x_group) {
 AYMO_ALIGN_V128
 struct aymo_(chip) {
     struct aymo_ymf262_chip parent;
+    uint8_t align_[sizeof(vi16x8_t) - sizeof(struct aymo_ymf262_chip)];
 
     // 128-bit data
     struct aymo_(slot_group) sg[AYMO_(SLOT_GROUP_NUM)];
