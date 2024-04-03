@@ -40,6 +40,9 @@ AYMO_CXX_EXTERN_C_BEGIN
 // Processing order (kinda), size/alignment order
 AYMO_ALIGN_V128
 struct aymo_(chip) {
+    struct aymo_tda8425_chip parent;
+    uint8_t align_[sizeof(vf32x4_t) - sizeof(struct aymo_tda8425_chip)];
+
     // 128-bit data
     vf32x4_t hb1l;
     vf32x4_t hb1r;

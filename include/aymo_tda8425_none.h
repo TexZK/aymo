@@ -37,6 +37,7 @@ AYMO_CXX_EXTERN_C_BEGIN
 
 
 struct aymo_(chip) {
+    struct aymo_tda8425_chip parent;
     TDA8425_Chip emu;
     float yh[AYMO_TDA8425_NONE_DELAY][2];
 };

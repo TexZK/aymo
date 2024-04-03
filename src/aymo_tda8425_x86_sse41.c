@@ -83,8 +83,8 @@ void aymo_(ctor)(struct aymo_(chip)* chip, float sample_rate)
     assert(chip);
     assert(sample_rate > 0.f);
 
-    // Wipe everything
-    aymo_memset(chip, 0, sizeof(struct aymo_(chip)));
+    // Wipe everything, except VT
+    aymo_memset((&chip->parent.vt + 1u), 0, (sizeof(*chip) - sizeof(chip->parent.vt)));
 
     // Setup default parameters
     chip->sample_rate = sample_rate;

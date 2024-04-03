@@ -59,11 +59,16 @@ void aymo_(ctor)(struct aymo_(chip)* chip, float sample_rate)
     assert(chip);
     assert(sample_rate > .0f);
 
+    // Wipe everything, except VT
+    aymo_memset((&chip->parent.vt + 1u), 0, (sizeof(*chip) - sizeof(chip->parent.vt)));
+
+    // Initialize emulated delay w.r.t. AYMO
     for (int i = 0; i < AYMO_(DELAY); ++i) {
         chip->yh[i][0] = .0f;
         chip->yh[i][1] = .0f;
     }
 
+    // Initialize wrapped emulator
     TDA8425_Chip* emu = &chip->emu;
     TDA8425_Chip_Ctor(emu);
 
