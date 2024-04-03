@@ -65,11 +65,11 @@ int aymo_score_vgm_ctor(
 {
     assert(score);
 
+    aymo_memset((&score->parent.vt + 1u), 0, (sizeof(*score) - sizeof(score->parent.vt)));
+
     uint32_t opl_rate = AYMO_SCORE_OPL_RATE_DEFAULT;
     uint32_t division = (opl_rate / 1000u);  // TODO: improve resolution via fixed point 24.8
     division += (uint32_t)(division == 0u);
-
-    score->vt = &aymo_score_vgm_vt;
 
     score->events = NULL;
 
@@ -167,7 +167,7 @@ struct aymo_score_status* aymo_score_vgm_get_status(
 )
 {
     assert(score);
-    return &score->status;
+    return &score->parent.status;
 }
 
 
@@ -180,15 +180,15 @@ void aymo_score_vgm_restart(
     score->offset = 0u;
     score->index = 0u;
 
-    score->status.delay = 0u;
-    score->status.address = 0u;
-    score->status.value = 0u;
-    score->status.flags = 0u;
+    score->parent.status.delay = 0u;
+    score->parent.status.address = 0u;
+    score->parent.status.value = 0u;
+    score->parent.status.flags = 0u;
 
     if ((score->offset >= score->eof_offset) ||
         (score->index >= score->total_samples)) {
 
-        score->status.flags |= AYMO_SCORE_FLAG_EOF;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_EOF;
     }
 }
 
@@ -203,13 +203,13 @@ static void aymo_score_vgm_decode(
     uint32_t wait = 0u;
 
     if ((opcode >= 0x5Au) && (opcode <= 0x5Fu)) {
-        score->status.address = ptr[1];
-        score->status.value = ptr[2];
-        score->status.flags = AYMO_SCORE_FLAG_EVENT;
+        score->parent.status.address = ptr[1];
+        score->parent.status.value = ptr[2];
+        score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
         skip = 3u;
 
         if (opcode == 0x5Fu) {
-            score->status.address |= 0x100u;
+            score->parent.status.address |= 0x100u;
         }
     }
     else if (opcode == 0x61u) {
@@ -223,7 +223,7 @@ static void aymo_score_vgm_decode(
         wait = 882u;
     }
     else if (opcode == 0x66u) {
-        score->status.flags |= AYMO_SCORE_FLAG_EOF;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_EOF;
     }
     else if ((opcode >= 0x70u) && (opcode <= 0x7Fu)) {
         wait = (opcode - 0x70u + 1u);
@@ -256,8 +256,8 @@ static void aymo_score_vgm_decode(
 
     if (wait) {
         uint32_t delay = ((wait * AYMO_SCORE_OPL_RATE_DEFAULT) / 44100u);
-        score->status.delay = delay;
-        score->status.flags |= AYMO_SCORE_FLAG_DELAY;
+        score->parent.status.delay = delay;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_DELAY;
     }
 }
 
@@ -273,34 +273,34 @@ uint32_t aymo_score_vgm_tick(
     uint32_t pending = count;
 
     do {
-        if (pending >= score->status.delay) {
-            pending -= score->status.delay;
-            score->status.delay = 0u;
+        if (pending >= score->parent.status.delay) {
+            pending -= score->parent.status.delay;
+            score->parent.status.delay = 0u;
         }
         else {
-            score->status.delay -= pending;
+            score->parent.status.delay -= pending;
             pending = 0u;
         }
 
-        score->status.address = 0u;
-        score->status.value = 0u;
-        score->status.flags = 0u;
+        score->parent.status.address = 0u;
+        score->parent.status.value = 0u;
+        score->parent.status.flags = 0u;
 
-        if (score->status.delay) {
-            score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        if (score->parent.status.delay) {
+            score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
         }
         else if ((score->offset < score->eof_offset) &&
                  (score->index < score->total_samples)) {
 
             aymo_score_vgm_decode(score);
 
-            if (score->status.flags & AYMO_SCORE_FLAG_EVENT) {
+            if (score->parent.status.flags & AYMO_SCORE_FLAG_EVENT) {
                 count -= pending;
                 break;
             }
         }
         else {  // TODO: support for loops
-            score->status.flags = AYMO_SCORE_FLAG_EOF;
+            score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
             break;
         }
     } while (pending);

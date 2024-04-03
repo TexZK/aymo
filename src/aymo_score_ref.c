@@ -48,7 +48,7 @@ int aymo_score_ref_ctor(
 {
     assert(score);
 
-    score->vt = &aymo_score_ref_vt;
+    aymo_memset((&score->parent.vt + 1u), 0, (sizeof(*score) - sizeof(score->parent.vt)));
 
     score->text = NULL;
     score->size = 0u;
@@ -95,7 +95,7 @@ struct aymo_score_status* aymo_score_ref_get_status(
 )
 {
     assert(score);
-    return &score->status;
+    return &score->parent.status;
 }
 
 
@@ -146,10 +146,10 @@ void aymo_score_ref_restart(
 {
     assert(score);
 
-    score->status.delay = 0u;
-    score->status.address = 0u;
-    score->status.value = 0u;
-    score->status.flags = 0u;
+    score->parent.status.delay = 0u;
+    score->parent.status.address = 0u;
+    score->parent.status.value = 0u;
+    score->parent.status.flags = 0u;
 
     score->offset = 0u;
     score->line = 1u;
@@ -162,7 +162,7 @@ void aymo_score_ref_restart(
     }
 
     if (score->offset >= score->size) {
-        score->status.flags |= AYMO_SCORE_FLAG_EOF;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_EOF;
     }
 }
 
@@ -250,8 +250,8 @@ static void aymo_score_ref_decode_rate(
     uint32_t delay = (((AYMO_SCORE_OPL_RATE_DEFAULT * scale) + (scaled / 2u)) / scaled);
 
     if (delay) {
-        score->status.delay = delay;
-        score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        score->parent.status.delay = delay;
+        score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
     }
 }
 
@@ -310,9 +310,9 @@ static void aymo_score_ref_decode_write(
     aymo_score_ref_skip_line(score);
 
     uint16_t address = (((uint16_t)score->addrhi << 8u) | addrlo);
-    score->status.address = address;
-    score->status.value = value;
-    score->status.flags = AYMO_SCORE_FLAG_EVENT;
+    score->parent.status.address = address;
+    score->parent.status.value = value;
+    score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
 }
 
 
@@ -350,32 +350,32 @@ uint32_t aymo_score_ref_tick(
     uint32_t pending = count;
 
     do {
-        if (pending >= score->status.delay) {
-            pending -= score->status.delay;
-            score->status.delay = 0u;
+        if (pending >= score->parent.status.delay) {
+            pending -= score->parent.status.delay;
+            score->parent.status.delay = 0u;
         }
         else {
-            score->status.delay -= pending;
+            score->parent.status.delay -= pending;
             pending = 0u;
         }
 
-        score->status.address = 0u;
-        score->status.value = 0u;
-        score->status.flags = 0u;
+        score->parent.status.address = 0u;
+        score->parent.status.value = 0u;
+        score->parent.status.flags = 0u;
 
-        if (score->status.delay) {
-            score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        if (score->parent.status.delay) {
+            score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
         }
         else if (score->offset < score->size) {
             aymo_score_ref_decode_line(score);
 
-            if (score->status.flags & AYMO_SCORE_FLAG_EVENT) {
+            if (score->parent.status.flags & AYMO_SCORE_FLAG_EVENT) {
                 count -= pending;
                 break;
             }
         }
         else {
-            score->status.flags = AYMO_SCORE_FLAG_EOF;
+            score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
             break;
         }
     } while (pending);

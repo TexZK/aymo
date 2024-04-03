@@ -51,10 +51,10 @@ int aymo_score_dro_ctor_specific(
     assert(score);
     assert(opl_rate);
 
+    aymo_memset((&score->parent.vt + 1u), 0, (sizeof(*score) - sizeof(score->parent.vt)));
+
     uint32_t division = (opl_rate / 1000u);  // TODO: improve resolution via fixed point 24.8
     division += (uint32_t)(division == 0u);
-
-    score->vt = &aymo_score_dro_vt;
 
     score->header = NULL;
     score->v1_header = NULL;
@@ -198,7 +198,7 @@ struct aymo_score_status* aymo_score_dro_get_status(
 )
 {
     assert(score);
-    return &score->status;
+    return &score->parent.status;
 }
 
 
@@ -211,13 +211,13 @@ void aymo_score_dro_restart(
     score->offset = 0u;
     score->address_hi = 0u;
 
-    score->status.delay = 0u;
-    score->status.address = 0u;
-    score->status.value = 0u;
-    score->status.flags = 0u;
+    score->parent.status.delay = 0u;
+    score->parent.status.address = 0u;
+    score->parent.status.value = 0u;
+    score->parent.status.flags = 0u;
 
     if (score->offset >= score->length) {
-        score->status.flags |= AYMO_SCORE_FLAG_EOF;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_EOF;
     }
 }
 
@@ -231,24 +231,24 @@ static void aymo_score_dro_decode_v1(
     switch ((enum aymo_score_dro_v1_code)ptr[0]) {
         case aymo_score_dro_v1_code_delay_byte: {
             if ((score->offset + 1u) <= score->length) {
-                score->status.delay = ((ptr[1] + 1uL) * score->division);
-                score->status.flags = AYMO_SCORE_FLAG_DELAY;
+                score->parent.status.delay = ((ptr[1] + 1uL) * score->division);
+                score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
                 score->offset += 2u;
             }
             else {
-                score->status.flags = AYMO_SCORE_FLAG_DELAY;
+                score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
                 score->offset = score->length;
             }
             break;
         }
         case aymo_score_dro_v1_code_delay_word: {
             if ((score->offset + 2u) <= score->length) {
-                score->status.delay = ((make_u16le(ptr[1], ptr[2]) + 1uL) * score->division);
-                score->status.flags = AYMO_SCORE_FLAG_DELAY;
+                score->parent.status.delay = ((make_u16le(ptr[1], ptr[2]) + 1uL) * score->division);
+                score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
                 score->offset += 3u;
             }
             else {
-                score->status.flags = AYMO_SCORE_FLAG_EOF;
+                score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
                 score->offset = score->length;
             }
             break;
@@ -265,13 +265,13 @@ static void aymo_score_dro_decode_v1(
         }
         case aymo_score_dro_v1_code_escape: {
             if ((score->offset + 2u) <= score->length) {
-                score->status.address = make_u16le(ptr[1], score->address_hi);
-                score->status.value = ptr[2];
-                score->status.flags = AYMO_SCORE_FLAG_EVENT;
+                score->parent.status.address = make_u16le(ptr[1], score->address_hi);
+                score->parent.status.value = ptr[2];
+                score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
                 score->offset += 3u;
             }
             else {
-                score->status.flags = AYMO_SCORE_FLAG_EOF;
+                score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
                 score->offset = score->length;
             }
             break;
@@ -279,13 +279,13 @@ static void aymo_score_dro_decode_v1(
         case aymo_score_dro_v1_code_invalid:
         default: {
             if ((score->offset + 2u) <= score->length) {
-                score->status.address = make_u16le(ptr[0], score->address_hi);
-                score->status.value = ptr[1];
-                score->status.flags = AYMO_SCORE_FLAG_EVENT;
+                score->parent.status.address = make_u16le(ptr[0], score->address_hi);
+                score->parent.status.value = ptr[1];
+                score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
                 score->offset += 2u;
             }
             else {
-                score->status.flags = AYMO_SCORE_FLAG_EOF;
+                score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
                 score->offset = score->length;
             }
             break;
@@ -302,19 +302,19 @@ static void aymo_score_dro_decode_v2(
     const uint8_t* ptr = &(score->events[score->offset]);
 
     if (ptr[0] == v2_header->short_delay_code) {
-        score->status.delay = ((ptr[1] + 1uL) * score->division);
-        score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        score->parent.status.delay = ((ptr[1] + 1uL) * score->division);
+        score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
     }
     else if (ptr[0] == v2_header->long_delay_code) {
-        score->status.delay = (((ptr[1] + 1uL) * 256u) * score->division);
-        score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        score->parent.status.delay = (((ptr[1] + 1uL) * 256u) * score->division);
+        score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
     }
     else if ((ptr[0] & 0xFFu) < v2_header->codemap_length) {
         score->address_hi = ((ptr[0] & 0x80u) >> 7u);
         uint8_t address_lo = score->codemap[ptr[0] & 0xFFu];
-        score->status.address = make_u16le(address_lo, score->address_hi);
-        score->status.value = ptr[1];
-        score->status.flags = AYMO_SCORE_FLAG_EVENT;
+        score->parent.status.address = make_u16le(address_lo, score->address_hi);
+        score->parent.status.value = ptr[1];
+        score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
     }
     score->offset += 2u;
 }
@@ -331,21 +331,21 @@ uint32_t aymo_score_dro_tick(
     uint32_t pending = count;
 
     do {
-        if (pending >= score->status.delay) {
-            pending -= score->status.delay;
-            score->status.delay = 0u;
+        if (pending >= score->parent.status.delay) {
+            pending -= score->parent.status.delay;
+            score->parent.status.delay = 0u;
         }
         else {
-            score->status.delay -= pending;
+            score->parent.status.delay -= pending;
             pending = 0u;
         }
 
-        score->status.address = 0u;
-        score->status.value = 0u;
-        score->status.flags = 0u;
+        score->parent.status.address = 0u;
+        score->parent.status.value = 0u;
+        score->parent.status.flags = 0u;
 
-        if (score->status.delay) {
-            score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        if (score->parent.status.delay) {
+            score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
         }
         else if (score->offset < score->length) {
             if (score->v2_header) {
@@ -355,18 +355,18 @@ uint32_t aymo_score_dro_tick(
                 aymo_score_dro_decode_v1(score);
             }
             else {
-                score->status.flags = AYMO_SCORE_FLAG_EOF;
+                score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
                 score->offset = score->length;
                 break;
             }
 
-            if (score->status.flags & AYMO_SCORE_FLAG_EVENT) {
+            if (score->parent.status.flags & AYMO_SCORE_FLAG_EVENT) {
                 count -= pending;
                 break;
             }
         }
         else {
-            score->status.flags = AYMO_SCORE_FLAG_EOF;
+            score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
             break;
         }
     } while (pending);

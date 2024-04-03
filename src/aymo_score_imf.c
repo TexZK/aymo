@@ -84,10 +84,10 @@ int aymo_score_imf_ctor_specific(
     assert(opl_rate);
     assert(imf_rate);
 
+    aymo_memset((&score->parent.vt + 1u), 0, (sizeof(*score) - sizeof(score->parent.vt)));
+
     uint32_t division = (opl_rate / imf_rate);  // TODO: improve resolution via fixed point 24.8
     division += (uint32_t)(division == 0u);
-
-    score->vt = &aymo_score_imf_vt;
 
     score->events = NULL;
     score->imf_rate = imf_rate;
@@ -181,7 +181,7 @@ struct aymo_score_status* aymo_score_imf_get_status(
 )
 {
     assert(score);
-    return &score->status;
+    return &score->parent.status;
 }
 
 
@@ -194,13 +194,13 @@ void aymo_score_imf_restart(
     score->index = 0u;
     score->address_hi = 0u;
 
-    score->status.delay = 0u;
-    score->status.address = 0u;
-    score->status.value = 0u;
-    score->status.flags = 0u;
+    score->parent.status.delay = 0u;
+    score->parent.status.address = 0u;
+    score->parent.status.value = 0u;
+    score->parent.status.flags = 0u;
 
     if (score->index >= score->length) {
-        score->status.flags |= AYMO_SCORE_FLAG_EOF;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_EOF;
     }
 }
 
@@ -216,29 +216,29 @@ uint32_t aymo_score_imf_tick(
     uint32_t pending = count;
 
     do {
-        if (pending >= score->status.delay) {
-            pending -= score->status.delay;
-            score->status.delay = 0u;
+        if (pending >= score->parent.status.delay) {
+            pending -= score->parent.status.delay;
+            score->parent.status.delay = 0u;
         }
         else {
-            score->status.delay -= pending;
+            score->parent.status.delay -= pending;
             pending = 0u;
         }
 
-        score->status.address = 0u;
-        score->status.value = 0u;
-        score->status.flags = 0u;
+        score->parent.status.address = 0u;
+        score->parent.status.value = 0u;
+        score->parent.status.flags = 0u;
 
-        if (score->status.delay) {
-            score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        if (score->parent.status.delay) {
+            score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
         }
         else if (score->index < score->length) {
             const struct aymo_score_imf_event* event = &score->events[score->index++];
 
             uint16_t delay = (((uint16_t)event->delay_hi << 8u) | event->delay_lo);
             if (delay) {
-                score->status.delay = (delay * score->division);
-                score->status.flags = AYMO_SCORE_FLAG_DELAY;
+                score->parent.status.delay = (delay * score->division);
+                score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
             }
 
             // Override virtual register 0x05 to extend the address range for OPL3
@@ -246,15 +246,15 @@ uint32_t aymo_score_imf_tick(
                 score->address_hi = (event->value & 0x01u);
             }
             else {
-                score->status.address = ((uint16_t)(score->address_hi << 8u) | event->address_lo);
-                score->status.value = event->value;
-                score->status.flags = AYMO_SCORE_FLAG_EVENT;
+                score->parent.status.address = ((uint16_t)(score->address_hi << 8u) | event->address_lo);
+                score->parent.status.value = event->value;
+                score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
                 count -= pending;
                 break;
             }
         }
         else {
-            score->status.flags = AYMO_SCORE_FLAG_EOF;
+            score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
             break;
         }
     } while (pending);

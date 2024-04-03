@@ -54,7 +54,7 @@ int aymo_score_raw_ctor(
 {
     assert(score);
 
-    score->vt = &aymo_score_raw_vt;
+    aymo_memset((&score->parent.vt + 1u), 0, (sizeof(*score) - sizeof(score->parent.vt)));
 
     score->events = NULL;
     score->raw_rate = AYMO_SCORE_RAW_REFCLK;
@@ -126,7 +126,7 @@ struct aymo_score_status* aymo_score_raw_get_status(
 )
 {
     assert(score);
-    return &score->status;
+    return &score->parent.status;
 }
 
 
@@ -141,13 +141,13 @@ void aymo_score_raw_restart(
     score->clock = score->clock_initial;
     aymo_score_raw_update_clock(score);
 
-    score->status.delay = 0u;
-    score->status.address = 0u;
-    score->status.value = 0u;
-    score->status.flags = 0u;
+    score->parent.status.delay = 0u;
+    score->parent.status.address = 0u;
+    score->parent.status.value = 0u;
+    score->parent.status.flags = 0u;
 
     if (score->index >= score->length) {
-        score->status.flags |= AYMO_SCORE_FLAG_EOF;
+        score->parent.status.flags |= AYMO_SCORE_FLAG_EOF;
     }
 }
 
@@ -163,21 +163,21 @@ uint32_t aymo_score_raw_tick(
     uint32_t pending = count;
 
     do {
-        if (pending >= score->status.delay) {
-            pending -= score->status.delay;
-            score->status.delay = 0u;
+        if (pending >= score->parent.status.delay) {
+            pending -= score->parent.status.delay;
+            score->parent.status.delay = 0u;
         }
         else {
-            score->status.delay -= pending;
+            score->parent.status.delay -= pending;
             pending = 0u;
         }
 
-        score->status.address = 0u;
-        score->status.value = 0u;
-        score->status.flags = 0u;
+        score->parent.status.address = 0u;
+        score->parent.status.value = 0u;
+        score->parent.status.flags = 0u;
 
-        if (score->status.delay) {
-            score->status.flags = AYMO_SCORE_FLAG_DELAY;
+        if (score->parent.status.delay) {
+            score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
         }
         else if (score->index < score->length) {
             const struct aymo_score_raw_event* event = &score->events[score->index++];
@@ -185,8 +185,8 @@ uint32_t aymo_score_raw_tick(
             if (event->ctrl == 0x00u) {
                 uint8_t delay = event->data;
                 if (delay) {
-                    score->status.delay = (delay * score->division);
-                    score->status.flags = AYMO_SCORE_FLAG_DELAY;
+                    score->parent.status.delay = (delay * score->division);
+                    score->parent.status.flags = AYMO_SCORE_FLAG_DELAY;
                 }
             }
             else if (event->ctrl == 0x02u) {
@@ -197,7 +197,7 @@ uint32_t aymo_score_raw_tick(
                         aymo_score_raw_update_clock(score);
                     }
                     else {
-                        score->status.flags = AYMO_SCORE_FLAG_EOF;
+                        score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
                         break;
                     }
                 }
@@ -209,15 +209,15 @@ uint32_t aymo_score_raw_tick(
                 }
             }
             else {
-                score->status.address = ((uint16_t)(score->address_hi << 8u) | event->ctrl);
-                score->status.value = event->data;
-                score->status.flags = AYMO_SCORE_FLAG_EVENT;
+                score->parent.status.address = ((uint16_t)(score->address_hi << 8u) | event->ctrl);
+                score->parent.status.value = event->data;
+                score->parent.status.flags = AYMO_SCORE_FLAG_EVENT;
                 count -= pending;
                 break;
             }
         }
         else {
-            score->status.flags = AYMO_SCORE_FLAG_EOF;
+            score->parent.status.flags = AYMO_SCORE_FLAG_EOF;
             break;
         }
     } while (pending);

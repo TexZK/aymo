@@ -35,8 +35,7 @@ AYMO_PRAGMA_SCALAR_STORAGE_ORDER_DEFAULT
 
 
 struct aymo_score_ref_instance {
-    const struct aymo_score_vt* vt;
-    struct aymo_score_status status;
+    struct aymo_score_instance parent;
     const char* text;
     uint32_t size;
     uint32_t offset;

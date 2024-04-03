@@ -60,8 +60,7 @@ AYMO_PRAGMA_SCALAR_STORAGE_ORDER_DEFAULT
 
 
 struct aymo_score_imf_instance {
-    const struct aymo_score_vt* vt;
-    struct aymo_score_status status;
+    struct aymo_score_instance parent;
     const struct aymo_score_imf_event* events;
     uint32_t imf_rate;
     uint32_t opl_rate;

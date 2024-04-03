@@ -97,6 +97,7 @@ struct aymo_score_vt {
 
 struct aymo_score_instance {
     const struct aymo_score_vt* vt;
+    struct aymo_score_status status;
 };
 
 

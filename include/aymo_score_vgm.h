@@ -127,8 +127,7 @@ enum aymo_score_vgm_type {
 
 
 struct aymo_score_vgm_instance {
-    const struct aymo_score_vt* vt;
-    struct aymo_score_status status;
+    struct aymo_score_instance parent;
     const uint8_t* events;
     uint32_t opl_rate;
     uint32_t division;

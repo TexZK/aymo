@@ -106,8 +106,7 @@ AYMO_PRAGMA_SCALAR_STORAGE_ORDER_DEFAULT
 
 // Score player score
 struct aymo_score_dro_instance {
-    const struct aymo_score_vt* vt;
-    struct aymo_score_status status;
+    struct aymo_score_instance parent;
     const struct aymo_score_dro_header *header;
     const struct aymo_score_dro_v1_header *v1_header;
     const struct aymo_score_dro_v2_header *v2_header;
