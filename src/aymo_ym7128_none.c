@@ -54,6 +54,10 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
 {
     assert(chip);
 
+    // Wipe everything, except VT
+    aymo_memset((&chip->parent.vt + 1u), 0, (sizeof(*chip) - sizeof(chip->parent.vt)));
+
+    // Initialize wrapped emulator
     YM7128B_ChipFixed* emu = &chip->emu;
     YM7128B_ChipFixed_Ctor(emu);
     YM7128B_ChipFixed_Reset(emu);

@@ -33,7 +33,7 @@ AYMO_CXX_EXTERN_C_BEGIN
 
 
 struct aymo_(chip) {
-    unsigned dummy;
+    struct aymo_ym7128_chip parent;
 };
 
 
