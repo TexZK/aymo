@@ -21,7 +21,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #define _include_aymo_tda8425_none_h
 
 #include "aymo_cpu.h"
-#include "aymo_tda8425_common.h"
+#include "aymo_tda8425.h"
 
 #include "TDA8425_emu.h"
 

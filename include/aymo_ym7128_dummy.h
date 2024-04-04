@@ -21,7 +21,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #define _include_aymo_ym7128_dummy_h
 
 #include "aymo_cpu.h"
-#include "aymo_ym7128_common.h"
+#include "aymo_ym7128.h"
 
 AYMO_CXX_EXTERN_C_BEGIN
 

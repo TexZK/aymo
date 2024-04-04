@@ -22,6 +22,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #ifdef AYMO_CPU_SUPPORT_ARM_NEON
 
 #include "aymo_cpu_arm_neon_inline.h"
+#include "aymo_ym7128.h"
 #define AYMO_KEEP_SHORTHANDS
 #include "aymo_ym7128_arm_neon.h"
 

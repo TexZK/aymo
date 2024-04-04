@@ -21,9 +21,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #define _include_aymo_tda8425_arm_neon_h
 
 #include "aymo_cpu.h"
-
-#include <stddef.h>
-#include <stdint.h>
+#include "aymo_tda8425.h"
 
 #ifdef AYMO_CPU_SUPPORT_ARM_NEON
 

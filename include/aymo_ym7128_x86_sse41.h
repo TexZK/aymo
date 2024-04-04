@@ -21,9 +21,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #define _include_aymo_ym7128_x86_sse41_h
 
 #include "aymo_cpu.h"
-#include "aymo_ym7128_common.h"
-
-#include <stddef.h>
+#include "aymo_ym7128.h"
 
 #ifdef AYMO_CPU_SUPPORT_X86_SSE41
 

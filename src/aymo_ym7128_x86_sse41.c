@@ -22,7 +22,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #ifdef AYMO_CPU_SUPPORT_X86_SSE41
 
 #include "aymo_cpu_x86_sse41_inline.h"
-#include "aymo_ym7128_common.h"
+#include "aymo_ym7128.h"
 #define AYMO_KEEP_SHORTHANDS
 #include "aymo_ym7128_x86_sse41.h"
 
