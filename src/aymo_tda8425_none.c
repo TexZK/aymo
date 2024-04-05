@@ -77,7 +77,7 @@ void aymo_(ctor)(struct aymo_(chip)* chip, float sample_rate)
         (TDA8425_Float)sample_rate,
         (TDA8425_Float)TDA8425_Pseudo_C1_Table[TDA8425_Pseudo_Preset_1],
         (TDA8425_Float)TDA8425_Pseudo_C2_Table[TDA8425_Pseudo_Preset_1],
-        TDA8425_Tfilter_Mode_Disabled
+        TDA8425_Tfilter_Mode_Enabled
     );
 
     TDA8425_Chip_Reset(emu);

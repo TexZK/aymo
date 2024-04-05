@@ -339,7 +339,7 @@ static void aymo_(apply_tfilter)(struct aymo_(chip)* chip)
         double b2 = (((m_k2w2 - abs2_sqrt_log10_g) - (h_sqrt_5_kw_abs_sqrt_log10_g * cosp)));
 
         double ra0 = (1. / a0);
-        chip->kb0 = _mm256_blend_ps(chip->kb0, _mm256_set1_ps((float)(b0 * ra0)), 0x88);
+        chip->kb0 = _mm256_blend_ps(chip->kb0, _mm256_set1_ps((float)(b0 * ra0)), 0x08);
         chip->kb1 = _mm256_blend_ps(chip->kb1, _mm256_set1_ps((float)(b1 * ra0)), 0x88);
         chip->kb2 = _mm256_blend_ps(chip->kb2, _mm256_set1_ps((float)(b2 * ra0)), 0x88);
         ra0 = -ra0;
@@ -446,53 +446,58 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
     assert(x);
     assert(y);
 
-    vf32x8_t b2 = chip->hb1;
-    vf32x8_t a2 = chip->ha1;
-
-    const float* xe = &x[count * 2u];
-
-    while AYMO_LIKELY(x != xe) {
-        vf32x8_t y2 = _mm256_add_ps(_mm256_mul_ps(b2, chip->kb2),
-                                    _mm256_mul_ps(a2, chip->ka2));
-        chip->hb2 = b2;
-        chip->ha2 = a2;
-
-        vf32x8_t b1 = chip->hb0;
-        vf32x8_t a1 = chip->ha0;
-        vf32x8_t y1 = _mm256_add_ps(_mm256_mul_ps(b1, chip->kb1),
-                                    _mm256_mul_ps(a1, chip->ka1));
-        chip->hb1 = b1;
-        chip->ha1 = a1;
-
-        vf32x8_t yy = _mm256_add_ps(y2, y1);
-
-        int32_t xli = *(int32_t*)x++;
-        int32_t xri = *(int32_t*)x++;
-        vi32x8_t xlri = _mm256_undefined_si256();
-        vi32x8_t xrli = _mm256_undefined_si256();
-        xlri = _mm256_insert_epi32(xlri, xli, 3);
-        xrli = _mm256_insert_epi32(xrli, xli, 7);
-        xlri = _mm256_insert_epi32(xlri, xri, 7);
-        xrli = _mm256_insert_epi32(xrli, xri, 3);
-        vf32x8_t xlr = _mm256_castsi256_ps(xlri);
-        vf32x8_t xrl = _mm256_castsi256_ps(xrli);
-        vf32x8_t xx = _mm256_add_ps(_mm256_mul_ps(xlr, chip->klr),
-                                    _mm256_mul_ps(xrl, chip->krl));
-
-        vf32x8_t b0 = mm256_alignr_ps(chip->ha0, xx, 3);
-        yy = _mm256_add_ps(yy, _mm256_mul_ps(b0, chip->kb0));
-        chip->hb0 = b0;
-
-        chip->ha0 = yy;
-
-        yy = _mm256_mul_ps(yy, chip->kv);
-        vi32x8_t yyi = _mm256_castps_si256(yy);
-        *(int32_t*)y++ = _mm256_extract_epi32(yyi, 3);
-        *(int32_t*)y++ = _mm256_extract_epi32(yyi, 7);
-
-        b2 = chip->hb1;
-        a2 = chip->ha1;
+    if AYMO_UNLIKELY(!count) {
+        return;
     }
+
+    vf32x8_t kb2 = chip->kb2;
+    vf32x8_t ka2 = chip->ka2;
+    vf32x8_t b2  = chip->hb1;
+    vf32x8_t a2  = chip->ha1;
+
+    vf32x8_t kb1 = chip->kb1;
+    vf32x8_t ka1 = chip->ka1;
+    vf32x8_t b1  = chip->hb0;
+    vf32x8_t a1  = chip->ha0;
+
+    vf32x8_t klr = chip->klr;
+    vf32x8_t krl = chip->krl;
+
+    vf32x8_t kb0 = chip->kb0;
+
+    vf32x8_t kv = chip->kv;
+
+    do {
+        vf32x8_t y2 = _mm256_add_ps(_mm256_mul_ps(b2, kb2), _mm256_mul_ps(a2, ka2));
+        vf32x8_t y1 = _mm256_add_ps(_mm256_mul_ps(b1, kb1), _mm256_mul_ps(a1, ka1));
+        vf32x8_t a0 = _mm256_add_ps(y2, y1);
+
+        vf32x4_t xl = _mm_set1_ps(x[0]);
+        vf32x4_t xr = _mm_set1_ps(x[1]); x += 2u;
+        vf32x8_t xlr = _mm256_insertf128_ps(_mm256_castps128_ps256(xl), xr, 1);
+        vf32x8_t xrl = _mm256_insertf128_ps(_mm256_castps128_ps256(xr), xl, 1);
+        vf32x8_t xx = _mm256_add_ps(_mm256_mul_ps(xlr, klr), _mm256_mul_ps(xrl, krl));
+
+        vf32x8_t b0 = mm256_alignr_ps(a1, xx, 3);
+        a0 = _mm256_add_ps(a0, _mm256_mul_ps(b0, kb0));
+
+        vf32x8_t yy = _mm256_mul_ps(a0, kv);
+        vi32x8_t yyi = _mm256_castps_si256(yy);
+        ((int32_t*)y)[0] = _mm256_extract_epi32(yyi, 3);
+        ((int32_t*)y)[1] = _mm256_extract_epi32(yyi, 7); y += 2u;
+
+        b2 = b1;
+        a2 = a1;
+
+        b1 = b0;
+        a1 = a0;
+    } while (--count);
+
+    chip->hb1 = b2;
+    chip->ha1 = a2;
+
+    chip->hb0 = b1;
+    chip->ha0 = a1;
 }
 
 

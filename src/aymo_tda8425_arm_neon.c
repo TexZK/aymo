@@ -439,67 +439,79 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
     assert(x);
     assert(y);
 
+    vf32x4_t kb2 = chip->kb2;
+    vf32x4_t ka2 = chip->ka2;
+
     vf32x4_t b2l = chip->hb1l;
-    vf32x4_t b2r = chip->hb1r;
     vf32x4_t a2l = chip->ha1l;
+
+    vf32x4_t b2r = chip->hb1r;
     vf32x4_t a2r = chip->ha1r;
 
-    const float* xe = &x[count * 2u];
+    vf32x4_t kb1 = chip->kb1;
+    vf32x4_t ka1 = chip->ka1;
 
-    while AYMO_LIKELY(x != xe) {
-        vf32x4_t y2l = vaddq_f32(vmulq_f32(b2l, chip->kb2),
-                                 vmulq_f32(a2l, chip->ka2));
-        vf32x4_t y2r = vaddq_f32(vmulq_f32(b2r, chip->kb2),
-                                 vmulq_f32(a2r, chip->ka2));
-        chip->hb2l = b2l;
-        chip->hb2r = b2r;
-        chip->ha2l = a2l;
-        chip->ha2r = a2r;
+    vf32x4_t b1l = chip->hb0l;
+    vf32x4_t a1l = chip->ha0l;
 
-        vf32x4_t b1l = chip->hb0l;
-        vf32x4_t b1r = chip->hb0r;
-        vf32x4_t a1l = chip->ha0l;
-        vf32x4_t a1r = chip->ha0r;
-        vf32x4_t y1l = vaddq_f32(vmulq_f32(b1l, chip->kb1),
-                                 vmulq_f32(a1l, chip->ka1));
-        vf32x4_t y1r = vaddq_f32(vmulq_f32(b1r, chip->kb1),
-                                 vmulq_f32(a1r, chip->ka1));
-        chip->hb1l = b1l;
-        chip->hb1r = b1r;
-        chip->ha1l = a1l;
-        chip->ha1r = a1r;
+    vf32x4_t b1r = chip->hb0r;
+    vf32x4_t a1r = chip->ha0r;
 
-        vf32x4_t yyl = vaddq_f32(y2l, y1l);
-        vf32x4_t yyr = vaddq_f32(y2r, y1r);
+    vf32x2_t klr = chip->klr;
+    vf32x2_t krl = chip->krl;
+
+    vf32x4_t kb0 = chip->kb0;
+
+    vf32x2_t kv = chip->kv;
+
+    do {
+        vf32x4_t y2l = vaddq_f32(vmulq_f32(b2l, kb2), vmulq_f32(a2l, ka2));
+        vf32x4_t y2r = vaddq_f32(vmulq_f32(b2r, kb2), vmulq_f32(a2r, ka2));
+
+        vf32x4_t y1l = vaddq_f32(vmulq_f32(b1l, kb1), vmulq_f32(a1l, ka1));
+        vf32x4_t y1r = vaddq_f32(vmulq_f32(b1r, kb1), vmulq_f32(a1r, ka1));
+
+        vf32x4_t a0l = vaddq_f32(y2l, y1l);
+        vf32x4_t a0r = vaddq_f32(y2r, y1r);
 
         vf32x2_t xlr = vld1_f32(x); x += 2u;
         vf32x2_t xrl = vrev64_f32(xlr);
-        vf32x2_t wx = vadd_f32(vmul_f32(xlr, chip->klr),
-                               vmul_f32(xrl, chip->krl));
+        vf32x2_t wx = vadd_f32(vmul_f32(xlr, klr), vmul_f32(xrl, krl));
         vf32x4_t xx = vcombine_f32(wx, wx);
 
         vf32x4_t xl = vrev64q_f32(xx);
         vf32x4_t b0l = vextq_f32(xl, a1l, 3);
         vf32x4_t b0r = vextq_f32(xx, a1r, 3);
-        yyl = vaddq_f32(yyl, vmulq_f32(b0l, chip->kb0));
-        yyr = vaddq_f32(yyr, vmulq_f32(b0r, chip->kb0));
-        chip->hb0l = b0l;
-        chip->hb0r = b0r;
 
-        chip->ha0l = yyl;
-        chip->ha0r = yyr;
+        a0l = vaddq_f32(a0l, vmulq_f32(b0l, kb0));
+        a0r = vaddq_f32(a0r, vmulq_f32(b0r, kb0));
 
-        vf32x2_t ylh = vget_high_f32(yyl);
-        vf32x2_t yrh = vget_high_f32(yyr);
+        vf32x2_t ylh = vget_high_f32(a0l);
+        vf32x2_t yrh = vget_high_f32(a0r);
         vf32x2_t yy = vext_f32(ylh, vrev64_f32(yrh), 1);
-        yy = vmul_f32(yy, chip->kv);
+        yy = vmul_f32(yy, kv);
         vst1_f32(y, yy); y += 2u;
 
-        b2l = chip->hb1l;
-        b2r = chip->hb1r;
-        a2l = chip->ha1l;
-        a2r = chip->ha1r;
-    }
+        b2l = b1l;
+        a2l = a1l;
+        b2r = b1r;
+        a2r = a1r;
+
+        b1l = b0l;
+        a1l = a0l;
+        b1r = b0r;
+        a1r = a0r;
+    } while (--count);
+
+    chip->hb1l = b2l;
+    chip->ha1l = a2l;
+    chip->hb1r = b2r;
+    chip->ha1r = a2r;
+
+    chip->hb0l = b1l;
+    chip->ha0l = a1l;
+    chip->hb0r = b1r;
+    chip->ha0r = a1r;
 }
 
 

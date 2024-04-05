@@ -42,25 +42,23 @@ struct aymo_(chip) {
     uint8_t align_[sizeof(vf32x4_t) - sizeof(struct aymo_tda8425_chip)];
 
     // 128-bit data
-    vf32x4_t hb1l;
-    vf32x4_t hb1r;
-    vf32x4_t hb2l;
-    vf32x4_t hb2r;
     vf32x4_t kb2;
-
-    vf32x4_t ha1l;
-    vf32x4_t ha1r;
-    vf32x4_t ha2l;
-    vf32x4_t ha2r;
     vf32x4_t ka2;
 
-    vf32x4_t hb0l;
-    vf32x4_t hb0r;
-    vf32x4_t kb1;
+    vf32x4_t hb1l;
+    vf32x4_t ha1l;
 
-    vf32x4_t ha0l;
-    vf32x4_t ha0r;
+    vf32x4_t hb1r;
+    vf32x4_t ha1r;
+
+    vf32x4_t kb1;
     vf32x4_t ka1;
+
+    vf32x4_t hb0l;
+    vf32x4_t ha0l;
+
+    vf32x4_t hb0r;
+    vf32x4_t ha0r;
 
     vf32x4_t kb0;
 

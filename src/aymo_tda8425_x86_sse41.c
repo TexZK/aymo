@@ -449,65 +449,77 @@ void aymo_(process_f32)(struct aymo_(chip)* chip, uint32_t count, const float x[
     assert(x);
     assert(y);
 
+    vf32x4_t kb2 = chip->kb2;
+    vf32x4_t ka2 = chip->ka2;
+
     vf32x4_t b2l = chip->hb1l;
-    vf32x4_t b2r = chip->hb1r;
     vf32x4_t a2l = chip->ha1l;
+
+    vf32x4_t b2r = chip->hb1r;
     vf32x4_t a2r = chip->ha1r;
 
-    const float* xe = &x[count * 2u];
+    vf32x4_t kb1 = chip->kb1;
+    vf32x4_t ka1 = chip->ka1;
 
-    while AYMO_LIKELY(x != xe) {
-        vf32x4_t y2l = _mm_add_ps(_mm_mul_ps(b2l, chip->kb2),
-                                  _mm_mul_ps(a2l, chip->ka2));
-        vf32x4_t y2r = _mm_add_ps(_mm_mul_ps(b2r, chip->kb2),
-                                  _mm_mul_ps(a2r, chip->ka2));
-        chip->hb2l = b2l;
-        chip->hb2r = b2r;
-        chip->ha2l = a2l;
-        chip->ha2r = a2r;
+    vf32x4_t b1l = chip->hb0l;
+    vf32x4_t a1l = chip->ha0l;
 
-        vf32x4_t b1l = chip->hb0l;
-        vf32x4_t b1r = chip->hb0r;
-        vf32x4_t a1l = chip->ha0l;
-        vf32x4_t a1r = chip->ha0r;
-        vf32x4_t y1l = _mm_add_ps(_mm_mul_ps(b1l, chip->kb1),
-                                  _mm_mul_ps(a1l, chip->ka1));
-        vf32x4_t y1r = _mm_add_ps(_mm_mul_ps(b1r, chip->kb1),
-                                  _mm_mul_ps(a1r, chip->ka1));
-        chip->hb1l = b1l;
-        chip->hb1r = b1r;
-        chip->ha1l = a1l;
-        chip->ha1r = a1r;
+    vf32x4_t b1r = chip->hb0r;
+    vf32x4_t a1r = chip->ha0r;
 
-        vf32x4_t yyl = _mm_add_ps(y2l, y1l);
-        vf32x4_t yyr = _mm_add_ps(y2r, y1r);
+    vf32x4_t klr = chip->klr;
+    vf32x4_t krl = chip->krl;
 
-        vf32x4_t xlr = _mm_loadh_pi(_mm_undefined_ps(), (const void*)x); x += 2u;
+    vf32x4_t kb0 = chip->kb0;
+
+    vf32x4_t kv = chip->kv;
+
+    do {
+        vf32x4_t y2l = _mm_add_ps(_mm_mul_ps(b2l, kb2), _mm_mul_ps(a2l, ka2));
+        vf32x4_t y2r = _mm_add_ps(_mm_mul_ps(b2r, kb2), _mm_mul_ps(a2r, ka2));
+
+        vf32x4_t y1l = _mm_add_ps(_mm_mul_ps(b1l, kb1), _mm_mul_ps(a1l, ka1));
+        vf32x4_t y1r = _mm_add_ps(_mm_mul_ps(b1r, kb1), _mm_mul_ps(a1r, ka1));
+
+        vf32x4_t a0l = _mm_add_ps(y2l, y1l);
+        vf32x4_t a0r = _mm_add_ps(y2r, y1r);
+
+        vf32x4_t xlr = _mm_loadh_pi(_mm_undefined_ps(), (void*)x); x += 2u;
         vf32x4_t xrl = _mm_shuffle_ps(xlr, xlr, _MM_SHUFFLE(2, 3, 0, 1));  // "23.."
-        vf32x4_t xx = _mm_add_ps(_mm_mul_ps(xlr, chip->klr),
-                                 _mm_mul_ps(xrl, chip->krl));
+        vf32x4_t xx = _mm_add_ps(_mm_mul_ps(xlr, klr), _mm_mul_ps(xrl, krl));
 
         vf32x4_t xl = _mm_shuffle_ps(xx, xx, _MM_SHUFFLE(2, 3, 0, 1));  // "2..."
         vf32x4_t b0l = mm_alignr_ps(a1l, xl, 3);
         vf32x4_t b0r = mm_alignr_ps(a1r, xx, 3);
-        yyl = _mm_add_ps(yyl, _mm_mul_ps(b0l, chip->kb0));
-        yyr = _mm_add_ps(yyr, _mm_mul_ps(b0r, chip->kb0));
-        chip->hb0l = b0l;
-        chip->hb0r = b0r;
 
-        chip->ha0l = yyl;
-        chip->ha0r = yyr;
+        a0l = _mm_add_ps(a0l, _mm_mul_ps(b0l, kb0));
+        a0r = _mm_add_ps(a0r, _mm_mul_ps(b0r, kb0));
 
-        yyl = _mm_shuffle_ps(yyl, yyl, _MM_SHUFFLE(2, 3, 0, 1));  // ".3.."
-        vf32x4_t yy = _mm_blend_ps(yyl, yyr, 0x8);  // "1000"
-        yy = _mm_mul_ps(yy, chip->kv);
+        vf32x4_t yy = _mm_shuffle_ps(a0l, a0l, _MM_SHUFFLE(2, 3, 0, 1));  // ".3.."
+        yy = _mm_blend_ps(yy, a0r, 0x8);  // "1000"
+        yy = _mm_mul_ps(yy, kv);
         _mm_storeh_pi((void*)y, yy); y += 2u;
 
-        b2l = chip->hb1l;
-        b2r = chip->hb1r;
-        a2l = chip->ha1l;
-        a2r = chip->ha1r;
-    }
+        b2l = b1l;
+        a2l = a1l;
+        b2r = b1r;
+        a2r = a1r;
+
+        b1l = b0l;
+        a1l = a0l;
+        b1r = b0r;
+        a1r = a0r;
+    } while (--count);
+
+    chip->hb1l = b2l;
+    chip->ha1l = a2l;
+    chip->hb1r = b2r;
+    chip->ha1r = a2r;
+
+    chip->hb0l = b1l;
+    chip->ha0l = a1l;
+    chip->hb0r = b1r;
+    chip->ha0r = a1r;
 }
 
 
