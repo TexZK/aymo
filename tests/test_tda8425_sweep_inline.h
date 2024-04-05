@@ -140,6 +140,7 @@ static void app_setup(void)
     TDA8425_Chip_Write(&emu, (TDA8425_Address)TDA8425_Reg_VR, app_args.reg_vr);
     TDA8425_Chip_Write(&emu, (TDA8425_Address)TDA8425_Reg_BA, app_args.reg_ba);
     TDA8425_Chip_Write(&emu, (TDA8425_Address)TDA8425_Reg_TR, app_args.reg_tr);
+    TDA8425_Chip_Write(&emu, (TDA8425_Address)TDA8425_Reg_PP, app_args.reg_pp);
     TDA8425_Chip_Write(&emu, (TDA8425_Address)TDA8425_Reg_SF, app_args.reg_sf);
     TDA8425_Chip_Start(&emu);
 

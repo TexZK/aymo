@@ -339,7 +339,7 @@ static void aymo_(apply_tfilter)(struct aymo_(chip)* chip)
         double b2 = (((m_k2w2 - abs2_sqrt_log10_g) - (h_sqrt_5_kw_abs_sqrt_log10_g * cosp)));
 
         double ra0 = (1. / a0);
-        chip->kb0 = _mm256_blend_ps(chip->kb0, _mm256_set1_ps((float)(b0 * ra0)), 0x08);
+        chip->kb0 = _mm256_blend_ps(chip->kb0, _mm256_set1_ps((float)(b0 * ra0)), 0x88);
         chip->kb1 = _mm256_blend_ps(chip->kb1, _mm256_set1_ps((float)(b1 * ra0)), 0x88);
         chip->kb2 = _mm256_blend_ps(chip->kb2, _mm256_set1_ps((float)(b2 * ra0)), 0x88);
         ra0 = -ra0;
