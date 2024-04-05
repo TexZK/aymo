@@ -472,6 +472,7 @@ sources = {
   ),
 
   'AYMO_SOURCES_X86_AVX': files(
+    'src/aymo_ym7128_x86_avx.c',
     'src/aymo_ymf262_x86_avx.c',
   ),
 

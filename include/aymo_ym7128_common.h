@@ -65,6 +65,8 @@ struct aymo_ym7128_chip {
 #define AYMO_YM7128_GAIN_MASK       0xFFF0
 #define AYMO_YM7128_SIGNAL_BITS     14
 #define AYMO_YM7128_SIGNAL_MASK     0xFFFC
+#define AYMO_YM7128_INPUT_RATE      23550
+#define AYMO_YM7128_OUTPUT_RATE     47100
 
 
 enum aymo_ym7128_reg {

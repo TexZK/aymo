@@ -22,17 +22,17 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 To play via shell pipe, run:
 
     - ALSA Play:
-        aymo_tda8425_filter WAVE | aplay -c 2 -r 44100 -f S16_LE
+        aymo_ym7128_filter WAVE | aplay -c 2 -r 44100 -f S16_LE
 
     - VLC:
-        aymo_tda8425_filter WAVE | vlc --demux=rawaud --rawaud-channels 2 --rawaud-samplerate 47916 -
+        aymo_ym7128_filter WAVE | vlc --demux=rawaud --rawaud-channels 2 --rawaud-samplerate 47916 -
 */
 
 #include "aymo.h"
 #include "aymo_convert.h"
 #include "aymo_cpu.h"
 #include "aymo_file.h"
-#include "aymo_tda8425.h"
+#include "aymo_ym7128.h"
 #include "aymo_wave.h"
 
 #include <assert.h>
@@ -57,6 +57,188 @@ To play via shell pipe, run:
 AYMO_CXX_EXTERN_C_BEGIN
 
 
+struct app_preset {
+    const char* label;
+    uint8_t regs[AYMO_YM7128_REG_COUNT];
+} const app_presets[] =
+{
+    { "off", {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    }},
+    { "direct", {
+        0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x3F, 0x00, 0x3F, 0x3F,
+        0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    }},
+    { "dune/arrakis", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x1A, 0x1A,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "dune/baghdad", {
+        0x1F, 0x00, 0x1B, 0x00, 0x17, 0x00, 0x33, 0x00,
+        0x00, 0x1D, 0x00, 0x19, 0x00, 0x15, 0x00, 0x11,
+        0x1D, 0x1D, 0x1D, 0x1D,
+        0x13, 0x13,
+        0x06, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E, 0x10,
+    }},
+    { "dune/morning", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x1B, 0x1B,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "dune/sequence", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x1C, 0x1C,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "dune/sietch", {
+        0x1F, 0x00, 0x1B, 0x00, 0x17, 0x00, 0x33, 0x00,
+        0x00, 0x1D, 0x00, 0x19, 0x00, 0x15, 0x00, 0x11,
+        0x1D, 0x1D, 0x1D, 0x1D,
+        0x13, 0x13,
+        0x06, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E, 0x10,
+    }},
+    { "dune/warsong", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x1C, 0x1C,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "dune/water", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x1A, 0x1A,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "dune/wormintro", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x18, 0x18,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "dune/wormsuit", {
+        0x18, 0x00, 0x1A, 0x00, 0x1C, 0x00, 0x1E, 0x00,
+        0x00, 0x19, 0x00, 0x1B, 0x00, 0x1D, 0x00, 0x1F,
+        0x1B, 0x1F, 0x17, 0x17,
+        0x12, 0x08,
+        0x1F, 0x07, 0x0A, 0x0D, 0x10, 0x13, 0x16, 0x19, 0x1C,
+    }},
+    { "gold/cavern", {
+        0x1F, 0x00, 0x1D, 0x00, 0x1B, 0x00, 0x19, 0x00,
+        0x20, 0x3E, 0x20, 0x3C, 0x20, 0x3A, 0x20, 0x38,
+        0x3C, 0x3E, 0x1C, 0x1C,
+        0x11, 0x0A,
+        0x12, 0x10, 0x0E, 0x0C, 0x0A, 0x08, 0x06, 0x04, 0x02,
+    }},
+    { "gold/chapel", {
+        0x1F, 0x1E, 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18,
+        0x3F, 0x3E, 0x3D, 0x3C, 0x3B, 0x3A, 0x39, 0x38,
+        0x38, 0x3D, 0x1B, 0x1B,
+        0x10, 0x10,
+        0x1F, 0x1F, 0x1D, 0x1B, 0x19, 0x17, 0x15, 0x13, 0x11,
+    }},
+    { "gold/concert_hall", {
+        0x31, 0x00, 0x15, 0x00, 0x39, 0x00, 0x1D, 0x00,
+        0x00, 0x33, 0x00, 0x17, 0x00, 0x3B, 0x00, 0x1F,
+        0x1A, 0x1C, 0x1D, 0x1D,
+        0x16, 0x16,
+        0x1F, 0x1C, 0x19, 0x16, 0x13, 0x10, 0x0D, 0x0A, 0x07,
+    }},
+    { "gold/deep_space", {
+        0x18, 0x00, 0x1A, 0x00, 0x1C, 0x00, 0x1E, 0x00,
+        0x00, 0x19, 0x00, 0x1B, 0x00, 0x1D, 0x00, 0x1F,
+        0x1B, 0x1F, 0x1C, 0x1C,
+        0x12, 0x08,
+        0x1F, 0x07, 0x0A, 0x0D, 0x10, 0x13, 0x16, 0x19, 0x1C,
+    }},
+    { "gold/jazz_club", {
+        0x1F, 0x1B, 0x37, 0x13, 0x2F, 0x0B, 0x27, 0x03,
+        0x1F, 0x3B, 0x17, 0x33, 0x0F, 0x2B, 0x07, 0x23,
+        0x1C, 0x1F, 0x1B, 0x1B,
+        0x0C, 0x0C,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "gold/movie_theater", {
+        0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07, 0x00,
+        0x00, 0x1F, 0x00, 0x17, 0x00, 0x0F, 0x00, 0x07,
+        0x1A, 0x1D, 0x1C, 0x1C,
+        0x16, 0x16,
+        0x1F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x17, 0x1B, 0x1F,
+    }},
+    { "gold/recital_hall", {
+        0x1F, 0x3E, 0x1D, 0x3C, 0x1B, 0x3A, 0x19, 0x38,
+        0x3F, 0x1E, 0x3D, 0x1C, 0x3B, 0x1A, 0x39, 0x18,
+        0x18, 0x1C, 0x1C, 0x1C,
+        0x15, 0x15,
+        0x14, 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E, 0x10, 0x12,
+    }},
+    { "gold/stadium", {
+        0x1F, 0x00, 0x1B, 0x00, 0x17, 0x00, 0x33, 0x00,
+        0x00, 0x1D, 0x00, 0x19, 0x00, 0x15, 0x00, 0x11,
+        0x1D, 0x1D, 0x3D, 0x3D,
+        0x13, 0x13,
+        0x06, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E, 0x10,
+    }},
+    { NULL, {0} }
+};
+
+
+static const char* app_reg_names[AYMO_YM7128_REG_COUNT] =
+{
+    "gl1",
+    "gl2",
+    "gl3",
+    "gl4",
+    "gl5",
+    "gl6",
+    "gl7",
+    "gl8",
+
+    "gr1",
+    "gr2",
+    "gr3",
+    "gr4",
+    "gr5",
+    "gr6",
+    "gr7",
+    "gr8",
+
+    "vM",
+    "vC",
+    "vL",
+    "vR",
+
+    "c0",
+    "c1",
+
+    "t0",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "t5",
+    "t6",
+    "t7",
+    "t8"
+};
+
+
 struct app_args {
     int argc;
     char** argv;
@@ -64,30 +246,22 @@ struct app_args {
     // App parameters
     unsigned buffer_length;
     unsigned length;
-    uint32_t sample_rate;
     bool benchmark;
 
     // Input parameters
     const char* in_path_cstr;           // NULL or "-" for stdin
     bool in_float;
-    float in_gain;
+    bool in_stereo;
 
     // Output parameters
     const char* out_path_cstr;          // NULL or "-" for stdout
     bool out_float;
 
-    // TDA8425 parameters
-    const struct aymo_tda8425_vt* tda8425_vt;
-    uint8_t reg_ba;
-    uint8_t reg_pp;
-    uint8_t reg_sf;
-    uint8_t reg_tr;
-    uint8_t reg_vl;
-    uint8_t reg_vr;
+    // YM7128 parameters
+    const struct aymo_ym7128_vt* ym7128_vt;
+    uint8_t regs[31];
 };
 
-
-static const struct aymo_tda8425_math math = { cos, fabs, log10, pow, sqrt, tan };
 
 static int app_return;
 
@@ -96,12 +270,13 @@ static clock_t clock_start;
 static clock_t clock_end;
 
 static bool in_stdin;
+static bool in_stereo;
 static FILE* in_file;
 static uint8_t in_buffer_default[sizeof(float) * 2u];
 static uint8_t* in_buffer_ptr;
 
 static uint32_t buffer_length;
-static struct aymo_tda8425_chip* chip;
+static struct aymo_ym7128_chip* chip;
 
 static bool out_stdout;
 static FILE* out_file;
@@ -147,7 +322,7 @@ static int app_boot(void)
     app_return = 2;
 
     aymo_boot();
-    aymo_tda8425_boot(&math);
+    aymo_ym7128_boot();
 
     buffer_length = 1u;
     chip = NULL;
@@ -170,18 +345,12 @@ static int app_args_init(int argc, char** argv)
     app_args.argv = argv;
 
     app_args.buffer_length = 1u;
-    app_args.sample_rate = 44100u;
 
-    app_args.in_gain = -1.f;
+    app_args.ym7128_vt = aymo_ym7128_get_best_vt();
 
-    app_args.tda8425_vt = aymo_tda8425_get_best_vt();
-
-    app_args.reg_ba = 0xF6u;
-    app_args.reg_pp = 0xFCu;
-    app_args.reg_sf = 0xCEu;
-    app_args.reg_tr = 0xF6u;
-    app_args.reg_vl = 0xFCu;
-    app_args.reg_vr = 0xFCu;
+    for (int i = 0; i < AYMO_YM7128_REG_COUNT; ++i) {
+        app_args.regs[i] = app_presets[1].regs[i];
+    }
 
     return 0;
 }
@@ -219,6 +388,10 @@ static int app_args_parse(void)
             app_args.in_float = true;
             continue;
         }
+        if (!strcmp(name, "--in-stereo")) {
+            app_args.in_stereo = true;
+            continue;
+        }
         if (!strcmp(name, "--out-float")) {
             app_args.out_float = true;
             continue;
@@ -240,8 +413,8 @@ static int app_args_parse(void)
         }
         if (!strcmp(name, "--cpu-ext")) {
             const char* text = app_args.argv[++argi];
-            app_args.tda8425_vt = aymo_tda8425_get_vt(text);
-            if (!app_args.tda8425_vt) {
+            app_args.ym7128_vt = aymo_ym7128_get_vt(text);
+            if (!app_args.ym7128_vt) {
                 fprintf(stderr, "ERROR: Unsupported CPU extensions tag: \"%s\"\n", text);
                 return 1;
             }
@@ -257,85 +430,42 @@ static int app_args_parse(void)
             }
             continue;
         }
-        if (!strcmp(name, "--reg-ba")) {
+        if (!strcmp(name, "--preset")) {
             const char* text = app_args.argv[++argi];
-            errno = 0;
-            long value = strtol(text, NULL, 16);
-            if (errno || value < 0x00 || value > 0xFF) {
-                fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
-                return 1;
+            const struct app_preset* preset = app_presets;
+            for (; preset->label; ++preset) {
+                if (!strcmp(text, preset->label)) {
+                    break;
+                }
             }
-            app_args.reg_ba = (uint8_t)value;
-            continue;
+            if (preset->label) {
+                for (int i = 0; i < AYMO_YM7128_REG_COUNT; ++i) {
+                    app_args.regs[i] = preset->regs[i];
+                }
+                continue;
+            }
+            fprintf(stderr, "ERROR: Unsupported preset name: \"%s\"\n", text);
+            return 1;
         }
-        if (!strcmp(name, "--reg-pp")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            long value = strtol(text, NULL, 16);
-            if (errno || value < 0x00 || value > 0xFF) {
-                fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
-                return 1;
+        if (!strncmp(name, "--reg-", 6)) {
+            bool found = false;
+            for (int i = 0; i < AYMO_YM7128_REG_COUNT; ++i) {
+                if (!strcmp(&name[6], app_reg_names[i])) {
+                    const char* text = app_args.argv[++argi];
+                    errno = 0;
+                    long value = strtol(text, NULL, 16);
+                    if (errno || value < 0x00 || value > 0xFF) {
+                        fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
+                        return 1;
+                    }
+                    app_args.regs[i] = (uint8_t)value;
+                    found = true;
+                    break;
+                }
             }
-            app_args.reg_pp = (uint8_t)value;
-            continue;
-        }
-        if (!strcmp(name, "--reg-sf")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            long value = strtol(text, NULL, 16);
-            if (errno || value < 0x00 || value > 0xFF) {
-                fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
-                return 1;
+            if (found) {
+                continue;
             }
-            app_args.reg_sf = (uint8_t)value;
-            continue;
-        }
-        if (!strcmp(name, "--reg-tr")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            long value = strtol(text, NULL, 16);
-            if (errno || value < 0x00 || value > 0xFF) {
-                fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
-                return 1;
-            }
-            app_args.reg_tr = (uint8_t)value;
-            continue;
-        }
-        if (!strcmp(name, "--reg-vl")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            long value = strtol(text, NULL, 16);
-            if (errno || value < 0x00 || value > 0xFF) {
-                fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
-                return 1;
-            }
-            app_args.reg_vl = (uint8_t)value;
-            continue;
-        }
-        if (!strcmp(name, "--reg-vr")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            long value = strtol(text, NULL, 16);
-            if (errno || value < 0x00 || value > 0xFF) {
-                fprintf(stderr, "ERROR: Invalid byte value: %s\n", text);
-                return 1;
-            }
-            app_args.reg_vr = (uint8_t)value;
-            continue;
-        }
-        if (!strcmp(name, "--sample-rate")) {
-            const char* text = app_args.argv[++argi];
-            errno = 0;
-            app_args.sample_rate = (uint32_t)strtoul(text, NULL, 0);
-            if (errno) {
-                perror(name);
-                return 1;
-            }
-            if (!app_args.sample_rate) {
-                fprintf(stderr, "ERROR: Null sample rate\n");
-                return 1;
-            }
-            continue;
         }
         break;
     }
@@ -373,22 +503,19 @@ static int app_args_parse(void)
 
 static int app_setup(void)
 {
-    size_t chip_size = app_args.tda8425_vt->get_sizeof();
+    size_t chip_size = app_args.ym7128_vt->get_sizeof();
     void* chip_alignptr = aymo_aligned_alloc(chip_size, 32u);
     if (!chip_alignptr) {
         perror("aymo_aligned_alloc(chip_size)");
         return 2;
     }
-    chip = (struct aymo_tda8425_chip*)chip_alignptr;
-    chip->vt = app_args.tda8425_vt;
-    aymo_tda8425_ctor(chip, (float)app_args.sample_rate);
+    chip = (struct aymo_ym7128_chip*)chip_alignptr;
+    chip->vt = app_args.ym7128_vt;
+    aymo_ym7128_ctor(chip);
 
-    aymo_tda8425_write(chip, 0x00u, app_args.reg_vl);
-    aymo_tda8425_write(chip, 0x01u, app_args.reg_vr);
-    aymo_tda8425_write(chip, 0x02u, app_args.reg_ba);
-    aymo_tda8425_write(chip, 0x03u, app_args.reg_tr);
-    aymo_tda8425_write(chip, 0x07u, app_args.reg_pp);
-    aymo_tda8425_write(chip, 0x08u, app_args.reg_sf);
+    for (int i = 0; i < AYMO_YM7128_REG_COUNT; ++i) {
+        aymo_ym7128_write(chip, (uint16_t)i, app_args.regs[i]);
+    }
 
     buffer_length = app_args.buffer_length;
     if (buffer_length != 1u) {
@@ -463,10 +590,12 @@ static int app_setup(void)
         }
 
         if (app_args.out_float) {
-            aymo_wave_heading_setup(&wave_head, AYMO_WAVE_FMT_TYPE_FLOAT, 2u, 32u, app_args.sample_rate, 0u);
+            aymo_wave_heading_setup(&wave_head, AYMO_WAVE_FMT_TYPE_FLOAT,
+                                    2u, 32u, (uint32_t)AYMO_YM7128_OUTPUT_RATE, 0u);
         }
         else {
-            aymo_wave_heading_setup(&wave_head, AYMO_WAVE_FMT_TYPE_PCM, 2u, 16u, app_args.sample_rate, 0u);
+            aymo_wave_heading_setup(&wave_head, AYMO_WAVE_FMT_TYPE_PCM,
+                                    2u, 16u, (uint32_t)AYMO_YM7128_OUTPUT_RATE, 0u);
         }
         if (fwrite(&wave_head, sizeof(wave_head), 1u, out_file) != 1u) {
             perror("fwrite(wave_head)");
@@ -481,7 +610,7 @@ static int app_setup(void)
 static void app_teardown(void)
 {
     if (chip) {
-        aymo_tda8425_dtor(chip);
+        aymo_ym7128_dtor(chip);
         aymo_aligned_free(chip);
     }
     chip = NULL;
@@ -512,14 +641,13 @@ static void app_teardown(void)
 
 static int app_run(void)
 {
-    size_t pending_length = (app_args.length * (size_t)2u);
-    size_t sample_length = ((size_t)buffer_length * 2u);
+    size_t pending_length = app_args.length;
+    size_t sample_length = buffer_length;
     size_t frame_total = 0u;
     size_t in_sample_size = (app_args.in_float ? sizeof(float) : sizeof(int16_t));
     size_t out_sample_size = (app_args.out_float ? sizeof(float) : sizeof(int16_t));
     uint8_t* in_ptr = in_buffer_ptr;
     uint8_t* out_ptr = out_buffer_ptr;
-    float in_gain = app_args.in_gain;
 
     clock_start = clock();
 
@@ -533,39 +661,38 @@ static int app_run(void)
 
         if (in_file) {
             avail_length = fread(in_ptr, in_sample_size, avail_length, in_file);
-            avail_length -= (avail_length % 2u);
             if (avail_length == 0u) {
                 break;
             }
-            if (!app_args.in_float) {
-                aymo_convert_i16_f32_1(avail_length, (int16_t*)in_ptr, (float*)out_ptr);
+            if (app_args.in_float) {
+                aymo_convert_f32_i16_1(avail_length, (float*)in_ptr, (int16_t*)out_ptr);
                 uint8_t* t = in_ptr;
                 in_ptr = out_ptr;
                 out_ptr = t;
             }
-            if (in_gain >= 0.f) {
-                for (unsigned i = 0u; i < avail_length; ++i) {
-                    ((float*)in_ptr)[i] *= in_gain;
+            if (in_stereo) {
+                for (unsigned i = 0u; i < avail_length; i += 2u) {
+                    ((int16_t*)in_ptr)[i / 2u] = ((int16_t*)in_ptr)[i];  // left only
                 }
             }
         }
 
-        aymo_tda8425_process_f32(chip, (avail_length / 2u), (float*)in_ptr, (float*)out_ptr);
+        aymo_ym7128_process_i16(chip, (uint32_t)avail_length, (int16_t*)in_ptr, (int16_t*)out_ptr);
 
         if (out_file) {
-            if (!app_args.out_float) {
-                aymo_convert_f32_i16_1(avail_length, (float*)out_ptr, (int16_t*)in_ptr);
+            if (app_args.out_float) {
+                aymo_convert_i16_f32_1(avail_length, (int16_t*)out_ptr, (float*)in_ptr);
                 uint8_t* t = in_ptr;
                 in_ptr = out_ptr;
                 out_ptr = t;
             }
-            if (fwrite(out_ptr, out_sample_size, avail_length, out_file) != avail_length) {
+            if (fwrite(out_ptr, out_sample_size, (avail_length * 2u), out_file) != avail_length) {
                 perror("fwrite(out_buffer)");
                 return 2;
             }
         }
 
-        frame_total += (avail_length / 2u);
+        frame_total += avail_length;
         if (pending_length) {
             pending_length -= avail_length;
             if (!pending_length) {
@@ -581,11 +708,11 @@ static int app_run(void)
         }
         if (app_args.out_float) {
             aymo_wave_heading_setup(&wave_head, AYMO_WAVE_FMT_TYPE_FLOAT, 2u, 32u,
-                                    app_args.sample_rate, (uint32_t)frame_total);
+                                    (uint32_t)AYMO_YM7128_OUTPUT_RATE, (uint32_t)frame_total);
         }
         else {
             aymo_wave_heading_setup(&wave_head, AYMO_WAVE_FMT_TYPE_PCM, 2u, 16u,
-                                    app_args.sample_rate, (uint32_t)frame_total);
+                                    (uint32_t)AYMO_YM7128_OUTPUT_RATE, (uint32_t)frame_total);
         }
         if (fwrite(&wave_head, sizeof(wave_head), 1u, out_file) != 1u) {
             perror("fwrite(wave_head)");

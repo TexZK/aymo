@@ -29,6 +29,7 @@ test_names_x86_sse41 = [
 ]
 
 test_names_x86_avx = [
+  'test_ym7128_x86_avx_compare',
   'test_ymf262_x86_avx_compare',
 ]
 

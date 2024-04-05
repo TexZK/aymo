@@ -23,6 +23,7 @@ along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 #include "aymo_ym7128_arm_neon.h"
 #include "aymo_ym7128_dummy.h"
 #include "aymo_ym7128_none.h"
+#include "aymo_ym7128_x86_avx.h"
 #include "aymo_ym7128_x86_sse41.h"
 
 AYMO_CXX_EXTERN_C_BEGIN
@@ -33,6 +34,13 @@ static const struct aymo_ym7128_vt* aymo_ym7128_best_vt;
 
 void aymo_ym7128_boot(void)
 {
+    #ifdef AYMO_CPU_SUPPORT_X86_AVX
+        if (aymo_cpu_x86_get_extensions() & AYMO_CPU_X86_EXT_AVX) {
+            aymo_ym7128_best_vt = aymo_ym7128_x86_avx_get_vt();
+            return;
+        }
+    #endif
+
     #ifdef AYMO_CPU_SUPPORT_X86_SSE41
         if (aymo_cpu_x86_get_extensions() & AYMO_CPU_X86_EXT_SSE41) {
             aymo_ym7128_best_vt = aymo_ym7128_x86_sse41_get_vt();
@@ -56,6 +64,14 @@ const struct aymo_ym7128_vt* aymo_ym7128_get_vt(const char* cpu_ext)
     if (cpu_ext == NULL) {
         return NULL;
     }
+
+    #ifdef AYMO_CPU_SUPPORT_X86_AVX
+        if (!aymo_strcmp(cpu_ext, "x86_avx")) {
+            if (aymo_cpu_x86_get_extensions() & AYMO_CPU_X86_EXT_AVX) {
+                return aymo_ym7128_x86_avx_get_vt();
+            }
+        }
+    #endif
 
     #ifdef AYMO_CPU_SUPPORT_X86_SSE41
         if (!aymo_strcmp(cpu_ext, "x86_sse41")) {

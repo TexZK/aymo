@@ -18,11 +18,12 @@ You should have received a copy of the GNU Lesser General Public License
 along with AYMO. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 #include "aymo_cpu_x86_avx2_inline.h"
 #include "aymo_ymf262.h"
 #define AYMO_KEEP_SHORTHANDS
 #include "aymo_ymf262_x86_avx2.h"
+
+#include <assert.h>
 
 #ifdef AYMO_CPU_SUPPORT_X86_AVX2
 
