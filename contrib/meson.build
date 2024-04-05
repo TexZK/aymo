@@ -15,6 +15,7 @@ aymo_contrib_sources = files(
 aymo_contrib_lib = static_library(
   'aymo-contrib',
   aymo_contrib_sources,
+  c_args: aymo_c_args,
   include_directories: aymo_contrib_includes,
   dependencies: libm,
   install: false,
