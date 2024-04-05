@@ -2,6 +2,94 @@ if opt_apps.disabled()
   error('Benchmarks require apps')
 endif
 
+# =====================================================================
+# TDA8425
+
+aymo_tda8425_benchmark_suite = {
+  'volume_lr_max_min':    ['--reg-vl', '0xFF', '--reg-vr', '0xF0', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+  'volume_lr_min_max':    ['--reg-vl', '0xF0', '--reg-vr', '0xFF', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+
+  'bass_min':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF0', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+  'bass_max':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xFF', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+
+  'treble_min':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF0', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+  'treble_max':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xFF', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+
+  'stereo_none_1':        ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC8'],
+  'stereo_none_2':        ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC9'],
+  'stereo_1_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCA'],
+  'stereo_1_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCC'],
+  'stereo_1_ab':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
+  'stereo_2_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCB'],
+  'stereo_2_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCD'],
+  'stereo_2_ab':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCF'],
+
+  'mono_1_a':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC2'],
+  'mono_1_b':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC4'],
+  'mono_1_ab':            ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC6'],
+
+  'pseudo_1_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFC', '--reg-sf', '0xD2'],
+  'pseudo_1_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFC', '--reg-sf', '0xD4'],
+  'pseudo_2_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFD', '--reg-sf', '0xD2'],
+  'pseudo_2_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFD', '--reg-sf', '0xD4'],
+  'pseudo_3_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFE', '--reg-sf', '0xD2'],
+  'pseudo_3_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFE', '--reg-sf', '0xD4'],
+
+  'spatial_1_a':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xDE'],
+  'spatial_1_b':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xDE'],
+  'spatial_1_ab':         ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xDE'],
+
+  'mute':                 ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xEE'],
+
+  'tfilter_min':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF0', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x4E'],
+  'tfilter_max':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xFF', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x4E'],
+
+  'dcremoval_lr_max_min': ['--reg-vl', '0xFF', '--reg-vr', '0xF0', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x8E'],
+  'dcremoval_lr_min_max': ['--reg-vl', '0xF0', '--reg-vr', '0xFF', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x8E'],
+}
+
+foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx2', 'arm_neon']
+  have_intr = get_variable('aymo_have_@0@'.format(intr_name))
+  if have_intr
+    test_suite = 'tda8425_@0@_process'.format(intr_name)
+    foreach test_name, test_args : aymo_tda8425_benchmark_suite
+      benchmark(
+        ('_'.join([test_suite, test_name])).underscorify(),
+        aymo_tda8425_process_exe,
+        args: [
+          '--benchmark',
+          '--cpu-ext', intr_name,
+          '--buffer-length', '@0@'.format(opt_benchmark_buffer_length),
+          '--length', '@0@'.format(opt_benchmark_stream_length),
+        ] + test_args,
+        timeout: 0
+      )
+    endforeach
+  endif
+endforeach
+
+# =====================================================================
+# YM7128
+
+# TODO: test suite
+
+foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'arm_neon']
+  have_intr = get_variable('aymo_have_@0@'.format(intr_name))
+  if have_intr
+    test_suite = 'ym7128_@0@_process'.format(intr_name)
+    benchmark(
+      test_suite,
+      aymo_ym7128_process_exe,
+      args: [
+        '--benchmark',
+        '--cpu-ext', intr_name,
+        '--buffer-length', '@0@'.format(opt_benchmark_buffer_length),
+        '--length', '@0@'.format(opt_benchmark_stream_length),
+      ],
+      timeout: 0
+    )
+  endif
+endforeach
 
 # =====================================================================
 # YMF262
@@ -113,20 +201,22 @@ foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'x86_avx2', 'arm_n
   if have_intr
     test_suite = 'ymf262_@0@_play'.format(intr_name)
     foreach score_path : aymo_ymf262_benchmark_suite
-      benchmark(
-        ('_'.join([test_suite, fs.name(score_path)])).underscorify(),
-        aymo_ymf262_play_exe,
-        args: [
-          '--benchmark',
-          '--cpu-ext', intr_name,
-          '--loops', '@0@'.format(opt_benchmark_loops),
-          score_path
-        ],
-        timeout: 0
-      )
+#      benchmark(
+#        ('_'.join([test_suite, fs.name(score_path)])).underscorify(),
+#        aymo_ymf262_play_exe,
+#        args: [
+#          '--benchmark',
+#          '--cpu-ext', intr_name,
+#          '--loops', '@0@'.format(opt_benchmark_score_loops),
+#          score_path
+#        ],
+#        timeout: 0
+#      )
     endforeach
   endif
 endforeach
+
+# =====================================================================
 
 # Strictly run:
 #   meson test --benchmark

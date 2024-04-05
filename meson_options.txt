@@ -5,7 +5,9 @@ option('rtcd', type: 'feature', value: 'auto', description: 'Run-Time CPU Detect
 # Components
 option('apps', type: 'feature', value: 'auto', description: 'Build Applications')
 option('benchmarks', type: 'feature', value: 'auto', description: 'Build Benchmarks')
-option('benchmark_loops', type: 'integer', min: 1, value: 3, description: 'Benchmark Score Loops')
+option('benchmark_score_loops', type: 'integer', min: 1, value: 3, description: 'Benchmark Score Loops')
+option('benchmark_buffer_length', type: 'integer', min: 1, value: 64, description: 'Benchmark Buffer Length')
+option('benchmark_stream_length', type: 'integer', min: 1, value: 100000000, description: 'Benchmark Stream Length')
 option('docs', type: 'feature', value: 'auto', description: 'Build Documentation')
 option('tests', type: 'feature', value: 'auto', description: 'Build Tests')
 option('test_all_scores', type: 'feature', value: 'auto', description: 'Test All Scores')
