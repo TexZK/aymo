@@ -20,6 +20,9 @@ if __name__ == '__main__':
         print(f'Entry:      {1+index:3d} / {len(lines):3d}')
 
         info = json.loads(line)
+        name = info['name']
+        if not name.startswith('ymf262_'):
+            continue
 
         cmdline = info['command']
         score = os.path.basename(cmdline[-1])

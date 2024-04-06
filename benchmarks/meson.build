@@ -193,17 +193,17 @@ foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'x86_avx2', 'arm_n
   if have_intr
     test_suite = 'ymf262_@0@_play'.format(intr_name)
     foreach score_path : aymo_ymf262_benchmark_suite
-#      benchmark(
-#        ('_'.join([test_suite, fs.name(score_path)])).underscorify(),
-#        aymo_ymf262_play_exe,
-#        args: [
-#          '--benchmark',
-#          '--cpu-ext', intr_name,
-#          '--loops', '@0@'.format(opt_benchmark_score_loops),
-#          score_path
-#        ],
-#        timeout: 0
-#      )
+      benchmark(
+        ('_'.join([test_suite, fs.name(score_path)])).underscorify(),
+        aymo_ymf262_play_exe,
+        args: [
+          '--benchmark',
+          '--cpu-ext', intr_name,
+          '--loops', '@0@'.format(opt_benchmark_score_loops),
+          score_path
+        ],
+        timeout: 0
+      )
     endforeach
   endif
 endforeach
@@ -213,11 +213,11 @@ endforeach
 # Strictly run:
 #   meson test --benchmark
 run_target(
-  'benchmark-report',
+  'benchmark-report-ymf262',
   command: [
     python_exe,
-    join_paths(top_srcdir, 'benchmarks', 'export_report.py'),
+    join_paths(top_srcdir, 'benchmarks', 'export_report_ymf262.py'),
     join_paths(top_builddir, 'meson-logs', 'testlog.json'),
-    join_paths(top_builddir, 'benchmarks', 'report.csv')
+    join_paths(top_builddir, 'benchmarks', 'report_ymf262.csv')
   ]
 )
