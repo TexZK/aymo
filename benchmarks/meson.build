@@ -6,46 +6,38 @@ endif
 # TDA8425
 
 aymo_tda8425_benchmark_suite = {
-  'volume_lr_max_min':    ['--reg-vl', '0xFF', '--reg-vr', '0xF0', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-  'volume_lr_min_max':    ['--reg-vl', '0xF0', '--reg-vr', '0xFF', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-
-  'bass_min':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF0', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-  'bass_max':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xFF', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-
-  'treble_min':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF0', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-  'treble_max':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xFF', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-
-  'stereo_none_1':        ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC8'],
-  'stereo_none_2':        ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC9'],
-  'stereo_1_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCA'],
-  'stereo_1_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCC'],
-  'stereo_1_ab':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCE'],
-  'stereo_2_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCB'],
-  'stereo_2_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCD'],
-  'stereo_2_ab':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xCF'],
-
-  'mono_1_a':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC2'],
-  'mono_1_b':             ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC4'],
-  'mono_1_ab':            ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xC6'],
-
-  'pseudo_1_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFC', '--reg-sf', '0xD2'],
-  'pseudo_1_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFC', '--reg-sf', '0xD4'],
-  'pseudo_2_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFD', '--reg-sf', '0xD2'],
-  'pseudo_2_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFD', '--reg-sf', '0xD4'],
-  'pseudo_3_a':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFE', '--reg-sf', '0xD2'],
-  'pseudo_3_b':           ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFE', '--reg-sf', '0xD4'],
-
-  'spatial_1_a':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xDE'],
-  'spatial_1_b':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xDE'],
-  'spatial_1_ab':         ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xDE'],
-
-  'mute':                 ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0xEE'],
-
-  'tfilter_min':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xF0', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x4E'],
-  'tfilter_max':          ['--reg-vl', '0xFC', '--reg-vr', '0xFC', '--reg-ba', '0xFF', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x4E'],
-
-  'dcremoval_lr_max_min': ['--reg-vl', '0xFF', '--reg-vr', '0xF0', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x8E'],
-  'dcremoval_lr_min_max': ['--reg-vl', '0xF0', '--reg-vr', '0xFF', '--reg-ba', '0xF6', '--reg-tr', '0xF6', '--reg-pp', '0xFF', '--reg-sf', '0x8E'],
+  'bass_max':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xFF --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'bass_min':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF0 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'dcremoval_lr_max_min': '--reg-vl 0xFF --reg-vr 0xF0 --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x8E'.split(),
+  'dcremoval_lr_min_max': '--reg-vl 0xF0 --reg-vr 0xFF --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x8E'.split(),
+  'mono_1_a':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC2'.split(),
+  'mono_1_ab':            '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC6'.split(),
+  'mono_1_b':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC4'.split(),
+  'mute':                 '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xEE'.split(),
+  'pseudo_1_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFC --reg-sf 0xD2'.split(),
+  'pseudo_1_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFC --reg-sf 0xD4'.split(),
+  'pseudo_2_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFD --reg-sf 0xD2'.split(),
+  'pseudo_2_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFD --reg-sf 0xD4'.split(),
+  'pseudo_3_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFE --reg-sf 0xD2'.split(),
+  'pseudo_3_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFE --reg-sf 0xD4'.split(),
+  'spatial_1_a':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xDE'.split(),
+  'spatial_1_ab':         '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xDE'.split(),
+  'spatial_1_b':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xDE'.split(),
+  'stereo_1_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCA'.split(),
+  'stereo_1_ab':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'stereo_1_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCC'.split(),
+  'stereo_2_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCB'.split(),
+  'stereo_2_ab':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCF'.split(),
+  'stereo_2_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCD'.split(),
+  'stereo_none_1':        '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC8'.split(),
+  'stereo_none_2':        '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC9'.split(),
+  'tfilter_max':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xFF --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x4E'.split(),
+  'tfilter_min':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF0 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x4E'.split(),
+  'treble_max':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xFF --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'treble_min':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF0 --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'volume_lr_max_min':    '--reg-vl 0xFF --reg-vr 0xF0 --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'volume_lr_min_max':    '--reg-vl 0xF0 --reg-vr 0xFF --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
+  'worst_case':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFC --reg-sf 0x12'.split(),
 }
 
 foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx2', 'arm_neon']
