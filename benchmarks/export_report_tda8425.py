@@ -21,15 +21,13 @@ if __name__ == '__main__':
 
         info = json.loads(line)
         name = info['name']
-        if not name.startswith('ymf262_play_'):
+        if not name.startswith('tda8425_process_'):
             continue
 
         cmdline = info['command']
-        score = os.path.basename(cmdline[-1])
         cpuext = cmdline[cmdline.index('--cpu-ext')+1]
         exit_code = info['returncode']
 
-        print(f'Score:      {score!r}')
         print(f'CPU-ext:    {cpuext}')
         print(f'Command:    {cmdline}')
         print(f'Exit-code:  {exit_code}')
@@ -42,26 +40,19 @@ if __name__ == '__main__':
         duration = float(stdout[rtidx+12:sidx])
         print(f'Duration:   {duration} seconds')
 
-        if score not in durations:
-            durations[score] = {}
-        durations[score][cpuext] = duration
+        durations[cpuext] = durations.get(cpuext, 0) + duration
 
     cpuexts.remove('dummy')
     cpuexts.remove('none')
     cpuexts = ['dummy', 'none'] + list(sorted(cpuexts))
 
-    durations = {score: durations[score] for score in sorted(durations, key=lambda x: x.lower())}
-
     with open(outpath, 'wt') as outfile:
-        outfile.write(f'SCORE')
+        outfile.write(f'TOTAL')
         for cpuext in cpuexts:
             outfile.write(f',{cpuext}')
         outfile.write('\n')
 
-        for score, values in durations.items():
-            score = score.replace('"', '\\"')
-            outfile.write(f'"{score}"')
-            for cpuext in cpuexts:
-                duration = values[cpuext]
-                outfile.write(f',{duration:.6f}')
-            outfile.write('\n')
+        for cpuext in cpuexts:
+            duration = durations[cpuext]
+            outfile.write(f',{duration:.6f}')
+        outfile.write('\n')
