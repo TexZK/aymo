@@ -219,10 +219,10 @@ static const char* app_reg_names[AYMO_YM7128_REG_COUNT] =
     "gr7",
     "gr8",
 
-    "vM",
-    "vC",
-    "vL",
-    "vR",
+    "vm",
+    "vc",
+    "vl",
+    "vr",
 
     "c0",
     "c1",

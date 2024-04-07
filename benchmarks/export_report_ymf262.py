@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
         info = json.loads(line)
         name = info['name']
-        if not name.startswith('ymf262_'):
+        if not name.startswith('ymf262_play_'):
             continue
 
         cmdline = info['command']

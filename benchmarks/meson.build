@@ -6,45 +6,58 @@ endif
 # TDA8425
 
 aymo_tda8425_benchmark_suite = {
-  'bass_max':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xFF --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'bass_min':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF0 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'dcremoval_lr_max_min': '--reg-vl 0xFF --reg-vr 0xF0 --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x8E'.split(),
-  'dcremoval_lr_min_max': '--reg-vl 0xF0 --reg-vr 0xFF --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x8E'.split(),
-  'mono_1_a':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC2'.split(),
-  'mono_1_ab':            '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC6'.split(),
-  'mono_1_b':             '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC4'.split(),
-  'mute':                 '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xEE'.split(),
-  'pseudo_1_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFC --reg-sf 0xD2'.split(),
-  'pseudo_1_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFC --reg-sf 0xD4'.split(),
-  'pseudo_2_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFD --reg-sf 0xD2'.split(),
-  'pseudo_2_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFD --reg-sf 0xD4'.split(),
-  'pseudo_3_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFE --reg-sf 0xD2'.split(),
-  'pseudo_3_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFE --reg-sf 0xD4'.split(),
-  'spatial_1_a':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xDE'.split(),
-  'spatial_1_ab':         '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xDE'.split(),
-  'spatial_1_b':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xDE'.split(),
-  'stereo_1_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCA'.split(),
-  'stereo_1_ab':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'stereo_1_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCC'.split(),
-  'stereo_2_a':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCB'.split(),
-  'stereo_2_ab':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCF'.split(),
-  'stereo_2_b':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCD'.split(),
-  'stereo_none_1':        '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC8'.split(),
-  'stereo_none_2':        '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xC9'.split(),
-  'tfilter_max':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xFF --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x4E'.split(),
-  'tfilter_min':          '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF0 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0x4E'.split(),
-  'treble_max':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xFF --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'treble_min':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF0 --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'volume_lr_max_min':    '--reg-vl 0xFF --reg-vr 0xF0 --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'volume_lr_min_max':    '--reg-vl 0xF0 --reg-vr 0xFF --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFF --reg-sf 0xCE'.split(),
-  'worst_case':           '--reg-vl 0xFC --reg-vr 0xFC --reg-ba 0xF6 --reg-tr 0xF6 --reg-pp 0xFC --reg-sf 0x12'.split(),
+  'bass_max':             ['0xFC', '0xFC', '0xFF', '0xF6', '0xFF', '0xCE'],
+  'bass_min':             ['0xFC', '0xFC', '0xF0', '0xF6', '0xFF', '0xCE'],
+  'dcremoval_lr_max_min': ['0xFF', '0xF0', '0xF6', '0xF6', '0xFF', '0x8E'],
+  'dcremoval_lr_min_max': ['0xF0', '0xFF', '0xF6', '0xF6', '0xFF', '0x8E'],
+  'mono_1_a':             ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xC2'],
+  'mono_1_ab':            ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xC6'],
+  'mono_1_b':             ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xC4'],
+  'mute':                 ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xEE'],
+  'pseudo_1_a':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFC', '0xD2'],
+  'pseudo_1_b':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFC', '0xD4'],
+  'pseudo_2_a':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFD', '0xD2'],
+  'pseudo_2_b':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFD', '0xD4'],
+  'pseudo_3_a':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFE', '0xD2'],
+  'pseudo_3_b':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFE', '0xD4'],
+  'spatial_1_a':          ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xDE'],
+  'spatial_1_ab':         ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xDE'],
+  'spatial_1_b':          ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xDE'],
+  'stereo_1_a':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xCA'],
+  'stereo_1_ab':          ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xCE'],
+  'stereo_1_b':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xCC'],
+  'stereo_2_a':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xCB'],
+  'stereo_2_ab':          ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xCF'],
+  'stereo_2_b':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xCD'],
+  'stereo_none_1':        ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xC8'],
+  'stereo_none_2':        ['0xFC', '0xFC', '0xF6', '0xF6', '0xFF', '0xC9'],
+  'tfilter_max':          ['0xFC', '0xFC', '0xFF', '0xF6', '0xFF', '0x4E'],
+  'tfilter_min':          ['0xFC', '0xFC', '0xF0', '0xF6', '0xFF', '0x4E'],
+  'treble_max':           ['0xFC', '0xFC', '0xF6', '0xFF', '0xFF', '0xCE'],
+  'treble_min':           ['0xFC', '0xFC', '0xF6', '0xF0', '0xFF', '0xCE'],
+  'volume_lr_max_min':    ['0xFF', '0xF0', '0xF6', '0xF6', '0xFF', '0xCE'],
+  'volume_lr_min_max':    ['0xF0', '0xFF', '0xF6', '0xF6', '0xFF', '0xCE'],
+  'worst_case':           ['0xFC', '0xFC', '0xF6', '0xF6', '0xFC', '0x12'],
 }
+test_args_keys = [
+  '--reg-vl',
+  '--reg-vr',
+  '--reg-ba',
+  '--reg-tr',
+  '--reg-pp',
+  '--reg-sf',
+]
+test_args_idx = [0, 1, 2, 3, 4, 5]
 
 foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
-    test_suite = 'tda8425_@0@_process'.format(intr_name)
-    foreach test_name, test_args : aymo_tda8425_benchmark_suite
+    test_suite = 'tda8425_process_@0@'.format(intr_name)
+    foreach test_name, test_args_values : aymo_tda8425_benchmark_suite
+      test_args = []
+      foreach i : test_args_idx
+        test_args += [test_args_keys[i], test_args_values[i]]
+      endforeach
       benchmark(
         ('_'.join([test_suite, test_name])).underscorify(),
         aymo_tda8425_process_exe,
@@ -63,23 +76,51 @@ endforeach
 # =====================================================================
 # YM7128
 
-# TODO: test suite
+aymo_ym7128_benchmark_suite = aymo_ym7128_sweep_suite
+test_args_keys = []
+foreach i : [1, 2, 3, 4, 5, 6, 7, 8]
+  test_args_keys += '--reg-gl@0@'.format(i)
+endforeach
+foreach i : [1, 2, 3, 4, 5, 6, 7, 8]
+  test_args_keys += '--reg-gr@0@'.format(i)
+endforeach
+test_args_keys += [
+  '--reg-vm',
+  '--reg-vc',
+  '--reg-vl',
+  '--reg-vr',
+  '--reg-c0',
+  '--reg-c1',
+]
+foreach i : [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  test_args_keys += '--reg-t@0@'.format(i)
+endforeach
+test_args_idx = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+  17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+]
 
 foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
-    test_suite = 'ym7128_@0@_process'.format(intr_name)
-    benchmark(
-      test_suite,
-      aymo_ym7128_process_exe,
-      args: [
-        '--benchmark',
-        '--cpu-ext', intr_name,
-        '--buffer-length', '@0@'.format(opt_benchmark_buffer_length),
-        '--length', '@0@'.format(opt_benchmark_stream_length),
-      ],
-      timeout: 0
-    )
+    test_suite = 'ym7128_process_@0@'.format(intr_name)
+    foreach test_name, test_args_values : aymo_ym7128_benchmark_suite
+      test_args = []
+      foreach i : test_args_idx
+        test_args += [test_args_keys[i], test_args_values[i]]
+      endforeach
+      benchmark(
+        ('_'.join([test_suite, test_name])).underscorify(),
+        aymo_ym7128_process_exe,
+        args: [
+          '--benchmark',
+          '--cpu-ext', intr_name,
+          '--buffer-length', '@0@'.format(opt_benchmark_buffer_length),
+          '--length', '@0@'.format(opt_benchmark_stream_length / 2),
+        ] + test_args,
+        timeout: 0
+      )
+    endforeach
   endif
 endforeach
 
@@ -191,7 +232,7 @@ endif
 foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'x86_avx2', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
-    test_suite = 'ymf262_@0@_play'.format(intr_name)
+    test_suite = 'ymf262_play_@0@'.format(intr_name)
     foreach score_path : aymo_ymf262_benchmark_suite
       benchmark(
         ('_'.join([test_suite, fs.name(score_path)])).underscorify(),
@@ -209,15 +250,17 @@ foreach intr_name : ['dummy', 'none', 'x86_sse41', 'x86_avx', 'x86_avx2', 'arm_n
 endforeach
 
 # =====================================================================
-
 # Strictly run:
 #   meson test --benchmark
-run_target(
-  'benchmark-report-ymf262',
-  command: [
-    python_exe,
-    join_paths(top_srcdir, 'benchmarks', 'export_report_ymf262.py'),
-    join_paths(top_builddir, 'meson-logs', 'testlog.json'),
-    join_paths(top_builddir, 'benchmarks', 'report_ymf262.csv')
-  ]
-)
+
+foreach name : ['tda8425', 'ym7128', 'ymf262']
+  run_target(
+    'benchmark-report-@0@'.format(name),
+    command: [
+      python_exe,
+      join_paths(top_srcdir, 'benchmarks', 'export_report_@0@.py'.format(name)),
+      join_paths(top_builddir, 'meson-logs', 'testlog.json'),
+      join_paths(top_builddir, 'benchmarks', 'report_@0@.csv'.format(name))
+    ]
+  )
+endforeach
