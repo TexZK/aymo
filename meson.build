@@ -53,7 +53,7 @@
 # =====================================================================
 
 project('aymo', 'c',
-  version: '0.0.2',
+  version: '0.0.3',
   meson_version: '>=0.60.0',
   default_options: [
     'warning_level=2',
@@ -61,7 +61,7 @@ project('aymo', 'c',
     'buildtype=release'
   ],
 )
-libversion = '0.0.2'
+libversion = '0.0.3'
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
