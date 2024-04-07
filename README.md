@@ -108,37 +108,56 @@ A basic benchmark suite is run via the following commands:
 ```sh
 cd PATH_TO_PROJECT_ROOT/builddir
 meson test --benchmark
-meson compile benchmark-report
+meson compile benchmark-report-tda8425
+meson compile benchmark-report-ym7128
+meson compile benchmark-report-ymf262
 ```
 
 
-### OPL3 Benchmark Results
+### Benchmark Results
 
 Some preliminary benchmarks were run against some very different CPUs:
 
 | System | OS | CPU | SIMD | Notes
 |:-|:-|:-|:-|:-|
-| PC | Windows 10 | i7 6700k | x86 SSE4.1 + AVX2 | Home PC |
+| PC | Windows 10 | i7 6700k | x86 SSE4.1 + AVX2 | 2016 gaming PC |
 | BeagleBone Black | Debian 11 | ARM Cortex-A8 | ARMv7 NEON | Headless |
 | Raspberry Pi 5 | Debian 12 | ARM Cortex-A76 | ARMv7 NEON | Headless + Heatsink Fan |
 
 All the systems were updated to their latest software and OS releases.
 The compiler was *GCC* for all these machines.
-All the scores were played via `aymo_ymf262_play --benchmark --loops 3`, except for the *BBB* which did not loop (too slow!).
 
 All the systems run `--cpu-ext dummy`, which mimics the overhead of the test harness itself (mostly the score decoder), to subtract it from the actual benchmarks.
-The reference implementation is *NukedOPL3*, run as `--cpu-ext none`.
 
-Here's a summary of the results:
+All the benchmarks results are normalized against the plain *C* implementation, run as `--cpu-ext none`.
 
-| CPU | SIMD | Ratio | DevSt | Speedup |
-|:-|:-|-:|-:|-:|
-| i7 6700k | x86 SSE4.1 | 0.590 | 0.026 | 1.695 |
-| i7 6700k | x86 AVX2 | 0.302 | 0.013 | 3.315 |
-| ARM Cortex-A8 | ARMv7 NEON | 0.575 | 0.035 | 1.740 |
-| ARM Cortex-A76 | ARMv7 NEON | 0.374 | 0.010 | 2.671 |
 
-![Benchmark Results](./doc/benchmarks/benchmark-results.png)
+#### TDA8425
+
+A basic *TDA8425* can be emulated with simple DSP techniques (mostly IIR filters), so the implementation can be rather straightforward.
+
+Surprisingly, the *BBB* shows a much higher speedup compared to the other SIMD I tested.
+Perhaps the plain C implementation cannot be optimized by the CPU core itself, as done with higher grade CPUs.
+This somehow shows the benefits of *AYMO* for older embedded systems.
+
+![Benchmark Results](./doc/benchmarks-tda8425.png)
+
+
+#### YM7128
+
+The *YM7128* is a simple fixed-point delay unit, with lots of parallel computations.
+The results are indeed very interesting for all the SIMD architectures under test, consistently showing some nice speedup.
+
+![Benchmark Results](./doc/benchmarks-ym7128.png)
+
+
+#### YMF262
+
+The reference *OPL3* implementation is *NukedOPL3*.
+
+All the *OPL3* scores were played via `aymo_ymf262_play --benchmark --loops 3`, except for the *BBB* which did not loop (too slow!).
+
+![YMF262 Benchmark Results](./doc/benchmarks-ymf262.png)
 
 
 ## Integration
