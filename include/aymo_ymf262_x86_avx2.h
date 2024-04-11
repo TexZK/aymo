@@ -46,12 +46,12 @@ AYMO_PRAGMA_SCALAR_STORAGE_ORDER_LITTLE_ENDIAN
 
 // Wave descriptor for single slot
 struct aymo_(wave) {
-    int16_t wg_phase_mullo;
+//FIXME:    int16_t wg_phase_mullo;
     int16_t wg_phase_zero;
     int16_t wg_phase_neg;
-    int16_t wg_phase_flip;
-    int16_t wg_phase_mask;
-    int16_t wg_sine_gate;
+//FIXME:    int16_t wg_phase_flip;
+//FIXME:    int16_t wg_phase_mask;
+//FIXME:    int16_t wg_sine_gate;
 };
 
 // Waveform enumerator
@@ -60,10 +60,10 @@ enum aymo_(wf) {
     aymo_(wf_sinup),
     aymo_(wf_sinabs),
     aymo_(wf_sinabsqrt),
-    aymo_(wf_sinfast),
-    aymo_(wf_sinabsfast),
-    aymo_(wf_square),
-    aymo_(wf_log)
+//FIXME:    aymo_(wf_sinfast),
+//FIXME:    aymo_(wf_sinabsfast),
+//FIXME:    aymo_(wf_square),
+//FIXME:    aymo_(wf_log)
 };
 
 
@@ -137,21 +137,22 @@ struct aymo_(slot_group) {
     vi16x16_t wg_fb_mulhi;
     vi16x16_t wg_prmod_gate;
     vi16x16_t wg_fbmod_gate;
-    vi16x16_t wg_phase_mullo;
+//FIXME:    vi16x16_t wg_phase_mullo;
     vi16x16_t wg_phase_zero;
-    vi16x16_t wg_phase_flip;
-    vi16x16_t wg_phase_mask;
-    vi16x16_t wg_sine_gate;
+//FIXME:    vi16x16_t wg_phase_flip;
+//FIXME:    vi16x16_t wg_phase_mask;
+//FIXME:    vi16x16_t wg_sine_gate;
     vi16x16_t eg_out;
     vi16x16_t wg_phase_neg;
     vi16x16_t eg_sl;
     vi16x16_t og_prout;
     vi16x16_t og_prout_ac;
     vi16x16_t og_prout_bd;
-    vi16x16_t og_out_ch_gate_a;
-    vi16x16_t og_out_ch_gate_c;
-    vi16x16_t og_out_ch_gate_b;
-    vi16x16_t og_out_ch_gate_d;
+    vi16x16_t og_out_ch_gate;//FIXME:
+//FIXME:    vi16x16_t og_out_ch_gate_a;
+//FIXME:    vi16x16_t og_out_ch_gate_c;
+//FIXME:    vi16x16_t og_out_ch_gate_b;
+//FIXME:    vi16x16_t og_out_ch_gate_d;
 
     // Updated infrequently
     vi16x16_t pg_vib;
@@ -184,8 +185,8 @@ struct aymo_(ch2x_group) {
     vi16x16_t eg_ksv;
     vi16x16_t og_ch_gate_a;
     vi16x16_t og_ch_gate_b;
-    vi16x16_t og_ch_gate_c;
-    vi16x16_t og_ch_gate_d;
+//FIXME:    vi16x16_t og_ch_gate_c;
+//FIXME:    vi16x16_t og_ch_gate_d;
 
 #ifdef AYMO_DEBUG
     // Variables for debug
@@ -207,9 +208,9 @@ struct aymo_(chip) {
     vi16x16_t wg_mod;
     vu16x16_t eg_incstep;
     vi16x16_t og_acc_a;
-    vi16x16_t og_acc_c;
+//FIXME:    vi16x16_t og_acc_c;
     vi16x16_t og_acc_b;
-    vi16x16_t og_acc_d;
+//FIXME:    vi16x16_t og_acc_d;
 
     vi16x16_t pg_vib_mulhi;
     vi16x16_t pg_vib_neg;

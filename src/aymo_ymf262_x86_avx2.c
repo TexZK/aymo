@@ -79,15 +79,15 @@ const uint16_t aymo_(eg_incstep_table)[4] =
 
 // Wave descriptors
 const struct aymo_(wave) aymo_(wave_table)[8] =
-{
-    { 1,  0x0000,  0x0200,  0x0100,  0x00FF,  -1 },
-    { 1,  0x0200,  0x0000,  0x0100,  0x00FF,  -1 },
-    { 1,  0x0000,  0x0000,  0x0100,  0x00FF,  -1 },
-    { 1,  0x0100,  0x0000,  0x0100,  0x00FF,  -1 },
+{//FIXME:
+    {/* 1, */ 0x0000,  0x0200, /* 0x0100,  0x00FF,  -1 */},
+    {/* 1, */ 0x0200,  0x0000, /* 0x0100,  0x00FF,  -1 */},
+    {/* 1, */ 0x0000,  0x0000, /* 0x0100,  0x00FF,  -1 */},
+    {/* 1, */ 0x0100,  0x0000, /* 0x0100,  0x00FF,  -1 */},/*FIXME:
     { 2,  0x0400,  0x0200,  0x0100,  0x01FE,  -1 },
     { 2,  0x0400,  0x0000,  0x0100,  0x01FE,  -1 },
     { 1,  0x0000,  0x0200,  0x0200,  0x0000,   0 },
-    { 8,  0x0000,  0x1000,  0x1000,  0x0FF8,   0 }
+    { 8,  0x0000,  0x1000,  0x1000,  0x0FF8,   0 }*/
 };
 
 
@@ -271,10 +271,10 @@ void aymo_(rm_update2_sg0)(struct aymo_(chip)* chip)
         vi16_t og_prout = vand(sg->og_prout, ryt_slot_mask);
         vi16_t og_out_ac = vblendv(wave_out, og_prout, sg->og_prout_ac);
         vi16_t og_out_bd = vblendv(wave_out, og_prout, sg->og_prout_bd);
-        chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate_a));
-        chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
-        chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate_b));
-        chip->og_acc_d = vadd(chip->og_acc_d, vand(og_out_bd, sg->og_out_ch_gate_d));
+        chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate/*_a*/));//FIXME:
+//FIXME:        chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
+        chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate/*_b*/));//FIXME:
+//FIXME:        chip->og_acc_d = vadd(chip->og_acc_d, vand(og_out_bd, sg->og_out_ch_gate_d));
     }
 }
 
@@ -325,10 +325,10 @@ void aymo_(rm_update2_sg1)(struct aymo_(chip)* chip)
         vi16_t og_prout = vand(sg->og_prout, ryt_slot_mask);
         vi16_t og_out_ac = vblendv(wave_out, og_prout, sg->og_prout_ac);
         vi16_t og_out_bd = vblendv(wave_out, og_prout, sg->og_prout_bd);
-        chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate_a));
-        chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
-        chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate_b));
-        chip->og_acc_d = vadd(chip->og_acc_d, vand(og_out_bd, sg->og_out_ch_gate_d));
+        chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate/*_a*/));//FIXME:
+//FIXME:        chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
+        chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate/*_b*/));//FIXME:
+//FIXME:        chip->og_acc_d = vadd(chip->og_acc_d, vand(og_out_bd, sg->og_out_ch_gate_d));
     }
 }
 
@@ -415,13 +415,13 @@ void aymo_(sg_update2)(
     eg_rout = vandnot(vandnot(notreset, vcmpeq(rate_hi, vset1(15))), eg_rout);
 
     // WG: Process phase
-    vi16_t phase_sped = vu2i(vmululo(vi2u(phase), sg->wg_phase_mullo));
+    vi16_t phase_sped = phase;//FIXME:vu2i(vmululo(vi2u(phase), sg->wg_phase_mullo));
     vi16_t phase_gate = vcmpz(vand(phase_sped, sg->wg_phase_zero));
-    vi16_t phase_flip = vcmpp(vand(phase_sped, sg->wg_phase_flip));
-    vi16_t phase_mask = sg->wg_phase_mask;
-    vi16_t phase_xor = vand(phase_flip, phase_mask);
+    vi16_t phase_flip = phase_sped;//FIXME:vcmpp(vand(phase_sped, sg->wg_phase_flip));
+//FIXME:    vi16_t phase_mask = sg->wg_phase_mask;
+    vi16_t phase_xor = phase_flip;//FIXME:vand(phase_flip, phase_mask);
     vi16_t phase_idx = vxor(phase_sped, phase_xor);
-    phase_out = vand(vand(phase_gate, phase_mask), phase_idx);
+    phase_out = vand(phase_gate, phase_idx);//FIXME:vand(vand(phase_gate, phase_mask), phase_idx);
 
     // EG: Envelope off
     vi16_t eg_off = vcmpgt(sg_eg_rout, vset1(0x01F7));
@@ -439,7 +439,7 @@ void aymo_(sg_update2)(
     vi16_t eg_gen = eg_prgen;
 
     // WG: Compute exponential output
-    vi16_t exp_in = vblendv(phase_out, logsin_val, sg->wg_sine_gate);
+    vi16_t exp_in = logsin_val;//FIXME:vblendv(phase_out, logsin_val, sg->wg_sine_gate);
     vi16_t exp_level = vadd(exp_in, vslli(sg->eg_out, 3));
     exp_level = vmini(exp_level, vset1(0x1FFF));
     vi16_t exp_level_lo = exp_level;  // vgather() masks to low byte
@@ -476,10 +476,10 @@ void aymo_(sg_update2)(
     vi16_t og_prout = sg->og_prout;
     vi16_t og_out_ac = vblendv(wave_out, og_prout, sg->og_prout_ac);
     vi16_t og_out_bd = vblendv(wave_out, og_prout, sg->og_prout_bd);
-    chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate_a));
-    chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
-    chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate_b));
-    chip->og_acc_d = vadd(chip->og_acc_d, vand(og_out_bd, sg->og_out_ch_gate_d));
+    chip->og_acc_a = vadd(chip->og_acc_a, vand(og_out_ac, sg->og_out_ch_gate/*_a*/));//FIXME:
+//FIXME:    chip->og_acc_c = vadd(chip->og_acc_c, vand(og_out_ac, sg->og_out_ch_gate_c));
+    chip->og_acc_b = vadd(chip->og_acc_b, vand(og_out_bd, sg->og_out_ch_gate/*_b*/));//FIXME:
+//FIXME:    chip->og_acc_d = vadd(chip->og_acc_d, vand(og_out_bd, sg->og_out_ch_gate_d));
 
     // EG: Move back to attack state
     eg_gen = vand(notreset, eg_gen);  // * --> 0
@@ -509,8 +509,8 @@ void aymo_(og_clear)(struct aymo_(chip)* chip)
 {
     chip->og_acc_a = vsetz();
     chip->og_acc_b = vsetz();
-    chip->og_acc_c = vsetz();
-    chip->og_acc_d = vsetz();
+//FIXME:    chip->og_acc_c = vsetz();
+//FIXME:    chip->og_acc_d = vsetz();
 }
 
 
@@ -521,8 +521,8 @@ void aymo_(og_update)(struct aymo_(chip)* chip)
     vi16x16_t one = _mm256_set1_epi16(1);
     vi32x8_t sum_a = _mm256_madd_epi16(chip->og_acc_a, one);
     vi32x8_t sum_b = _mm256_madd_epi16(chip->og_acc_b, one);
-    vi32x8_t sum_c = _mm256_madd_epi16(chip->og_acc_c, one);
-    vi32x8_t sum_d = _mm256_madd_epi16(chip->og_acc_d, one);
+//FIXME:    vi32x8_t sum_c = _mm256_madd_epi16(chip->og_acc_c, one);
+//FIXME:    vi32x8_t sum_d = _mm256_madd_epi16(chip->og_acc_d, one);
 
     vi32x4_t sum_a_lo = _mm256_castsi256_si128(sum_a);
     vi32x4_t sum_a_hi = _mm256_extracti128_si256(sum_a, 1);
@@ -532,27 +532,27 @@ void aymo_(og_update)(struct aymo_(chip)* chip)
     vi32x4_t sum_b_hi = _mm256_extracti128_si256(sum_b, 1);
     vi32x4_t tot_b = _mm_add_epi32(sum_b_lo, sum_b_hi);
 
-    vi32x4_t sum_c_lo = _mm256_castsi256_si128(sum_c);
-    vi32x4_t sum_c_hi = _mm256_extracti128_si256(sum_c, 1);
-    vi32x4_t tot_c = _mm_add_epi32(sum_c_lo, sum_c_hi);
+//FIXME:    vi32x4_t sum_c_lo = _mm256_castsi256_si128(sum_c);
+//FIXME:    vi32x4_t sum_c_hi = _mm256_extracti128_si256(sum_c, 1);
+//FIXME:    vi32x4_t tot_c = _mm_add_epi32(sum_c_lo, sum_c_hi);
 
-    vi32x4_t sum_d_lo = _mm256_castsi256_si128(sum_d);
-    vi32x4_t sum_d_hi = _mm256_extracti128_si256(sum_d, 1);
-    vi32x4_t tot_d = _mm_add_epi32(sum_d_lo, sum_d_hi);
+//FIXME:    vi32x4_t sum_d_lo = _mm256_castsi256_si128(sum_d);
+//FIXME:    vi32x4_t sum_d_hi = _mm256_extracti128_si256(sum_d, 1);
+//FIXME:    vi32x4_t tot_d = _mm_add_epi32(sum_d_lo, sum_d_hi);
 
     tot_a = _mm_add_epi32(tot_a, _mm_shuffle_epi32(tot_a, _MM_SHUFFLE(2, 3, 0, 1)));
     tot_b = _mm_add_epi32(tot_b, _mm_shuffle_epi32(tot_b, _MM_SHUFFLE(2, 3, 0, 1)));
-    tot_c = _mm_add_epi32(tot_c, _mm_shuffle_epi32(tot_c, _MM_SHUFFLE(2, 3, 0, 1)));
-    tot_d = _mm_add_epi32(tot_d, _mm_shuffle_epi32(tot_d, _MM_SHUFFLE(2, 3, 0, 1)));
+//FIXME:    tot_c = _mm_add_epi32(tot_c, _mm_shuffle_epi32(tot_c, _MM_SHUFFLE(2, 3, 0, 1)));
+//FIXME:    tot_d = _mm_add_epi32(tot_d, _mm_shuffle_epi32(tot_d, _MM_SHUFFLE(2, 3, 0, 1)));
 
     tot_a = _mm_add_epi32(tot_a, _mm_shuffle_epi32(tot_a, _MM_SHUFFLE(1, 0, 3, 2)));
     tot_b = _mm_add_epi32(tot_b, _mm_shuffle_epi32(tot_b, _MM_SHUFFLE(1, 0, 3, 2)));
-    tot_c = _mm_add_epi32(tot_c, _mm_shuffle_epi32(tot_c, _MM_SHUFFLE(1, 0, 3, 2)));
-    tot_d = _mm_add_epi32(tot_d, _mm_shuffle_epi32(tot_d, _MM_SHUFFLE(1, 0, 3, 2)));
+//FIXME:    tot_c = _mm_add_epi32(tot_c, _mm_shuffle_epi32(tot_c, _MM_SHUFFLE(1, 0, 3, 2)));
+//FIXME:    tot_d = _mm_add_epi32(tot_d, _mm_shuffle_epi32(tot_d, _MM_SHUFFLE(1, 0, 3, 2)));
 
     vi32x4_t tot_ab = _mm_blend_epi32(tot_a, tot_b, 0xA);
-    vi32x4_t tot_cd = _mm_blend_epi32(tot_c, tot_d, 0xA);
-    vi32x4_t tot_abcd = _mm_blend_epi32(tot_ab, tot_cd, 0xC);
+//FIXME:    vi32x4_t tot_cd = _mm_blend_epi32(tot_c, tot_d, 0xA);
+    vi32x4_t tot_abcd = tot_ab;//FIXME:_mm_blend_epi32(tot_ab, tot_cd, 0xC);
     vi16x8_t sat_abcd = _mm_packs_epi32(tot_abcd, tot_abcd);
 
     vi16x8_t old_abcd = _mm_shuffle_epi32(chip->og_out, _MM_SHUFFLE(1, 0, 3, 2));
@@ -866,7 +866,7 @@ void aymo_(eg_key_off)(struct aymo_(chip)* chip, int word, int16_t mode)
 
 static
 void aymo_(ch2x_key_on)(struct aymo_(chip)* chip, int ch2x)
-{
+{/*FIXME:
     if (chip->chip_regs.reg_105h.newm) {
         unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1uL << ch2x));
         unsigned ch2x_is_drum    = (chip->og_ch2x_drum    & (1uL << ch2x));
@@ -890,7 +890,7 @@ void aymo_(ch2x_key_on)(struct aymo_(chip)* chip, int ch2x)
             aymo_(eg_key_on)(chip, ch2x_word1, AYMO_(EG_KEY_NORMAL));
         }
     }
-    else {
+    else */{
         int ch2x_word0 = aymo_ymf262_ch2x_to_word[ch2x][0];
         int ch2x_word1 = aymo_ymf262_ch2x_to_word[ch2x][1];
         aymo_(eg_key_on)(chip, ch2x_word0, AYMO_(EG_KEY_NORMAL));
@@ -901,7 +901,7 @@ void aymo_(ch2x_key_on)(struct aymo_(chip)* chip, int ch2x)
 
 static
 void aymo_(ch2x_key_off)(struct aymo_(chip)* chip, int ch2x)
-{
+{/*FIXME:
     if (chip->chip_regs.reg_105h.newm) {
         unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1uL << ch2x));
         unsigned ch2x_is_drum    = (chip->og_ch2x_drum    & (1uL << ch2x));
@@ -925,7 +925,7 @@ void aymo_(ch2x_key_off)(struct aymo_(chip)* chip, int ch2x)
             aymo_(eg_key_off)(chip, ch2x_word1, AYMO_(EG_KEY_NORMAL));
         }
     }
-    else {
+    else */{
         int ch2x_word0 = aymo_ymf262_ch2x_to_word[ch2x][0];
         int ch2x_word1 = aymo_ymf262_ch2x_to_word[ch2x][1];
         aymo_(eg_key_off)(chip, ch2x_word0, AYMO_(EG_KEY_NORMAL));
@@ -947,10 +947,11 @@ void aymo_(cm_rewire_slot)(struct aymo_(chip)* chip, int word, const struct aymo
 
     int cgi = aymo_(sgi_to_cgi)(sgi);
     struct aymo_(ch2x_group)* cg = &chip->cg[cgi];
-    vinsertv(sg->og_out_ch_gate_a, (vextractv(cg->og_ch_gate_a, sgo) & og_out_gate), sgo);
-    vinsertv(sg->og_out_ch_gate_b, (vextractv(cg->og_ch_gate_b, sgo) & og_out_gate), sgo);
-    vinsertv(sg->og_out_ch_gate_c, (vextractv(cg->og_ch_gate_c, sgo) & og_out_gate), sgo);
-    vinsertv(sg->og_out_ch_gate_d, (vextractv(cg->og_ch_gate_d, sgo) & og_out_gate), sgo);
+vinsertv(sg->og_out_ch_gate, og_out_gate, sgo);//FIXME:
+//FIXME:    vinsertv(sg->og_out_ch_gate_a, (vextractv(cg->og_ch_gate_a, sgo) & og_out_gate), sgo);
+//FIXME:    vinsertv(sg->og_out_ch_gate_b, (vextractv(cg->og_ch_gate_b, sgo) & og_out_gate), sgo);
+//FIXME:    vinsertv(sg->og_out_ch_gate_c, (vextractv(cg->og_ch_gate_c, sgo) & og_out_gate), sgo);
+//FIXME:    vinsertv(sg->og_out_ch_gate_d, (vextractv(cg->og_ch_gate_d, sgo) & og_out_gate), sgo);
 }
 
 
@@ -978,7 +979,7 @@ void aymo_(cm_rewire_ch2x)(struct aymo_(chip)* chip, int ch2x)
             return;
         }
     }
-
+/*FIXME:
     if (chip->chip_regs.reg_105h.newm && (chip->og_ch2x_pairing & (1uL << ch2x))) {
         int ch2p = aymo_ymf262_ch2x_paired[ch2x];
         int ch2x_is_secondary = (ch2p < ch2x);
@@ -996,7 +997,7 @@ void aymo_(cm_rewire_ch2x)(struct aymo_(chip)* chip, int ch2x)
         aymo_(cm_rewire_slot)(chip, aymo_ymf262_ch2x_to_word[ch2p][0], &ch4x_conn[2]);
         aymo_(cm_rewire_slot)(chip, aymo_ymf262_ch2x_to_word[ch2p][1], &ch4x_conn[3]);
     }
-    else {
+    else */{
         unsigned ch2x_cnt = chip->ch2x_regs[ch2x].reg_C0h.cnt;
         const struct aymo_(conn)* ch2x_conn = aymo_(conn_ch2x_table)[ch2x_cnt];
         aymo_(cm_rewire_slot)(chip, aymo_ymf262_ch2x_to_word[ch2x][0], &ch2x_conn[0]);
@@ -1010,7 +1011,7 @@ void aymo_(cm_rewire_conn)(
     struct aymo_(chip)* chip,
     const struct aymo_ymf262_reg_104h* reg_104h_prev
 )
-{
+{/*FIXME:
     struct aymo_ymf262_reg_104h* reg_104h = &chip->chip_regs.reg_104h;
     unsigned diff = (reg_104h_prev ? (reg_104h_prev->conn ^ reg_104h->conn) : 0xFF);
 
@@ -1029,7 +1030,7 @@ void aymo_(cm_rewire_conn)(
                 aymo_(cm_rewire_ch2x)(chip, ch2p);
             }
         }
-    }
+    }*/
 }
 
 
@@ -1144,7 +1145,7 @@ void aymo_(write_00h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     case 0x105: {
         struct aymo_ymf262_reg_105h reg_105h_prev = chip->chip_regs.reg_105h;
         FORCE_BYTE(&(chip->chip_regs.reg_105h)) = value;
-        if (chip->chip_regs.reg_105h.newm != reg_105h_prev.newm) {
+        {//FIXME:if (chip->chip_regs.reg_105h.newm != reg_105h_prev.newm) {
             ;
         }
         break;
@@ -1325,18 +1326,18 @@ void aymo_(write_E0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     int sgo = (word % AYMO_(SLOT_GROUP_LENGTH));
     struct aymo_(slot_group)* sg = &(chip->sg[sgi]);
 
-    if (!chip->chip_regs.reg_105h.newm) {
+    {//FIXME:if (!chip->chip_regs.reg_105h.newm) {
         reg_E0h->ws &= 3;
     }
 
     if (reg_E0h->ws != reg_E0h_prev.ws) {
         const struct aymo_(wave)* wave = &aymo_(wave_table)[reg_E0h->ws];
-        vinsertv(sg->wg_phase_mullo, wave->wg_phase_mullo, sgo);
+//FIXME:        vinsertv(sg->wg_phase_mullo, wave->wg_phase_mullo, sgo);
         vinsertv(sg->wg_phase_zero,  wave->wg_phase_zero,  sgo);
         vinsertv(sg->wg_phase_neg,   wave->wg_phase_neg,   sgo);
-        vinsertv(sg->wg_phase_flip,  wave->wg_phase_flip,  sgo);
-        vinsertv(sg->wg_phase_mask,  wave->wg_phase_mask,  sgo);
-        vinsertv(sg->wg_sine_gate,   wave->wg_sine_gate,   sgo);
+//FIXME:        vinsertv(sg->wg_phase_flip,  wave->wg_phase_flip,  sgo);
+//FIXME:        vinsertv(sg->wg_phase_mask,  wave->wg_phase_mask,  sgo);
+//FIXME:        vinsertv(sg->wg_sine_gate,   wave->wg_sine_gate,   sgo);
     }
 }
 
@@ -1352,7 +1353,7 @@ void aymo_(write_A0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     if (!chip->chip_regs.reg_105h.simd && (ch2x >= AYMO_YMF262_CHANNEL_NUM)) {
         return;
     }
-
+/*FIXME:
     unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1uL << ch2x));
     int ch2p = aymo_ymf262_ch2x_paired[ch2x];
     int ch2x_is_secondary = (ch2p < ch2x);
@@ -1361,11 +1362,11 @@ void aymo_(write_A0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
         if (!(chip->chip_regs.reg_105h.newm && ch2x_is_pairing && !ch2x_is_secondary)) {
             ch2p = -1;
         }
-
+*/int ch2p=-1;//FIXME:
         if (reg_A0h->fnum_lo != reg_A0h_prev.fnum_lo) {
             aymo_(ch2x_update_fnum)(chip, ch2x, ch2p);
         }
-    }
+//FIXME:    }
 }
 
 
@@ -1398,7 +1399,7 @@ void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
         if (!chip->chip_regs.reg_105h.simd && (ch2x >= AYMO_YMF262_CHANNEL_NUM)) {
             return;
         }
-
+/*FIXME:
         unsigned ch2x_is_pairing = (chip->og_ch2x_pairing & (1u << ch2x));
         int ch2p = aymo_ymf262_ch2x_paired[ch2x];
         int ch2x_is_secondary = (ch2p < ch2x);
@@ -1407,11 +1408,11 @@ void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
             if (!(chip->chip_regs.reg_105h.newm && ch2x_is_pairing && !ch2x_is_secondary)) {
                 ch2p = -1;
             }
-
+*/int ch2p=-1;//FIXME:
             if ((reg_B0h->fnum_hi != reg_B0h_prev.fnum_hi) || (reg_B0h->block != reg_B0h_prev.block)) {
                 aymo_(ch2x_update_fnum)(chip, ch2x, ch2p);
             }
-        }
+//FIXME:        }
 
         if (reg_B0h->kon != reg_B0h_prev.kon) {
             if (reg_B0h->kon) {
@@ -1427,7 +1428,7 @@ void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 static
 void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 {
-    if (!chip->chip_regs.reg_105h.newm) {
+    {//FIXME:if (!chip->chip_regs.reg_105h.newm) {
         value = ((value & 0x0Fu) | 0x30u);
     }
     int ch2x = aymo_(addr_to_ch2x)(address);
@@ -1447,6 +1448,7 @@ void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
         int sgi1 = (ch2x_word1 / AYMO_(SLOT_GROUP_LENGTH));
         struct aymo_(slot_group)* sg0 = &chip->sg[sgi0];
         struct aymo_(slot_group)* sg1 = &chip->sg[sgi1];
+#if 0  // FIXME:
         int cgi = aymo_(sgi_to_cgi)(sgi0);
         struct aymo_(ch2x_group)* cg = &chip->cg[cgi];
 
@@ -1474,6 +1476,7 @@ void aymo_(write_C0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
             vinsertv(sg0->og_out_ch_gate_d, (vextractv(sg0->og_out_gate, sgo) & og_ch_gate_d), sgo);
             vinsertv(sg1->og_out_ch_gate_d, (vextractv(sg1->og_out_gate, sgo) & og_ch_gate_d), sgo);
         }
+#endif  // FIXME:
 
         if (reg_C0h->fb != reg_C0h_prev.fb) {
             int16_t fb_mulhi = (reg_C0h->fb ? (0x0040 << reg_C0h->fb) : 0);
@@ -1558,12 +1561,12 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
         sg->og_prout_bd     = vsetm(aymo_(og_prout_bd)[sgi]);
 
         const struct aymo_(wave)* wave = &aymo_(wave_table)[0];
-        sg->wg_phase_mullo  = vset1(wave->wg_phase_mullo);
+//FIXME:        sg->wg_phase_mullo  = vset1(wave->wg_phase_mullo);
         sg->wg_phase_zero   = vset1(wave->wg_phase_zero);
         sg->wg_phase_neg    = vset1(wave->wg_phase_neg);
-        sg->wg_phase_flip   = vset1(wave->wg_phase_flip);
-        sg->wg_phase_mask   = vset1(wave->wg_phase_mask);
-        sg->wg_sine_gate    = vset1(wave->wg_sine_gate);
+//FIXME:        sg->wg_phase_flip   = vset1(wave->wg_phase_flip);
+//FIXME:        sg->wg_phase_mask   = vset1(wave->wg_phase_mask);
+//FIXME:        sg->wg_sine_gate    = vset1(wave->wg_sine_gate);
     }
 
     // Initialize channels
