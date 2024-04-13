@@ -63,9 +63,7 @@ void aymo_(ctor)(struct aymo_(chip)* chip)
     aymo_memset((&chip->parent.vt + 1u), 0, (sizeof(*chip) - sizeof(chip->parent.vt)));
 
     // Initialize input stage coefficients (-1 as a placeholder for computed values)
-    chip->xxv[2] = 1;
-    chip->xxv[3] = 1;
-
+    chip->xxv = vseta(0, 0, 0, 0, 1, 1, 0, 0);
     chip->kk1 = vseta(0, -1, -1, -1, -0x8000, -0x8000, -0x8000, -0x8000);
     chip->kk2 = vseta(0, -1, -0x8000, 0, 0, 0, 0x8000, -0x8000);
     chip->kkm = vseta(0, 0x7FFF, 0x7FFF, 0, 0, 0, AYMO_YM7128_DELAY_LENGTH, AYMO_YM7128_DELAY_LENGTH);
@@ -151,17 +149,17 @@ void aymo_(write)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
     else if (address <= (uint16_t)aymo_ym7128_reg_t8) {
         value &= 0x1Fu;
         int16_t t = aymo_ym7128_tap[value];
-        int16_t hi = chip->xxv[1];  // hi
+        int16_t hi = vextract(chip->xxv, 1);  // hi
         t = (hi - t);
         if (t < 0) {
             t += AYMO_YM7128_DELAY_LENGTH;
         }
         if (address == (uint16_t)aymo_ym7128_reg_t0) {
-            chip->xxv[0] = t;  // ti0
+            chip->xxv = vinsert(chip->xxv, t, 0);  // ti0
         }
         else {
             uint16_t i = (address - (uint16_t)aymo_ym7128_reg_t1);
-            chip->tiv[i] = t;
+            chip->ti = vinsertn(chip->ti, t, i);
         }
     }
 
@@ -178,46 +176,61 @@ void aymo_(process_i16)(struct aymo_(chip)* chip, uint32_t count, const int16_t 
     assert(y);
     if AYMO_UNLIKELY(!count) return;
 
-    int16_t AYMO_ALIGN_V128 vv[8] = {0};
+    vi16x8_t xxv = chip->xxv;
+    vi16x8_t kk1 = chip->kk1;
+    vi16x8_t kk2 = chip->kk2;
+    vi16x8_t kkm = chip->kkm;
+    vi16x8_t ti = chip->ti;
+    vi16x8_t kgl = chip->kgl;
+    vi16x8_t kgr = chip->kgr;
+    vi16x8_t kv = chip->kv;
 
-    int16_t ti0 = chip->xxv[0];
-    int16_t t0 = chip->uh[ti0];
-    chip->xxv[4] = t0;
+    vi16x8_t zc = chip->zc;
+    vi16x8_t zb = chip->zb;
+    vi16x8_t kf = chip->kf;
+    vi16x8_t ke = chip->ke;
+    vi16x8_t za = chip->za;
+    vi16x8_t kd = chip->kd;
+    vi16x8_t kc = chip->kc;
+    vi16x8_t kb = chip->kb;
+    vi16x8_t ka = chip->ka;
 
-    const int16_t* xe = &x[count];
+    do {
+        int16_t ti0 = vextract(xxv, 0);
+        int16_t t0 = chip->uh[ti0];
+        xxv = vinsert(xxv, t0, 4);
 
-    while AYMO_LIKELY(x != xe) {
-        chip->xxv[5] = (*x++ & AYMO_YM7128_SIGNAL_MASK);
+        xxv = vinsert(xxv, (*x++ & AYMO_YM7128_SIGNAL_MASK), 5);
 
-        vsfence();
-        vi16x8_t xx = vload((void*)chip->xxv);
-        chip->xxv[6] = t0;  // t0d = t0
-        xx = vmulhrs(xx, chip->kk1);
+        vi16x8_t xx = xxv;
+        xxv = vinsert(xxv, t0, 6);  // t0d = t0
+        xx = vmulhrs(xx, kk1);
         xx = vaddsi(xx, vvshuffle(xx, KSHUFFLE(2, 3, 0, 1)));  // "2301"
-        xx = vmulhrs(xx, chip->kk2);
-        xx = vand(xx, vcmpgt(chip->kkm, xx));
+        xx = vmulhrs(xx, kk2);
+        xx = vand(xx, vcmpgt(kkm, xx));
         xx = vaddsi(xx, valignr(xx, xx, 2));
-        vstore((void*)vv, xx);
-        vi16x8_t ti = vload((void*)chip->tiv);
+        vi16x8_t vv = xx;
         vi16x8_t tj = vsub(ti, vset1(-1));
         vi16x8_t tm = vcmpgt(vset1(AYMO_YM7128_DELAY_LENGTH - 1), ti);  // tj < DL
-        vstore((void*)chip->tiv, vand(tj, tm));
-        vsfence();
+        ti = vand(tj, tm);
 
-        chip->xxv[0] = vv[7];  // ti0'
-        int16_t hj = vv[1];
-        chip->xxv[1] = hj;  // hi'
-        int16_t u = vv[5];
+        xxv = vinsert(xxv, vextract(vv, 7), 0);  // ti0'
+        int16_t hj = vextract(vv, 1);
+        xxv = vinsert(xxv, hj, 1);  // hi'
+        int16_t u = vextract(vv, 5);
         chip->uh[hj] = u;
-        int16_t AYMO_ALIGN_V128 tuv[8];
-        for (unsigned i = 0u; i < 8u; ++i) {
-            tuv[i] = chip->uh[chip->tiv[i]];
-        }
-        vsfence();
-        vi16x8_t tu = vload((void*)tuv);
+        vi16x8_t tu = vsetx();
+        tu = vinsert(tu, chip->uh[vextract(ti, 0)], 0);
+        tu = vinsert(tu, chip->uh[vextract(ti, 1)], 1);
+        tu = vinsert(tu, chip->uh[vextract(ti, 2)], 2);
+        tu = vinsert(tu, chip->uh[vextract(ti, 3)], 3);
+        tu = vinsert(tu, chip->uh[vextract(ti, 4)], 4);
+        tu = vinsert(tu, chip->uh[vextract(ti, 5)], 5);
+        tu = vinsert(tu, chip->uh[vextract(ti, 6)], 6);
+        tu = vinsert(tu, chip->uh[vextract(ti, 7)], 7);
 
-        vi16x8_t gl = vmulhrs(tu, chip->kgl);
-        vi16x8_t gr = vmulhrs(tu, chip->kgr);
+        vi16x8_t gl = vmulhrs(tu, kgl);
+        vi16x8_t gr = vmulhrs(tu, kgr);
         vi32x4_t ggl = vmadd(gl, vset1(1));
         vi32x4_t ggr = vmadd(gr, vset1(1));
         ggl = vvadd(ggl, vvshuffle(ggl, KSHUFFLE(1, 0, 3, 2)));  // "1032"
@@ -226,28 +239,22 @@ void aymo_(process_i16)(struct aymo_(chip)* chip, uint32_t count, const int16_t 
         ggr = vvadd(ggr, vvshuffle(ggr, KSHUFFLE(2, 3, 0, 1)));  // "2301"
         vi16x8_t ggrl = vvpacks(ggr, ggl);
         vi16x8_t gglr = valignr(ggrl, ggrl, 2);
-        vi16x8_t vlr = vmulhrs(gglr, chip->kv);
+        vi16x8_t vlr = vmulhrs(gglr, kv);
 
-        vi16x8_t zc = chip->zc;
-        vi16x8_t zb = chip->zb;
         zc = valignr(zc, zb, 12);  // '543210..'
-        chip->zc = zc;
 
-        vi16x8_t y1 = vmulhrs(zc, chip->kf);
-        vi16x8_t y0 = vmulhrs(zc, chip->ke);
+        vi16x8_t y1 = vmulhrs(zc, kf);
+        vi16x8_t y0 = vmulhrs(zc, ke);
 
-        vi16x8_t za = chip->za;
         zb = valignr(zb, za, 12);  // '543210..'
-        chip->zb = zb;
 
-        y1 = vaddsi(y1, vmulhrs(zb, chip->kd));
-        y0 = vaddsi(y0, vmulhrs(zb, chip->kc));
+        y1 = vaddsi(y1, vmulhrs(zb, kd));
+        y0 = vaddsi(y0, vmulhrs(zb, kc));
 
         za = valignr(za, vlr, 12);  // '543210..'
-        chip->za = za;
 
-        y1 = vaddsi(y1, vmulhrs(za, chip->kb));
-        y0 = vaddsi(y0, vmulhrs(za, chip->ka));
+        y1 = vaddsi(y1, vmulhrs(za, kb));
+        y0 = vaddsi(y0, vmulhrs(za, ka));
 
         y0 = vaddsi(y0, vvshuffle(y0, KSHUFFLE(1, 0, 3, 2)));  // "1032"
         y1 = vaddsi(y1, vvshuffle(y1, KSHUFFLE(1, 0, 3, 2)));  // "1032"
@@ -257,11 +264,14 @@ void aymo_(process_i16)(struct aymo_(chip)* chip, uint32_t count, const int16_t 
         vi16x8_t yy = vblendi(y0, y1, 0xCC);        // '1100''1100'
         yy = vand(yy, vset1((int16_t)AYMO_YM7128_SIGNAL_MASK));
         vstorelo((void*)y, yy); y += 4u;
+    } while (--count);
 
-        ti0 = chip->xxv[0];
-        t0 = chip->uh[ti0];
-        chip->xxv[4] = t0;
-    }
+    chip->xxv = xxv;
+    chip->ti = ti;
+
+    chip->zc = zc;
+    chip->zb = zb;
+    chip->za = za;
 }
 
 

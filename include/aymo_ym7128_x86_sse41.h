@@ -42,11 +42,11 @@ struct aymo_(chip) {
     uint8_t align_[sizeof(vi16x8_t) - sizeof(struct aymo_ym7128_chip)];
 
     // Vector data
-    int16_t xxv[8];
+    vi16x8_t xxv;
     vi16x8_t kk1;
     vi16x8_t kk2;
     vi16x8_t kkm;
-    int16_t tiv[8];
+    vi16x8_t ti;
     vi16x8_t kgl;
     vi16x8_t kgr;
     vi16x8_t kv;

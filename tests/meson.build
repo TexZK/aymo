@@ -29,7 +29,7 @@ test_names_x86_sse41 = [
 ]
 
 test_names_x86_avx = [
-  'test_ym7128_x86_avx_compare',
+  'test_ym7128_x86_avx_sweep',
   'test_ymf262_x86_avx_compare',
 ]
 
@@ -369,7 +369,7 @@ aymo_ym7128_sweep_suite = {
   ],
 }
 
-foreach intr_name : ['x86_sse41', 'arm_neon']
+foreach intr_name : ['x86_sse41', 'x86_avx', 'arm_neon']
   have_intr = get_variable('aymo_have_@0@'.format(intr_name))
   if have_intr
     test_suite = 'test_ym7128_@0@_sweep'.format(intr_name)
