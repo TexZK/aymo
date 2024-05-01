@@ -112,7 +112,7 @@ enum aymo_ym7128_reg {
 AYMO_PUBLIC const int16_t aymo_ym7128_gain[AYMO_YM7128_GAIN_COUNT];
 AYMO_PUBLIC const int16_t aymo_ym7128_tap[AYMO_YM7128_TAP_COUNT];
 AYMO_PUBLIC const int16_t aymo_ym7128_kernel_linear[AYMO_YM7128_KERNEL_LENGTH];
-AYMO_PUBLIC const int16_t aymo_ym7128_kernel_minèhase[AYMO_YM7128_KERNEL_LENGTH];
+AYMO_PUBLIC const int16_t aymo_ym7128_kernel_minphase[AYMO_YM7128_KERNEL_LENGTH];
 
 
 AYMO_CXX_EXTERN_C_END
