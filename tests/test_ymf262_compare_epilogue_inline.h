@@ -135,15 +135,6 @@ static int app_run(void)
             if (status->flags & AYMO_SCORE_FLAG_EVENT) {
                 OPL3_WriteReg(&nuked_chip, status->address, status->value);
 
-                // Fix tremolo updates delayed w.r.t. AYMO
-                if (status->address == 0xBDu) {
-                    uint8_t tremolopos = nuked_chip.tremolopos;
-                    if (tremolopos >= 105u) {
-                        tremolopos = (210u - tremolopos);
-                    }
-                    nuked_chip.tremolo = (tremolopos >> nuked_chip.tremoloshift);
-                }
-
                 aymo_(write)(&aymo_chip, status->address, status->value);
                 score_delay = 2u;
             }

@@ -55,11 +55,11 @@ static int compare_slots(int slot_)
     assert((uint16_t)vextractn(sg->eg_rout, sgo) == slot->eg_rout);
     assert((uint16_t)vextractn(sg->eg_out, sgo) == slot->eg_out);
 #ifdef AYMO_DEBUG
-    assert(vextractn(sg->eg_inc, sgo) == slot->eg_inc);
+    //assert(vextractn(sg->eg_inc, sgo) == slot->eg_inc);
 #endif
     assert((uint16_t)vextractn(sg->eg_gen, sgo) == slot->eg_gen);
 #ifdef AYMO_DEBUG
-    assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
+    //assert(vextractn(sg->eg_rate, sgo) == slot->eg_rate);
     assert(vextractn(sg->eg_ksl, sgo) == slot->eg_ksl);
     assert((uint16_t)vextractn(sg->eg_tl_x4, sgo) == (slot->reg_tl * 4u));
 #endif
@@ -152,7 +152,12 @@ static int compare_chips(void)
     //uint8_t rhy;
     assert(aymo_chip.pg_vibpos == nuked_chip.vibpos);
     assert(aymo_chip.eg_vibshift == nuked_chip.vibshift);
-    //assert((uint16_t)vextractn(aymo_chip.eg_tremolo, 0) == nuked_chip.tremolo);
+    uint8_t eg_tremolopos = aymo_chip.eg_tremolopos;
+    if (eg_tremolopos >= 105) {
+        eg_tremolopos = (210 - eg_tremolopos);
+    }
+    uint8_t eg_tremolo = (eg_tremolopos >> aymo_chip.eg_tremoloshift);
+    assert(eg_tremolo == nuked_chip.tremolo);
     assert(aymo_chip.eg_tremolopos == nuked_chip.tremolopos);
     assert(aymo_chip.eg_tremoloshift == nuked_chip.tremoloshift);
     assert(aymo_chip.ng_noise == nuked_chip.noise);

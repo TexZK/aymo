@@ -239,12 +239,12 @@ struct aymo_(chip) {
     uint8_t rm_hh_bit8;
     uint8_t rm_tc_bit3;
     uint8_t rm_tc_bit5;
+    uint8_t eg_tremoloreq;
     uint8_t eg_tremolopos;
     uint8_t eg_tremoloshift;
     uint8_t eg_vibshift;
     uint8_t pg_vibpos;
     uint8_t process_all_slots;
-    uint8_t pad32_[1];
 
     struct aymo_ymf262_chip_regs chip_regs;
     struct aymo_ymf262_slot_regs slot_regs[AYMO_(SLOT_NUM_MAX)];

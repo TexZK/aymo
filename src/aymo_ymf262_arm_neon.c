@@ -552,7 +552,7 @@ void aymo_(og_update)(struct aymo_(chip)* chip)
 static inline
 void aymo_(tm_update_tremolo)(struct aymo_(chip)* chip)
 {
-    uint16_t eg_tremolopos = chip->eg_tremolopos;
+    uint8_t eg_tremolopos = chip->eg_tremolopos;
     if (eg_tremolopos >= 105) {
         eg_tremolopos = (210 - eg_tremolopos);
     }
@@ -602,6 +602,10 @@ void aymo_(tm_update)(struct aymo_(chip)* chip)
     // Update tremolo
     if AYMO_UNLIKELY((chip->tm_timer & 0x3F) == 0x3F) {
         chip->eg_tremolopos = ((chip->eg_tremolopos + 1) % 210);
+        chip->eg_tremoloreq = 1;
+    }
+    if AYMO_UNLIKELY(chip->eg_tremoloreq) {
+        chip->eg_tremoloreq = 0;
         aymo_(tm_update_tremolo)(chip);
     }
 
@@ -1387,7 +1391,7 @@ void aymo_(write_B0h)(struct aymo_(chip)* chip, uint16_t address, uint8_t value)
 
         if (reg_BDh->dam != reg_BDh_prev.dam) {
             chip->eg_tremoloshift = (((reg_BDh->dam ^ 1) << 1) + 2);
-            aymo_(tm_update_tremolo)(chip);
+            chip->eg_tremoloreq = 1;
         }
 
         if (reg_BDh->dvb != reg_BDh_prev.dvb) {
