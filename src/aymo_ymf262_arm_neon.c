@@ -174,7 +174,7 @@ const uint8_t aymo_(og_prout_ac)[AYMO_(SLOT_GROUP_NUM)] =
 const uint8_t aymo_(og_prout_bd)[AYMO_(SLOT_GROUP_NUM)] =
 {
     0x88,
-    0xF8,
+    0x88,
     0x88,
     0xF8,
     0x88,

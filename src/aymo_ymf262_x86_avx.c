@@ -175,7 +175,7 @@ const uint8_t aymo_(og_prout_ac)[AYMO_(SLOT_GROUP_NUM)] =  // TODO: TBV: use a s
 const uint8_t aymo_(og_prout_bd)[AYMO_(SLOT_GROUP_NUM)] =  // TODO: TBV: use a shared mask; use bit 7 as mask flag; <<=1 for the next flag
 {
     0x88,
-    0xF8,
+    0x88,
     0x88,
     0xF8,
     0x88,

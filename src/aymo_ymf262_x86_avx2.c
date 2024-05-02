@@ -172,7 +172,7 @@ const uint16_t aymo_(og_prout_ac)[AYMO_(SLOT_GROUP_NUM)] =
 // Slot mask output delay for outputs B and D
 const uint16_t aymo_(og_prout_bd)[AYMO_(SLOT_GROUP_NUM)] =
 {
-    0xF888,
+    0x8888,
     0xF888,
     0xFF88,
     0xFF88

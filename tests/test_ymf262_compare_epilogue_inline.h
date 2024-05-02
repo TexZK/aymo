@@ -134,7 +134,6 @@ static int app_run(void)
 
             if (status->flags & AYMO_SCORE_FLAG_EVENT) {
                 OPL3_WriteReg(&nuked_chip, status->address, status->value);
-
                 aymo_(write)(&aymo_chip, status->address, status->value);
                 score_delay = 2u;
             }
